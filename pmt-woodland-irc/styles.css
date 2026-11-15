@@ -511,7 +511,6 @@ details[open]:not(.is-closing) .pm::after{transform:rotate(0deg)}
 .footer-logo{width:118px;height:auto;margin:0 0 16px;border-radius:8px}
 .footer-contact{font-size:15px}
 .footer-contact a{display:inline-block;padding:6px 0}
-.cookie-note{margin-top:16px!important;padding-top:14px;border-top:1px solid #D9DFE6;font-size:12.5px}
 
 /* ---------- Sticky mobile CTA (off unless config.stickyMobileCta is true) ---------- */
 .sticky-cta{position:fixed;z-index:50;left:0;right:0;bottom:0;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(24,43,66,.96);transform:translate3d(0,110%,0);transition:transform .45s var(--ease)}

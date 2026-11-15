@@ -44,6 +44,10 @@ tracking: {
 
 Leave either one as `""` to keep it off. The page works with both off.
 
+**Before turning tracking on, put the cookie notice back.** It was removed from the footer because tracking is off. Meta's terms require a page that uses its pixel to tell visitors. Add this as the last paragraph of the footer in `index.html`, after PMT has OK'd the wording:
+
+> This page uses cookies and similar tools from Meta and Google to count visits and button taps and to show PMT ads to people who've visited. We don't collect your name, email or payment details on this page. Registration and payment happen on our registration site. You can block cookies in your browser settings and manage ad preferences in your Facebook or Instagram settings. Questions? (925) 373-4802 or info@pmtinc.co.
+
 **Other switches**
 
 | Setting | What it does |
@@ -100,7 +104,6 @@ Netlify, static site: no build command, publish directory is this folder. Sugges
 
 1. Meta pixel ID and GA4 ID (or launch without them).
 2. Next Woodland Intermediate date(s) after Nov 21.
-3. PMT (Chris or Craig) OKs the footer cookie notice.
-4. Launch-day recheck: prices ($425, $149), 1,250+ Google reviews, Woodland 5.0 / 120+, and the four quoted reviews still live with the same wording.
-5. Releases from recognizable riders in the photos.
-6. Optional: written OK from Total Control Training to show its logo.
+3. Launch-day recheck: prices ($425, $149), 1,250+ Google reviews, Woodland 5.0 / 120+, and the four quoted reviews still live with the same wording.
+4. Releases from recognizable riders in the photos.
+5. Optional: written OK from Total Control Training to show its logo.
