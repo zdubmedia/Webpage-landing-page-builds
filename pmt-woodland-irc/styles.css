@@ -299,15 +299,15 @@ summary::-webkit-details-marker{display:none}
 .lf-cones circle{fill:var(--orange);stroke:#fff;stroke-width:2}
 .lf-line{fill:none;stroke:var(--gold);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0}
 .lf-pt>circle{fill:var(--gold);stroke:#fff;stroke-width:3}
+.lf-lead{fill:none;stroke:var(--navy);stroke-width:2;stroke-linecap:round}
 .lf-pt rect{fill:#fff;stroke:var(--navy);stroke-width:2}
 .lf-pt text{font:700 19px var(--body);letter-spacing:.04em;fill:var(--navy);text-anchor:middle}
-.lf-pt{transform-box:fill-box;transform-origin:50% 50%}
 .a-armed .lf-line{stroke-dashoffset:1}
-.a-in .lf-line{animation:draw 2.3s cubic-bezier(.4,.1,.3,1) .15s both}
+.a-in .lf-line{animation:draw 2.4s cubic-bezier(.45,.2,.35,1) .15s both}
 .a-armed .lf-pt{opacity:0}
-.a-in .lf-pt{animation:labelPop .55s var(--ease) both;animation-delay:calc(.55s + var(--i) * .68s)}
+.a-in .lf-pt{animation:labelPop .55s var(--ease) both;animation-delay:var(--dl,.6s)}
 @keyframes draw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
-@keyframes labelPop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+@keyframes labelPop{from{opacity:0}to{opacity:1}}
 
 .skills-grid{display:grid;gap:14px;align-items:start}
 .skill{position:relative;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden;transition:transform .45s var(--ease),box-shadow .45s ease}
@@ -319,26 +319,7 @@ summary::-webkit-details-marker{display:none}
 .fix{position:absolute;z-index:3;left:0;right:0;bottom:0;padding:8px 10px 9px;border-top:2px solid var(--gold);background:rgba(24,43,66,.93);color:#fff;font-size:12.5px;font-weight:600;line-height:1.3}
 .motion .fix{transform:translate3d(0,102%,0);transition:transform .65s var(--ease)}
 .motion .fix-on .fix{transform:none}
-.skill-icon{display:grid;place-items:center;background:#E9EEF4}
-.skill-icon svg{width:118px;height:auto}
-.si-ground{fill:none;stroke:#9AA9BA;stroke-width:2;stroke-linecap:round}
-.si-stop{fill:none;stroke:var(--navy);stroke-width:5;stroke-linecap:round}
-.si-flash{stroke:var(--gold);opacity:0}
-.si-bike{fill:none;stroke:var(--navy);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-.si-path{fill:none;stroke:var(--navy);stroke-width:3.4;stroke-linecap:round;stroke-dasharray:.1 8}
-.si-reveal{fill:none;stroke:#fff;stroke-width:10;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:0}
-.si-arrow{fill:none;stroke:var(--navy);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.si-cone{fill:var(--orange)}
-.si-conebase{fill:none;stroke:var(--orange);stroke-width:4;stroke-linecap:round}
-.a-armed .si-bike{opacity:0}
-.a-in .si-bike{animation:brakeIn 1.3s cubic-bezier(.12,.7,.2,1) .1s both}
-.a-in .si-flash{animation:flash 1s ease-out 1.3s 1 both}
-@keyframes brakeIn{from{opacity:0;transform:translate3d(-64px,0,0)}18%{opacity:1}to{opacity:1;transform:none}}
 @keyframes flash{0%{opacity:0}25%{opacity:1}100%{opacity:0}}
-.a-armed .si-reveal{stroke-dashoffset:1}
-.a-in .si-reveal{animation:draw 1.3s cubic-bezier(.4,.1,.3,1) .1s both}
-.a-armed .si-arrow{opacity:0}
-.a-in .si-arrow{animation:fadeIn .35s ease 1.25s both}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .skill-txt{display:flex;flex:1;flex-direction:column;justify-content:center;gap:8px;min-width:0;padding:14px 6px 14px 16px}
 .skill-n{display:inline-grid;place-items:center;width:30px;height:22px;border-radius:999px;background:var(--gold);color:var(--ink);font-size:11.5px;font-weight:700;letter-spacing:.04em}
@@ -554,7 +535,6 @@ details[open]:not(.is-closing) .pm::after{transform:rotate(0deg)}
   .skill summary{min-height:150px}
   .skill-media{width:190px}
   .fix{font-size:13.5px;padding:10px 12px 11px}
-  .skill-icon svg{width:150px}
   .skill-name{font-size:32px}
   .skill-txt{padding-left:22px}
   .band-item{width:270px;max-width:none;margin-left:-22px}
