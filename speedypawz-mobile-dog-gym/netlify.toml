@@ -1,0 +1,103 @@
+# Speedy PawZ landing page: static site, no build step.
+[build]
+  publish = "."
+
+# Working files that are not for visitors.
+[[redirects]]
+  from = "/brand/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/START-HERE.md"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/FOR-EMELYN.md"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/assets/photos/README.md"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/assets/video/README.md"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/assets/van-sequence/README.md"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/netlify.toml"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+# Any unknown path goes to the page (real files like thank-you.html and /assets/* still load).
+# Two rules because Netlify skips a plain "/*" to "/" rule as a loop.
+[[redirects]]
+  from = "/:first"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/:first/*"
+  to = "/"
+  status = 301
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/speedypawz.vcf"
+  [headers.values]
+    Content-Type = "text/vcard; charset=utf-8"
+    Content-Disposition = "attachment; filename=\"Speedy-PawZ.vcf\""
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/site-config.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
