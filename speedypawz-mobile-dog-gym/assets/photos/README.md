@@ -7,13 +7,13 @@ Rules: never alter faces or real dogs (crop, color and exposure only). No AI ups
 
 | File | Shows in | Shown at (max CSS width) | Current width | Ideal original |
 |---|---|---|---|---|
-| `dog-on-slat-mill.jpg` | Hero background (darkened), PawZ Reel slide 1, OG image | full screen | 1320 | 2400+ |
-| `emelyn-van-door-black-dog.jpg` | Meet Emelyn flip card 1, PawZ Reel, VSL poster | 340 | 437 | 1200+ |
+| `dog-on-slat-mill.jpg` | Hero background (darkened), OG image | full screen | 1320 | 2400+ |
+| `emelyn-van-door-black-dog.jpg` | Meet Emelyn flip card 1, VSL poster | 340 | 437 | 1200+ |
 | `emelyn-and-son.jpg` | Meet Emelyn flip card 2 [CONFIRM OK to show Adan] | 340 | 438 | 1200+ |
-| `husky-bandana-mill.jpg` | Meet Emelyn flip card 3 [CONFIRM Kira or Kiko], PawZ Reel, phone notification in the van scene | 340 | 438 | 1200+ |
+| `husky-bandana-mill.jpg` | Meet Emelyn flip card 3 [CONFIRM Kira or Kiko], PawZ Reel | 340 | 438 | 1200+ |
 | `black-lab-smiling-mill.jpg` | Who it's for: high-energy, PawZ Reel | 380 | 437 | 1200+ |
-| `emelyn-overalls-on-mill.jpg` | Who it's for: shy pups, PawZ Reel | 380 | 437 | 1200+ |
-| `emelyn-selfie-van.jpg` | PawZ Reel | 380 | 438 | 1200+ |
+| `emelyn-overalls-on-mill.jpg` | Who it's for: shy pups | 380 | 437 | 1200+ |
+| `emelyn-selfie-van.jpg` | Not placed right now (spare) | 380 | 438 | 1200+ |
 | `van-mystery-machine.jpg` | Community trophy card, PawZ Reel | 380 | 1320 | 1600+ |
 | `emelyn-velma-trunk-or-treat.jpg` | PawZ Reel | 380 | 1130 | 1600+ |
 | `van-driveway.jpg` | How it works (first image, and the whole stage with reduced motion), PawZ Reel | 1060 | 1320 | 2400+ |
