@@ -21,9 +21,9 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `css/site.css` | All styles. Tokens at the top match the visual design guide. |
 | `js/main.js` | Config rendering, review mode, dog illustrations, race-track progress, sticky CTA, flip cards, counters, pace dial, PawZ Reel, easter egg, pixel. |
 | `js/booking.js` | Tabs, 3-step session form, quick-call form, validation, Netlify AJAX submit. |
-| `js/intro.js` | The lick opener: gold screen with the logo, the pup runs up, boops and licks the lens, his nose fills the screen, blackout, then navy, red and gold curves roll up to reveal the hero. |
+| `js/intro.js` | The lick opener: gold screen with the logo, the pup hops out of the van and runs up, one big lick, then red, navy and gold curves follow the tongue up the screen and reveal the hero. |
 | `js/flow.js` | The flow layer: wavy ribbon marquees, section arcs that flatten as they rise, the giant "zoomies / snoozies" type band. Decoration only. |
-| `js/scene.js` | The "How it works" scene. It sticks to the screen while you scroll through five steps; arriving at a step plays that step's short film through by itself. |
+| `js/scene.js` | The "How it works" laps: five laps down the page, each with a short film that moves forward as you scroll. Nothing sticks and nothing plays by itself. |
 | `vendor/` | GSAP 3.13 + ScrollTrigger, self-hosted (free "no charge" license). |
 | `assets/fonts/` | Self-hosted Poppins, Nunito, Racing Sans One (latin subsets). |
 | `assets/photos/` | Photos plus WebP/AVIF versions. See `assets/photos/README.md` for every slot. |
@@ -32,7 +32,7 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `assets/speedypawz.vcf` | "Save our number" contact card. |
 | `assets/video/` | Drop the intro video here (see below). |
 | `assets/intro/` | The lick opener clip, two sizes (`lick-720.mp4` phones, `lick-1080.mp4` desktop). |
-| `assets/scene/` | The five scene films: videos in `film/`, and the same films as still frames in `seq/` for phones that refuse to autoplay video. See its README to swap in new clips. |
+| `assets/scene/` | The five lap films, stored as folders of still frames in `seq/`. See its README to swap in new clips. |
 | `brand/` | Brand guide, visual design guide, original build brief. Redirected away on the live site. |
 | `netlify.toml` | Publish settings, redirects, caching headers. |
 | `FOR-EMELYN.md` | One-page owner note. |
@@ -64,24 +64,24 @@ Zach's reference for the feel is sweet-tape.com: one flat color fills the whole 
 - **Red:** still buttons only, plus the one red ribbon. Her brand guide reserves red for the call to action, so there are no red sections. If Zach wants a red field, that is a brand-rule change to clear with Emelyn.
 
 ## The lick opener
-- Sequence: gold screen, logo pops, the clip (pup hops out, runs up, boops the lens, licks), his nose fills the screen, blackout, then navy, red and gold curves roll up and away to reveal the hero. About 4.5 seconds.
-- Plays on **every fresh page load** (Zach wants to see it each time while we pitch). It does not replay when someone comes back with the Back button, never plays with reduced motion, and can be skipped (button or Escape).
+- Sequence: gold screen, logo pops, the pup hops out of the van and runs up until his nose is on the lens, one big lick with the tongue sweeping up from the bottom, then red, navy and gold curves follow the tongue up the screen and roll away to reveal the hero. About 4.5 seconds.
+- The clip is two clips joined: the first run-up clip, cut on the black frame where the nose fills the lens, into Zach's lick clip. The join is hidden by that black frame.
+- Plays on **every fresh page load**. It does not replay when someone comes back with the Back button, never plays with reduced motion, and can be skipped (button or Escape).
 - **Switch:** `data-intro` on the `<html>` tag in `index.html`: `"on"` (every load), `"once"` (one time per visit, a sensible setting once real ad traffic is running), `"off"`. `/?intro=0` skips it once, `/?intro=1` forces it.
-- **Low Power Mode:** an iPhone in Low Power Mode refuses to start any video by itself. The opener asks the browser first; if the answer is no, it plays the same clip from still frames (`assets/intro/seq/`, 39 frames) so the pup still shows up. The scene below does the same.
-- **Replace the clip:** export from Kling without the watermark, upright (3:4 or 9:16), ending with the nose filling the frame. Then:
-  `ffmpeg -ss START -i clip.mp4 -an -vf "scale=720:-2,setpts=PTS/1.2" -r 24 -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p -movflags +faststart assets/intro/lick-720.mp4` (and again at 1080 wide, crf 28). Keep it about 2.5 seconds. Then rebuild the frames: `ffmpeg -i assets/intro/lick-720.mp4 -vf "fps=15,scale=540:680" -start_number 0 -c:v libwebp -quality 48 assets/intro/seq/%03d.webp` and set the frame count (`SEQ.n`) at the top of `js/intro.js`. The blackout fires 0.1 s before the clip ends and the screen shake 0.95 s before the end (the first nose boop).
+- **Low Power Mode:** an iPhone in Low Power Mode refuses to start any video by itself. The opener asks the browser first; if the answer is no, it plays the same clip from still frames (`assets/intro/seq2/`, 38 frames) so the pup still shows up.
+- **Files:** `assets/intro/lick2-720.mp4` (phones), `lick2-1080.mp4` (desktop), `seq2/` (frame copy).
+- **Replace the clip:** make one upright clip about 2.5 seconds long that ends on the lick, encode it as above sizes, then rebuild the frames: `ffmpeg -i assets/intro/lick3-720.mp4 -vf "fps=15,scale=540:680" -start_number 0 -c:v libwebp -quality 48 assets/intro/seq3/%03d.webp`. Use new file names (browsers cache `/assets` for a year), then at the top of `js/intro.js` set the file names, the frame count (`SEQ.n`), `BOOP_AT` (seconds in: nose bumps the lens) and `LICK_AT` (seconds in: tongue comes up, the curves start).
 - With the opener on, the hero skips its own start-lights and logo roll-in. With it off, the original hero start sequence plays.
 
 ## Add a booking calendar
 Set `calendarEmbed: { type: "iframe", src: "https://...", height: 760, name: "Square Appointments" }`. The "Request a session" tab then shows the live calendar first and the request form under "Can't find a time?". **Set the calendar's own "after booking" redirect to `/thank-you.html`.** [CONFIRM which platform Emelyn uses]
 
-## "How it works" scene
-- **How it moves:** the scene sticks to the screen while you scroll through five steps. Arriving at a step plays that step's film all the way through by itself (the van starts pulling up just before the scene locks in place). Scroll on and the next step plays. When a film ends, a small "Keep scrolling" nudge appears so nobody sits waiting. The dots show where you are; tap one to jump.
-- **Why it is smooth now:** the sticking is plain CSS (`position: sticky`), so scrolling stays native, and the films play at their own speed instead of being dragged frame by frame with the thumb.
-- **Step length:** each step is 84% of a screen of scrolling. To change it, edit `84svh` in the `.scene-on .scene` rule in `css/site.css`.
-- **No play buttons, ever.** Films are videos where the browser allows them. Where it refuses to start videos on its own (iPhone Low Power Mode), the same films play from still frames on a canvas (`assets/scene/seq/`), a little less smooth but automatic.
-- Reduced motion: no films, the real van photo and the five step cards show instead.
-- See `assets/scene/README.md` for what each step uses, the "seamless" idea (film on a flat color that matches the page, so the van is on the page and not in a video box), how to swap in a clip, and the Kling prompts that worked.
+## "How it works" laps
+- **How it moves:** five laps sit one under the other (Lap 1, Lap 2, Lap 3, Pit stop, Finish line), each a color band with its step card and a picture. The picture is a short film that moves forward as you scroll down and runs back as you scroll up. It is all one plain vertical scroll: nothing sticks, nothing plays by itself, no dots or buttons.
+- **Pace:** a lap's film starts as its picture comes up from the bottom of the screen and finishes a little above the middle. To stretch or tighten that, change `START` and `END` at the top of `js/scene.js`.
+- **Why frames, not video:** phones cannot scrub a video smoothly with the thumb, and an iPhone in Low Power Mode will not play video by itself. Each film is a folder of still frames drawn on a canvas, which works everywhere.
+- Reduced motion or no JavaScript: each lap shows one still picture.
+- See `assets/scene/README.md` for what each lap uses, how to swap in a clip, and the Kling prompts that worked.
 
 Still wanted:
 1. **A treadmill shot with more cartoonish energy** (Zach is working on it). Replaces `3-trot`.
@@ -90,10 +90,14 @@ Still wanted:
 
 Session network note: generating from a cloud session needs `kling.ai`, `s15-kling.klingai.com` and `v15-kling.klingai.com` on the environment's allowed hosts (the "Landing pages (Kling access)" environment has them, plus `sweet-tape.com` for the reference site).
 
-## Photos changed after Zach's phone review
-- **Meet your coach, first card:** now `emelyn-and-pup-van` (her whole head in frame). It is a crop of an Instagram frame, so it is small (477 px wide). A full-size original from Emelyn would be sharper.
-- **"The pups who started it all":** now `huskies-on-the-mills`, both huskies in frame. The only source with both dogs was Emelyn's Instagram story, which had caption text and arrows over it. Those were cleaned off with an AI edit; nothing else was changed. Swap in her original photo when she sends it (review mode flags this).
-- **High-energy pups card:** the photo now sits at the top of its frame so the dog's whole face shows. The file itself is cropped right at the top of the head; a wider original would fix that fully.
+## Photos and clips changed after Zach's phone reviews
+- **Meet your coach, first card:** `emelyn-and-pup-van` (her whole head in frame). It is a crop of an Instagram frame, so it is small (477 px wide). A full-size original from Emelyn would be sharper.
+- **"The pups who started it all":** `huskies-on-the-mills`, both huskies in frame. The source was Emelyn's Instagram story, with the caption text and arrows cleaned off by an AI edit; nothing else was changed. Zach has since sent a clean photo of both huskies sitting on the mills (wide, not upright); it does not fit this upright card without cutting a dog off, so it is not placed yet.
+- **High-energy pups card:** `heeler-and-emelyn-mill`, the cattle dog with Emelyn, cropped from an Instagram screenshot so the like and comment icons are out of frame.
+- **Older dogs card:** a 2.5 second clip (`assets/video/older-dog-rest.mp4`) that plays once when the card comes on screen, then rests on the dog lying down. If the phone will not autoplay, the still (`older-dog-rest`) shows. **This is AI footage, not one of Emelyn's clients.** Swap in a real photo by setting `olderDogPhoto` in `site-config.js`.
+- **Shy pups card:** unchanged (Emelyn beside the black dog on the mill).
+- **Pace dial:** the little drawing under the dial is replaced by the real trot footage (the Lap 3 frames, looped). It runs slower or faster with the needle. The drawing remains as the fallback.
+- **The PawZ Reel** photo carousel is gone from the proof section, at Zach's request. Stats, reviews, then "Part of the pack".
 - **Note on swapping photos:** files in `/assets` are cached by browsers for a year. Give a replacement photo a new file name (and update `index.html`) instead of overwriting the old one.
 
 ## The "Powered by Netlify" badge

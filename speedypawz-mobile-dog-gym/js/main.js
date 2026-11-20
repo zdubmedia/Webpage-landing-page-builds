@@ -268,7 +268,7 @@
     if (!has(CFG.calendarEmbed)) items.push({ text: 'Booking platform for the calendar embed (config.calendarEmbed)' });
     if (!has((CFG.vsl || {}).src)) items.push({ text: 'Intro video (assets/video/intro.mp4, config.vsl.src)' });
     if (CFG.freeMeetAndGreet == null) items.push({ text: 'Is the meet-and-greet free? (config.freeMeetAndGreet)' });
-    items.push({ text: 'AI footage (opener + How it works films) shows an AI dog modeled on a client dog, and the opener and Lap 2 show an AI Emelyn. Get her OK. Opener and Lap 2 clips still need a watermark-free export' });
+    items.push({ text: 'AI footage (opener + How it works films) shows an AI dog modeled on a client dog, and the opener and Lap 2 show an AI Emelyn. Get her OK. Lap 2 clip still needs an export without the caption text' });
     items.push({ text: 'Owner permission for every client dog photo' });
     items.push({ text: 'Privacy policy legal review (privacy.html)' });
 
@@ -466,6 +466,39 @@
     set(45);
 
     if (REDUCED) { window.SPZ.stepSlats(slats, 0, 0); return; }
+
+    /* Real footage: the trot clip from the How it works section, looped, playing faster or slower with the dial.
+       Frames 18 to 57 loop cleanly (same point in the stride); the last few blend into the first few. */
+    var film = $('.dial__film canvas', card);
+    if (film) (function () {
+      var ctx = film.getContext('2d'), A = 18, B = 57, LEN = B - A, FADE = 3, imgs = [], got = 0, asked = false, pos = 0, on = false, seen = false, lastT = 0, drawnKey = '';
+      function src(k) { return 'assets/scene/seq/trot/0' + (k < 10 ? '0' : '') + k + '.webp'; }
+      function ask() {
+        if (asked) return; asked = true;
+        for (var k = A - FADE; k < B; k++) (function (k) {
+          var im = new Image();
+          im.onload = function () { im._ok = true; if (++got === LEN + FADE) { on = true; card.classList.add('has-film'); if (seen) requestAnimationFrame(step); } };
+          im.src = src(k); imgs[k] = im;
+        })(k);
+      }
+      function step(now) {
+        if (!on || !seen) return;
+        var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0; lastT = now;
+        pos = (pos + dt * 12 * (0.45 + value / 100 * 2.35)) % LEN;           // 12 frames a second is the clip's own slow-motion speed
+        var k = Math.floor(pos), key = k + '', tail = k >= LEN - FADE ? (k - (LEN - FADE) + 1) / (FADE + 1) : 0;
+        if (key !== drawnKey) {
+          drawnKey = key;
+          ctx.globalAlpha = 1; ctx.drawImage(imgs[A + k], 0, 0, 640, 472);
+          if (tail) { ctx.globalAlpha = tail; ctx.drawImage(imgs[A + k - LEN], 0, 0, 640, 472); ctx.globalAlpha = 1; }   // blend into the frames just before the loop start
+        }
+        requestAnimationFrame(step);
+      }
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) { if (es[0].isIntersecting) ask(); }, { rootMargin: '120% 0px' }).observe(card);
+        new IntersectionObserver(function (es) { seen = es[0].isIntersecting; if (seen && on) { lastT = 0; requestAnimationFrame(step); } }).observe(card);
+      }
+    })();
+
     var visible = false, last = 0;
     if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) { last = 0; requestAnimationFrame(loop); } }).observe(mill);
     function loop(now) {
@@ -478,7 +511,22 @@
     }
   }
 
-  /* ---------- The PawZ Reel ---------- */
+  /* ---------- Short clips inside cards (older dog): play once when the card is on screen ----------
+     If the phone will not start a video on its own (Low Power Mode), the still picture simply stays. No play button. */
+  function cardClips() {
+    if (REDUCED || !('IntersectionObserver' in window)) return;
+    $$('video[data-src]').forEach(function (v) {
+      var done = false;
+      new IntersectionObserver(function (es, io) {
+        if (!es[0].isIntersecting || done) return;
+        done = true; io.disconnect();
+        v.muted = true; v.src = v.getAttribute('data-src');
+        var p = v.play(); if (p && p.catch) p.catch(function () { v.removeAttribute('src'); v.load(); });
+      }, { threshold: 0.6 }).observe(v);
+    });
+  }
+
+  /* ---------- The PawZ Reel (section removed; kept in case it comes back) ---------- */
   function reel() {
     var root = $('#pawzReel');
     if (!root) return;
@@ -622,6 +670,7 @@
   flips();
   counters();
   paceDial();
+  cardClips();
   reel();
   easterEgg();
   magnetic();

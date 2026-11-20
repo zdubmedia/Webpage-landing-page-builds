@@ -44,8 +44,8 @@
   });
   var giant = document.querySelector('.giant');
   if (giant) {
-    gsap.fromTo('.giant__row--a', { xPercent: 3 }, { xPercent: -40, ease: 'none', scrollTrigger: { trigger: giant, start: 'top bottom', end: 'bottom top', scrub: 0.4 } });
-    gsap.fromTo('.giant__row--b', { xPercent: -44 }, { xPercent: -2, ease: 'none', scrollTrigger: { trigger: giant, start: 'top bottom', end: 'bottom top', scrub: 0.4 } });
+    gsap.fromTo('.giant__row--a', { xPercent: 0 }, { xPercent: -2.2, ease: 'none', scrollTrigger: { trigger: giant, start: 'top bottom', end: 'bottom top', scrub: 0.4 } });
+    gsap.fromTo('.giant__row--b', { xPercent: -1.8 }, { xPercent: 0, ease: 'none', scrollTrigger: { trigger: giant, start: 'top bottom', end: 'bottom top', scrub: 0.4 } });
     gsap.to('.giant__sticker', { rotation: '+=40', ease: 'none', scrollTrigger: { trigger: giant, start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
   }
 })();

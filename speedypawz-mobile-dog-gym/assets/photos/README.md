@@ -12,17 +12,19 @@ Rules: never alter faces or real dogs (crop, color and exposure only). No AI ups
 | `emelyn-van-door-black-dog.jpg` | Not placed now (her head is cut off in this file) | 340 | 437 | 1200+ |
 | `emelyn-and-son.jpg` | Meet Emelyn flip card 2 [CONFIRM OK to show Adan] | 340 | 438 | 1200+ |
 | `huskies-on-the-mills.jpg` | Meet Emelyn flip card 3 [CONFIRM these are Kira and Kiko]. From her Instagram story; the caption text and arrows were cleaned off with an AI edit. Swap for her original. | 340 | 880 | 1200+ |
-| `husky-bandana-mill.jpg` | PawZ Reel | 340 | 438 | 1200+ |
-| `black-lab-smiling-mill.jpg` | Who it's for: high-energy (pinned to the top of its frame so the whole face shows), PawZ Reel | 380 | 437 | 1200+ |
+| `husky-bandana-mill.jpg` | Not placed now | 340 | 438 | 1200+ |
+| `heeler-and-emelyn-mill.jpg` | Who it's for: high-energy (cropped from an Instagram screenshot, icons out of frame) | 380 | 1170 | 1600+ |
+| `older-dog-rest.jpg` | Who it's for: older dogs. Still for the short clip `assets/video/older-dog-rest.mp4`. AI footage, not a client: swap for a real photo. | 380 | 960 | 1200+ |
+| `black-lab-smiling-mill.jpg` | Sticker in the zoomies band | 120 | 437 | 1200+ |
 | `emelyn-overalls-on-mill.jpg` | Who it's for: shy pups | 380 | 437 | 1200+ |
 | `emelyn-selfie-van.jpg` | Not placed right now (spare) | 380 | 438 | 1200+ |
-| `van-mystery-machine.jpg` | Community trophy card, PawZ Reel | 380 | 1320 | 1600+ |
-| `emelyn-velma-trunk-or-treat.jpg` | PawZ Reel | 380 | 1130 | 1600+ |
-| `van-driveway.jpg` | How it works (first image, and the whole stage with reduced motion), PawZ Reel | 1060 | 1320 | 2400+ |
-| `coach-beside-mill.jpg` | Safety section photo, PawZ Reel | 480 | 984 | 1600+ |
-| `client-dog-trot-mill.jpg` | PawZ Reel, photo inside the phone notification | 520 | 1187 | 1600+ |
-| `emelyn-client-dog-van.jpg` | PawZ Reel | 520 | 978 | 1600+ |
-| `love-pats.jpg` | PawZ Reel | 520 | 1320 | 2400+ |
+| `van-mystery-machine.jpg` | Community trophy card | 380 | 1320 | 1600+ |
+| `emelyn-velma-trunk-or-treat.jpg` | Not placed now | 380 | 1130 | 1600+ |
+| `van-driveway.jpg` | How it works (first image, and the whole stage with reduced motion) | 1060 | 1320 | 2400+ |
+| `coach-beside-mill.jpg` | Safety section photo | 480 | 984 | 1600+ |
+| `client-dog-trot-mill.jpg` | photo inside the phone notification | 520 | 1187 | 1600+ |
+| `emelyn-client-dog-van.jpg` | Not placed now | 520 | 978 | 1600+ |
+| `love-pats.jpg` | Not placed now | 520 | 1320 | 2400+ |
 | `van-emelyn-at-door.jpg` | Not placed yet (spare real van photo) | n/a | 1320 | 2400+ |
 | *(empty)* older dog photo | Who it's for: older dogs (set `olderDogPhoto` in `site-config.js`) | 380 | none | 1200+ |
 

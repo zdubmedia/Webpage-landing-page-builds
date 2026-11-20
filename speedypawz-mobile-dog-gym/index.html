@@ -111,14 +111,12 @@
   </defs>
 </svg>
 
-<!-- Lick opener: gold screen, logo pops, the pup runs up, boops and licks the lens, blackout, then navy, red and gold curves roll up to reveal the page -->
+<!-- Lick opener: gold screen, logo pops, the pup hops out and runs up, one big lick, then red, navy and gold curves follow the tongue up the screen and reveal the page -->
 <div class="lick" id="lick">
   <img class="lick__mark" src="assets/logo/knockout-navy-480.webp" width="480" height="413" alt="" aria-hidden="true">
   <video class="lick__video" muted playsinline preload="auto" disablepictureinpicture aria-hidden="true" tabindex="-1"></video>
   <img class="lick__logo" src="assets/logo/badge-360.webp" width="360" height="360" alt="" aria-hidden="true">
-  <div class="lick__wipe lick__wipe--gold" aria-hidden="true"></div>
-  <div class="lick__wipe lick__wipe--red" aria-hidden="true"></div>
-  <div class="lick__wipe lick__wipe--mid" aria-hidden="true"></div>
+  <div class="lick__train" aria-hidden="true"><i class="lick__band lick__band--red"></i><i class="lick__band lick__band--mid"></i><i class="lick__band lick__band--gold"></i></div>
   <button class="lick__skip" type="button">Skip intro</button>
 </div>
 
@@ -200,29 +198,84 @@
     <h2 id="how-title">We bring the gym to <span class="hl">YOU</span></h2>
   </div>
 
-  <div class="scene" id="vanScene" data-confirm="AI footage shows an AI version of Emelyn and a client dog: get Emelyn's OK">
-    <div class="scene__pin">
-      <div class="scene__stage" aria-hidden="true">
-        <!-- Real photo: shows first, and is the whole stage with reduced motion or no JS -->
-        <picture class="scene__still">
-          <source type="image/avif" srcset="assets/photos/van-driveway-640.avif 640w, assets/photos/van-driveway.avif 1320w" sizes="(min-width: 1100px) 1060px, 100vw">
-          <source type="image/webp" srcset="assets/photos/van-driveway-640.webp 640w, assets/photos/van-driveway.webp 1320w" sizes="(min-width: 1100px) 1060px, 100vw">
-          <img src="assets/photos/van-driveway-640.jpg" width="1320" height="605" alt="" loading="lazy" decoding="async">
-        </picture>
-        <!-- The films (js/scene.js adds them here once the page has loaded) -->
-        <div class="scene__films"></div>
-        <!-- Pit stop: labels that pop in over the exploded slat mill -->
-        <ul class="scene__tags" role="list">
-          <li class="is-gold">No motor</li>
-          <li>Free-spinning wheels</li>
-          <li>Dog-powered slats</li>
-          <li>Stops when they stop</li>
-        </ul>
-
-        <!-- Finish line: the photo update -->
-        <svg class="scene__svg scene__phone" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
-          <defs><clipPath id="c-shot"><rect x="-96" y="-30" width="192" height="150" rx="14"/></clipPath></defs>
-          <g id="phoneMock"><g transform="translate(972 236) scale(.6)">
+  <!-- Five laps, one under the other. Each lap's film advances as the visitor scrolls (js/scene.js). No JS or reduced motion: the still pictures show. -->
+  <ol class="laps" id="vanScene" role="list" data-confirm="AI footage shows an AI version of Emelyn and a client dog: get Emelyn's OK">
+    <li class="lap lap--gold lap--seamless" data-seq="van" data-n="108" style="--fx: .58">
+      <div class="lap__inner">
+        <div class="beat reveal">
+        <span class="beat__lap">Lap 1</span>
+        <h3 class="beat__title">We pull up to <span class="hl">your curb.</span></h3>
+        <p>No driving, no loading up the car, no waiting room.</p>
+      </div>
+        <div class="lap__media" aria-hidden="true">
+          <img class="lap__poster" src="assets/scene/seq/van/052.webp" width="640" height="360" alt="" loading="lazy" decoding="async">
+          <canvas class="lap__film" width="640" height="360"></canvas>
+        </div>
+      </div>
+    </li>
+    <li class="lap lap--dark" data-seq="warmup" data-n="60">
+      <div class="arc" aria-hidden="true"></div>
+      <div class="lap__inner">
+        <div class="beat reveal">
+        <span class="beat__lap">Lap 2</span>
+        <h3 class="beat__title">Your pup warms up at <span class="hl">their own pace.</span></h3>
+        <p>Praise, toys and treats. Never force. We take time to get comfy before the first step.</p>
+      </div>
+        <div class="lap__media" aria-hidden="true">
+          <img class="lap__poster" src="assets/scene/seq/warmup/040.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
+          <canvas class="lap__film" width="640" height="472"></canvas>
+        </div>
+      </div>
+    </li>
+    <li class="lap lap--cream" data-seq="trot" data-n="60">
+      <div class="arc" aria-hidden="true"></div>
+      <div class="lap__inner">
+        <div class="beat reveal">
+        <span class="beat__lap">Lap 3</span>
+        <h3 class="beat__title">A happy <span class="hl nw">30-minute</span> workout.</h3>
+        <p>Two dog-powered slat mills, no motor. Your dog sets the speed while Emelyn coaches the whole time.</p>
+      </div>
+        <div class="lap__media" aria-hidden="true">
+          <img class="lap__poster" src="assets/scene/seq/trot/020.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
+          <canvas class="lap__film" width="640" height="472"></canvas>
+        </div>
+      </div>
+    </li>
+    <li class="lap lap--navy lap--seamless" data-seq="mill" data-n="72">
+      <div class="arc" aria-hidden="true"></div>
+      <div class="lap__inner">
+        <div class="beat reveal">
+        <span class="beat__lap">Pit stop</span>
+        <h3 class="beat__title">No motor. <span class="hl">Your dog powers every step.</span></h3>
+        <p>The slats only roll when their paws move them, so they can slow down, speed up or stop whenever they want.</p>
+      </div>
+        <div class="lap__media" aria-hidden="true">
+          <img class="lap__poster" src="assets/scene/seq/mill/036.webp" width="640" height="360" alt="" loading="lazy" decoding="async">
+          <canvas class="lap__film" width="640" height="360"></canvas>
+          <!-- Pit stop: labels that pop in over the exploded slat mill -->
+          <ul class="lap__tags" role="list">
+            <li class="is-gold">No motor</li>
+            <li>Free-spinning wheels</li>
+            <li>Dog-powered slats</li>
+            <li>Stops when they stop</li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li class="lap lap--gold" data-seq="nap" data-n="84">
+      <div class="arc" aria-hidden="true"></div>
+      <div class="lap__inner">
+        <div class="beat reveal">
+        <span class="beat__lap">Finish line</span>
+        <h3 class="beat__title">Photo update, plus a <span class="hl">tired, happy pup.</span></h3>
+        <p>You get pictures after every session. Plenty of pups settle in for a deep nap afterward.</p>
+      </div>
+        <div class="lap__media" aria-hidden="true">
+          <img class="lap__poster" src="assets/scene/seq/nap/083.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
+          <canvas class="lap__film" width="640" height="472"></canvas>
+          <!-- Finish line: the photo update drops in -->
+          <svg class="lap__phone" viewBox="-140 -260 280 520">
+            <defs><clipPath id="c-shot"><rect x="-96" y="-30" width="192" height="150" rx="14"/></clipPath></defs>
             <rect x="-130" y="-250" width="260" height="500" rx="38" fill="#1F1B30" stroke="#121117" stroke-width="4"/>
             <rect x="-114" y="-230" width="228" height="460" rx="28" fill="#F6EEDE"/>
             <rect x="-40" y="-222" width="80" height="16" rx="8" fill="#1F1B30"/>
@@ -235,49 +288,11 @@
               <text x="-92" y="-17" font-family="Poppins, Arial, sans-serif" font-weight="800" font-size="15" fill="#1F1B30">today! Photo inside.</text>
               <g transform="translate(0 46)"><g clip-path="url(#c-shot)"><image href="assets/photos/client-dog-trot-mill-640.webp" x="-170" y="-40" width="340" height="170" preserveAspectRatio="xMidYMid slice"/></g></g>
             </g></g>
-          </g></g>
-        </svg>
-      </div>
-
-      <ol class="beats" role="list">
-        <li class="beat" data-beat="0">
-          <span class="beat__lap">Lap 1</span>
-          <h3 class="beat__title">We pull up to <span class="hl">your curb.</span></h3>
-          <p>No driving, no loading up the car, no waiting room.</p>
-        </li>
-        <li class="beat" data-beat="1">
-          <span class="beat__lap">Lap 2</span>
-          <h3 class="beat__title">Your pup warms up at <span class="hl">their own pace.</span></h3>
-          <p>Praise, toys and treats. Never force. We take time to get comfy before the first step.</p>
-        </li>
-        <li class="beat" data-beat="2">
-          <span class="beat__lap">Lap 3</span>
-          <h3 class="beat__title">A happy <span class="hl nw">30-minute</span> workout.</h3>
-          <p>Two dog-powered slat mills, no motor. Your dog sets the speed while Emelyn coaches the whole time.</p>
-        </li>
-        <li class="beat" data-beat="3">
-          <span class="beat__lap">Pit stop</span>
-          <h3 class="beat__title">No motor. <span class="hl">Your dog powers every step.</span></h3>
-          <p>The slats only roll when their paws move them, so they can slow down, speed up or stop whenever they want.</p>
-        </li>
-        <li class="beat" data-beat="4">
-          <span class="beat__lap">Finish line</span>
-          <h3 class="beat__title">Photo update, plus a <span class="hl">tired, happy pup.</span></h3>
-          <p>You get pictures after every session. Plenty of pups settle in for a deep nap afterward.</p>
-        </li>
-      </ol>
-      <div class="scene__bar">
-        <div class="scene__pips" role="group" aria-label="Jump to a step">
-          <button type="button" aria-label="Lap 1"><i></i></button>
-          <button type="button" aria-label="Lap 2"><i></i></button>
-          <button type="button" aria-label="Lap 3"><i></i></button>
-          <button type="button" aria-label="Pit stop"><i></i></button>
-          <button type="button" aria-label="Finish line"><i></i></button>
+          </svg>
         </div>
-        <p class="scene__hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Keep scrolling</p>
       </div>
-    </div>
-  </div>
+    </li>
+  </ol>
   <div class="wrap cta-row">
     <a class="btn btn--red" href="#book" data-cta="how">Pick my times</a>
   </div>
@@ -363,21 +378,16 @@
     <ul class="cards3" role="list">
       <li class="card fit-card reveal">
         <div class="fit-card__media">
-          <picture><source type="image/avif" srcset="assets/photos/black-lab-smiling-mill.avif"><source type="image/webp" srcset="assets/photos/black-lab-smiling-mill.webp"><img class="is-top" src="assets/photos/black-lab-smiling-mill.jpg" width="437" height="497" alt="A black lab smiling on the slat mill, wearing a purple bandana" loading="lazy" decoding="async"></picture>
+          <picture><source type="image/avif" srcset="assets/photos/heeler-and-emelyn-mill-640.avif 640w, assets/photos/heeler-and-emelyn-mill.avif 1170w" sizes="(min-width: 900px) 340px, 92vw"><source type="image/webp" srcset="assets/photos/heeler-and-emelyn-mill-640.webp 640w, assets/photos/heeler-and-emelyn-mill.webp 1170w" sizes="(min-width: 900px) 340px, 92vw"><img class="is-top" src="assets/photos/heeler-and-emelyn-mill-640.jpg" width="640" height="512" alt="A cattle dog with perked ears, smiling on the slat mill, with Emelyn beside the mill" loading="lazy" decoding="async"></picture>
         </div>
         <div class="fit-card__body">
           <h3>High-energy pups</h3>
           <p>Zoomies at 9 pm? Chewed-up shoes? A good run helps burn off that extra energy.</p>
         </div>
       </li>
-      <li class="card fit-card reveal" data-confirm="Older dog photo (slot ready)" data-confirm-key="olderDogPhoto">
-        <div class="fit-card__media fit-card__media--illus" id="olderDogMedia">
-          <svg viewBox="0 0 320 240" aria-hidden="true">
-            <rect width="320" height="240" fill="#FCD98A"/>
-            <g fill="#F6EEDE" opacity=".6"><use href="#i-paw" x="24" y="24" width="30" height="30"/><use href="#i-paw" x="262" y="176" width="30" height="30"/><use href="#i-paw" x="250" y="30" width="22" height="22"/></g>
-            <ellipse cx="160" cy="214" rx="120" ry="12" fill="#282742" opacity=".15"/>
-            <g transform="translate(166 214) scale(.8)" data-dog="husky" data-variant="senior"></g>
-          </svg>
+      <li class="card fit-card reveal" data-confirm="Older dog clip is AI footage, not one of Emelyn's clients: swap for a real photo (olderDogPhoto in site-config.js)" data-confirm-key="olderDogPhoto">
+        <div class="fit-card__media" id="olderDogMedia">
+          <video class="fit-card__clip" muted playsinline preload="none" disablepictureinpicture tabindex="-1" aria-label="An older dog settling down for a rest" poster="assets/photos/older-dog-rest.jpg" data-src="assets/video/older-dog-rest.mp4" width="640" height="512"></video>
         </div>
         <div class="fit-card__body">
           <h3>Older dogs slowing down</h3>
@@ -429,6 +439,10 @@
           <button type="button" data-pace="10">Sniff and stroll</button>
           <button type="button" data-pace="50" aria-pressed="true">Happy trot</button>
           <button type="button" data-pace="92">Full zoomies</button>
+        </div>
+        <div class="dial__film" aria-hidden="true">
+          <canvas width="640" height="472"></canvas>
+          <span class="dial__streaks"></span>
         </div>
         <svg class="mini-mill" viewBox="0 -30 520 220" aria-hidden="true">
           <defs><clipPath id="c-beltM"><rect x="40" y="-74" width="420" height="22" rx="6"/></clipPath><linearGradient id="g-red2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9474A"/><stop offset="1" stop-color="#A51E2B"/></linearGradient></defs>
@@ -521,36 +535,6 @@
         <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Raffle winners who became weekly regulars</li>
       </ul>
       <p class="reviews__src">Summarized from Speedy PawZ reviews on Google.</p>
-    </div>
-
-    <!-- The PawZ Reel -->
-    <div class="reel reveal" id="pawzReel" role="region" aria-roledescription="carousel" aria-label="The PawZ Reel: photos from the van" tabindex="0">
-      <h3 class="reel__title">The PawZ Reel</h3>
-      <div class="reel__viewer">
-        <div class="reel__frame is-wide">
-          <figure class="reel__slide is-active" data-wide data-i="0"><picture><source type="image/avif" srcset="assets/photos/client-dog-trot-mill-640.avif"><source type="image/webp" srcset="assets/photos/client-dog-trot-mill-640.webp"><img src="assets/photos/client-dog-trot-mill-640.jpg" width="640" height="284" alt="A client's dog trotting on the slat mill while Emelyn cheers" loading="lazy" decoding="async"></picture><figcaption>Mid-trot, tongue out</figcaption></figure>
-          <figure class="reel__slide" data-i="1"><picture><source type="image/avif" srcset="assets/photos/black-lab-smiling-mill.avif"><source type="image/webp" srcset="assets/photos/black-lab-smiling-mill.webp"><img src="assets/photos/black-lab-smiling-mill.jpg" width="437" height="497" alt="A black lab grinning on the mill" loading="lazy" decoding="async"></picture><figcaption>All smiles, mid-session</figcaption></figure>
-          <figure class="reel__slide" data-wide data-i="2"><picture><source type="image/avif" srcset="assets/photos/coach-beside-mill-640.avif"><source type="image/webp" srcset="assets/photos/coach-beside-mill-640.webp"><img src="assets/photos/coach-beside-mill-640.jpg" width="640" height="347" alt="Emelyn coaching a dog on the mill" loading="lazy" decoding="async"></picture><figcaption>Coaching right beside the mill</figcaption></figure>
-          <figure class="reel__slide" data-i="3"><picture><source type="image/avif" srcset="assets/photos/husky-bandana-mill.avif"><source type="image/webp" srcset="assets/photos/husky-bandana-mill.webp"><img src="assets/photos/husky-bandana-mill.jpg" width="438" height="501" alt="A husky in a bandana on the mill" loading="lazy" decoding="async"></picture><figcaption>Bandana day on the mill</figcaption></figure>
-          <figure class="reel__slide" data-wide data-i="4"><picture><source type="image/avif" srcset="assets/photos/emelyn-client-dog-van-640.avif"><source type="image/webp" srcset="assets/photos/emelyn-client-dog-van-640.webp"><img src="assets/photos/emelyn-client-dog-van-640.jpg" width="640" height="387" alt="Emelyn in her checkered overalls sitting with a client's dog in the van doorway" loading="lazy" decoding="async"></picture><figcaption>Curbside and ready to roll</figcaption></figure>
-          <figure class="reel__slide" data-wide data-i="5"><picture><source type="image/avif" srcset="assets/photos/love-pats-640.avif"><source type="image/webp" srcset="assets/photos/love-pats-640.webp"><img src="assets/photos/love-pats-640.jpg" width="640" height="270" alt="Emelyn giving a dog love pats inside the van" loading="lazy" decoding="async"></picture><figcaption>Tail wags and love pats</figcaption></figure>
-          <figure class="reel__slide" data-wide data-i="6"><picture><source type="image/avif" srcset="assets/photos/van-driveway-640.avif"><source type="image/webp" srcset="assets/photos/van-driveway-640.webp"><img src="assets/photos/van-driveway-640.jpg" width="640" height="293" alt="The Speedy PawZ van parked in a driveway with the side door open, Emelyn greeting a dog" loading="lazy" decoding="async"></picture><figcaption>Right in your driveway</figcaption></figure>
-          <figure class="reel__slide" data-i="7"><picture><source type="image/avif" srcset="assets/photos/van-mystery-machine-480.avif"><source type="image/webp" srcset="assets/photos/van-mystery-machine-480.webp"><img src="assets/photos/van-mystery-machine-480.jpg" width="480" height="473" alt="The Speedy PawZ van dressed as the Mystery Machine" loading="lazy" decoding="async"></picture><figcaption>The van, Mystery Machine edition</figcaption></figure>
-          <figure class="reel__slide" data-i="8"><picture><source type="image/avif" srcset="assets/photos/emelyn-velma-trunk-or-treat-480.avif"><source type="image/webp" srcset="assets/photos/emelyn-velma-trunk-or-treat-480.webp"><img src="assets/photos/emelyn-velma-trunk-or-treat-480.jpg" width="480" height="650" alt="Emelyn dressed as Velma beside the van" loading="lazy" decoding="async"></picture><figcaption>Velma, reporting for duty</figcaption></figure>
-        </div>
-      </div>
-      <div class="reel__deck">
-        <button class="reel__btn reel__prev" type="button" aria-label="Previous photo"><svg aria-hidden="true"><use href="#i-left"/></svg></button>
-        <div class="reel__disc-wrap" aria-hidden="true">
-          <div class="reel__pointer"></div>
-          <div class="reel__disc"></div>
-        </div>
-        <button class="reel__btn reel__next" type="button" aria-label="Next photo"><svg aria-hidden="true"><use href="#i-right"/></svg></button>
-      </div>
-      <div class="reel__meta">
-        <p class="reel__count" aria-live="polite"><span class="reel__n">1</span> of <span class="reel__total">9</span></p>
-        <button class="reel__sound" type="button" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-mute"/></svg><span>Sound off</span></button>
-      </div>
     </div>
 
     <div class="community">

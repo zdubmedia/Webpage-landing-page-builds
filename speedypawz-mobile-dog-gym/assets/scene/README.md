@@ -1,60 +1,44 @@
-# "How it works" scene films
+# "How it works" lap films
 
-The "How it works" section sticks to the screen while the visitor scrolls through five steps. Arriving at a step plays that step's short film through by itself; scrolling on plays the next one. The engine is `js/scene.js`.
+The "How it works" section is five laps stacked down the page. Each lap has a short film that moves forward as the visitor scrolls. The engine is `js/scene.js`.
 
-## The idea: the van is on the page, not in a video box
+Each film is a folder of still frames (`seq/<name>/000.webp`, `001.webp`, ...), drawn on a canvas. Frames are used instead of video because a phone cannot scrub a video smoothly with the thumb, and an iPhone in Low Power Mode will not play video by itself.
 
-Some films are **seamless**: the subject sits on one flat background color, and the page behind the film is painted the same color. So the van reads as rolling across the page itself.
+## What is here now (`seq/`)
 
-- The van film was generated on a flat gold studio background, then every background pixel was set to brand gold `#F7B334`.
-- The exploded mill sits on a navy studio background, and the page turns navy while it plays.
-- The other films are **tiles**: rounded cards on phones, full width on desktop (the upright Lap 2 clip sits as a tilted card beside the text on desktop).
+| Lap | Folder | Frames | What happens | Source | Look |
+|---|---|---|---|---|---|
+| Lap 1 | `van` | 108 | Van drives in from the left edge of the page and parks, the side door slides open, the camera pushes to the doorway | Kling 4.0, gold studio (two clips joined) | seamless, on the gold page |
+| Lap 2 | `warmup` | 60 | Emelyn clips the harness on, love pats, a treat | Zach's Kling clip | tile |
+| Lap 3 | `trot` | 60 | Happy slow-motion trot, tongue flapping, no saliva | Zach's Kling clip | tile |
+| Pit stop | `mill` | 72 | Slat mill comes apart and goes back together | Kling 4.0, from a studio still of her real mill | seamless on phones, tile on desktop |
+| Finish line | `nap` | 84 | Pup hops out, curls up on a dog bed, falls asleep | Kling 4.0 | tile |
 
-## What is here now (`film/`)
+About 5 MB in all, 640 pixels wide. Nothing loads until the page itself has finished loading; then each lap's frames load when that lap is about a screen away, coarse first so the film works straight away.
 
-| Step | Film | What happens | Source | Look |
-|---|---|---|---|---|
-| Lap 1 | `1-van` | Van drives in from the left edge of the page and parks, the side door slides open, the camera pushes to the doorway | Kling 4.0, gold studio (two clips joined) | seamless |
-| Lap 2 | `2-warmup` | Emelyn clips the harness on, love pats, a treat | Zach's Kling clip (upright) | tile |
-| Lap 3 | `3-trot` | Happy slow-motion trot, tongue flapping, no saliva | Zach's Kling clip | tile |
-| Pit stop | `4-mill` | Slat mill comes apart and goes back together | Kling 4.0, from a studio still of her real mill | seamless |
-| Finish line | `5-nap` | Pup hops out, curls up on a dog bed, falls asleep | Kling 4.0 | tile |
-
-Each film has a desktop file (`name.mp4`, 1280 x 720) and a phone file (`name-m.mp4`), except `2-warmup`, which uses one file for both. Phone total is about 2.3 MB, desktop about 4.2 MB. No sound.
-
-Nothing here loads until the page itself has finished loading. Then the first film loads when the section is near, and each next film loads while the one before it plays.
-
-## The frame copies (`seq/`)
-
-An iPhone in Low Power Mode will not start a video by itself, and we never want a play button here. So each film also exists as a folder of still frames (`seq/van`, `seq/warmup`, `seq/trot`, `seq/mill`, `seq/nap`; about 5 MB in all), which `js/scene.js` plays on a canvas when the browser refuses the video. Only those phones download them.
-
-Rebuild a folder whenever you replace its film (12 frames a second; the van uses 15):
-```
-ffmpeg -i film/3-trot-m.mp4 -vf "fps=12,scale=640:472" -start_number 0 -c:v libwebp -quality 46 seq/trot/%03d.webp
-```
-Then set that film's frame count (`n`) in the `FILMS` list in `js/scene.js`.
+The Lap 3 frames are also used by the pace dial further down the page (frames 15 to 57, looped).
 
 `nap-still.webp` is one frame of the nap, used as a sticker in the big "zoomies / snoozies" band.
 
-**Push-in note:** the push-in is cut at 3.75 s on purpose. After that point Kling drew ordinary motorized-looking treadmills inside the van, which is wrong for a "no motor" business. The scene hands off to the Lap 2 film instead.
+**"Seamless"** means the subject sits on one flat background color and the page behind it is the same color, so the van reads as rolling across the page itself. The van film's background was set to exact brand gold `#F7B334`.
 
-**Lap 2 note:** Zach's clip has Instagram caption text burned into the lower part of the frame and a Kling watermark, so the bottom 18% is cropped off. A clean export would let the whole frame show.
+**Push-in note:** the push-in is cut at 3.75 s on purpose. After that point Kling drew ordinary motorized-looking treadmills inside the van, which is wrong for a "no motor" business.
+
+**Lap 2 note:** Zach's clip has Instagram caption text burned into the lower part of the frame and a Kling watermark, so the bottom of the frame is cropped off.
 
 ## Swapping in a new clip
 
-1. Export the clip without a watermark, 1080p. 16:9 for most steps; upright is fine for a tile.
-2. Encode it (no sound, 24 frames a second):
+1. Export the clip without a watermark, 16:9, about 5 to 7 seconds.
+2. Make the frames (12 a second; the van uses 15). Tile laps are cropped to 640 x 472, seamless laps keep the whole frame at 640 x 360:
    ```
-   # desktop
-   ffmpeg -i clip.mp4 -an -vf "fps=24,scale=1280:720" -c:v libx264 -crf 25 -preset slow -pix_fmt yuv420p -movflags +faststart film/3-trot.mp4
-   # phone, tile film (crop to the tile shape; 137 = how far from the left the crop starts, 0 to 304)
-   ffmpeg -i clip.mp4 -an -vf "fps=24,scale=1280:720,crop=976:720:137:0,scale=640:472" -c:v libx264 -crf 26 -preset slow -pix_fmt yuv420p -movflags +faststart film/3-trot-m.mp4
-   # phone, seamless film (whole frame)
-   ffmpeg -i clip.mp4 -an -vf "fps=24,scale=854:480" -c:v libx264 -crf 25 -preset slow -pix_fmt yuv420p -movflags +faststart film/4-mill-m.mp4
+   # tile lap (137 = how far from the left the crop starts, 0 to 304)
+   ffmpeg -i clip.mp4 -vf "fps=12,scale=1280:720,crop=976:720:137:0,scale=640:472" -start_number 0 -c:v libwebp -quality 46 seq/trot2/%03d.webp
+   # seamless lap
+   ffmpeg -i clip.mp4 -vf "fps=12,scale=640:360" -start_number 0 -c:v libwebp -quality 48 seq/mill2/%03d.webp
    ```
-3. **Give the new file a new name** (for example `3-trot-v2.mp4`) and update the name in `js/scene.js`. Files in `/assets` are cached by browsers for a year, so overwriting an old name will not reach people who already visited.
-4. For a gold seamless film, the gold in the clip will not be exactly brand gold. Shift the background to `#F7B334` (any video tool with a color replace limited to the background, or the small script ZDub used in the build session). Without this you get a faint box around the film.
-5. In `js/scene.js`, the `FILMS` list at the top holds one line per film: video file name, frame folder and frame count, the look (`seamless` or `tile`), and the page color behind it.
+3. **Use a new folder name** (for example `trot2`). Files in `/assets` are cached by browsers for a year, so overwriting an old folder will not reach people who already visited.
+4. In `index.html`, find that lap (`<li class="lap ..." data-seq="trot" data-n="60">`) and set the folder name and the frame count. Point the still picture (`<img class="lap__poster">`) at one good frame from the new folder.
+5. For a gold seamless film, the gold in the clip will not be exactly brand gold. Shift the background to `#F7B334` (any video tool with a color replace limited to the background). Without this you get a faint box around the film.
 
 ## Prompts that worked (Kling 4.0, image to video)
 
