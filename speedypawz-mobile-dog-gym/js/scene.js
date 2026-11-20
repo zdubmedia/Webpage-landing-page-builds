@@ -2,7 +2,7 @@
    Pinned and scroll-scrubbed with GSAP ScrollTrigger. The footage is sets of still frames
    that the page steps through as the visitor scrolls. Five beats:
 
-     Lap 1        v   the van rolls in from the side of the page and parks (on a flat gold field)
+     Lap 1        v   the van drives in from the side of the page and parks (on a flat gold field)
                   p   the side door slides open and the camera pushes inside
      Lap 2        pats (real photo)   love pats before the first step
      Lap 3        s   happy slow-motion trot on the slat mill, tongue flapping
@@ -39,7 +39,7 @@
   var GOLD = '#F7B334', MIDNIGHT = '#1F1B30';
 
   /* ---- Footage: frames per shot ---- */
-  var SHOTS = { v: 29, a: 24, s: 40, x: 48, n: 56 };
+  var SHOTS = { v: 27, p: 30, s: 40, x: 48, n: 56 };
   var cache = {}, requested = {};
   function load(name) {
     if (cache[name]) return cache[name];
@@ -95,25 +95,31 @@
     return true;
   }
   // Seamless shots on phones: whole frame, full width, edges feathered into the page color
-  var edge = { top: '', bot: '' };
+  var edge = { top: '', bot: '' }, fixedField = false;
   function px(x, y) { var d = ctx.getImageData(x, y, 1, 1).data; return 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')'; }
   function setEdges(top, bot) {
     if (top !== edge.top) { edge.top = top; pin.style.setProperty('--edge-top', top); }
     if (bot !== edge.bot) { edge.bot = bot; pin.style.setProperty('--edge-bot', bot); }
   }
-  function drawSeamless(img, alpha) {
+  // dx: horizontal slide as a fraction of the canvas width (the van rolling in from the page edge)
+  function drawSeamless(img, alpha, dx, fxFocus) {
     if (!img || !img._ok) return false;
-    var cw = canvas.width, ch = canvas.height;
+    var cw = canvas.width, ch = canvas.height, shift = (dx || 0) * cw;
+    var sample = (alpha == null || alpha >= 1) && !dx && !fixedField;
+    ctx.globalAlpha = alpha == null ? 1 : alpha;
     if (!portrait.matches) {                     // desktop: fill the screen, paint the page to match
-      drawCover(img, 1, 0.5, 0.5, alpha);
-      if (alpha == null || alpha >= 1) setEdges(px(Math.round(cw / 2), 3), px(Math.round(cw / 2), ch - 4));
+      var sc = Math.max(cw / img.naturalWidth, ch / img.naturalHeight), w0 = img.naturalWidth * sc, h0 = img.naturalHeight * sc;
+      if (dx) ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(img, (cw - w0) / 2 + shift, (ch - h0) / 2, w0, h0);
+      ctx.globalAlpha = 1;
+      if (sample) setEdges(px(Math.round(cw / 2), 3), px(Math.round(cw / 2), ch - 4));
       return true;
     }
-    var s = cw / img.naturalWidth, h = img.naturalHeight * s, y0 = Math.round((ch - h) / 2), f = Math.round(h * 0.07);
-    ctx.globalAlpha = alpha == null ? 1 : alpha;
-    ctx.drawImage(img, 0, y0, cw, h);
+    var w = cw * 1.15, s = w / img.naturalWidth, h = img.naturalHeight * s;
+    var x0 = -(w - cw) * (fxFocus == null ? 0.5 : fxFocus) + shift, y0 = Math.round((ch - h) / 2), f = Math.round(h * 0.07);
+    ctx.drawImage(img, x0, y0, w, h);
     ctx.globalAlpha = 1;
-    if (alpha == null || alpha >= 1) setEdges(px(Math.round(cw / 2), y0 + 3), px(Math.round(cw / 2), Math.round(y0 + h) - 4));
+    if (sample) setEdges(px(Math.round(cw / 2), y0 + 3), px(Math.round(cw / 2), Math.round(y0 + h) - 4));
     ctx.globalCompositeOperation = 'destination-out';
     var g = ctx.createLinearGradient(0, y0, 0, y0 + f); g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = g; ctx.fillRect(0, y0 - 1, cw, f + 1);
@@ -127,8 +133,8 @@
   /* ---- Chapters: where each piece of footage sits on the 0 to 1 scroll ---- */
   var ease = function (t) { return t * t * (3 - 2 * t); };
   var CHAPTERS = [
-    { from: 0.00, to: 0.15, beat: 0, shot: 'v', seamless: true, draw: function (t, a) { return drawSeamless(at('v', t), a); } },
-    { from: 0.15, to: 0.32, beat: 0, shot: 'a', field: GOLD, draw: function (t, a) { return drawCover(at('a', t), 1, 0.5, 0.5, a); } },
+    { from: 0.00, to: 0.15, beat: 0, shot: 'v', seamless: true, field: GOLD, draw: function (t, a) { return drawSeamless(at('v', t), a, 0, 0.58); } },
+    { from: 0.15, to: 0.32, beat: 0, shot: 'p', seamless: true, field: GOLD, draw: function (t, a) { return drawSeamless(at('p', t), a, 0, 0.58); } },
     { from: 0.32, to: 0.42, beat: 1, shot: 'pats', field: MIDNIGHT, draw: function (t, a) { return drawCover(cache.pats, 1 + 0.12 * ease(t), small ? 0.5 : 0.55, 0.6, a); } },
     { from: 0.42, to: 0.57, beat: 2, shot: 's', field: MIDNIGHT, draw: function (t, a) { return drawCover(at('s', t), 1, 0.5, 0.4, a); } },
     { from: 0.57, to: 0.81, beat: 3, shot: 'x', seamless: true, draw: function (t, a) { return drawSeamless(at('x', t), a); } },
@@ -141,9 +147,10 @@
     sizeCanvas();
     var p = progress, i = chapterAt(p), c = CHAPTERS[i], t = (p - c.from) / (c.to - c.from);
     var tile = !c.seamless;
+    fixedField = !!c.field;
     if (tile !== mode) { mode = tile; stage.classList.toggle('is-tile', tile); }
-    if (c.seamless && portrait.matches) ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (i > 0 && p - c.from < FADE && !c.seamless && !CHAPTERS[i - 1].seamless) {   // short crossfade between two full-frame shots
+    if (c.seamless) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (i > 0 && p - c.from < FADE && (!portrait.matches || (!c.seamless && !CHAPTERS[i - 1].seamless))) {   // short crossfade between two full-frame shots
       CHAPTERS[i - 1].draw(1, 1);
       c.draw(t, (p - c.from) / FADE);
     } else { c.draw(t, 1); }

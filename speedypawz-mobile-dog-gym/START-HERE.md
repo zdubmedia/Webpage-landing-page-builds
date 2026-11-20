@@ -21,8 +21,9 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `css/site.css` | All styles. Tokens at the top match the visual design guide. |
 | `js/main.js` | Config rendering, review mode, dog illustrations, race-track progress, sticky CTA, flip cards, counters, pace dial, PawZ Reel, easter egg, pixel. |
 | `js/booking.js` | Tabs, 3-step session form, quick-call form, validation, Netlify AJAX submit. |
-| `js/intro.js` | The lick opener: black screen, logo, the pup runs up and licks the lens, slobber drips away to reveal the hero. |
-| `js/scene.js` | The pinned, scroll-scrubbed "How it works" scene (GSAP ScrollTrigger): Kling footage frames, a real photo, the exploded slat mill, the nap + photo update. |
+| `js/intro.js` | The lick opener: gold screen, logo, red and navy wipes, the pup runs up and licks the lens, slobber drips away to reveal the hero. |
+| `js/flow.js` | The flow layer: wavy ribbon marquees, section arcs that flatten as they rise, the giant "zoomies / snoozies" type band. Decoration only. |
+| `js/scene.js` | The pinned, scroll-scrubbed "How it works" scene (GSAP ScrollTrigger). The van drives across the gold page itself, the door opens, real photo, treadmill clip, exploded slat mill, nap + photo update. |
 | `vendor/` | GSAP 3.13 + ScrollTrigger, self-hosted (free "no charge" license). |
 | `assets/fonts/` | Self-hosted Poppins, Nunito, Racing Sans One (latin subsets). |
 | `assets/photos/` | Photos plus WebP/AVIF versions. See `assets/photos/README.md` for every slot. |
@@ -53,31 +54,35 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 2. In `site-config.js`: `vsl: { src: "assets/video/intro.mp4", captions: "assets/video/intro.vtt", poster: "..." }`.
 The "See Speedy PawZ in action" section appears below the hero. It autoplays muted while on screen, with a big "Tap to watch with sound" button. Portrait or landscape is detected automatically.
 
+## Design language (after the sweet-tape.com reference)
+Zach's reference for the feel is sweet-tape.com: one flat color fills the whole screen, the next color arrives as a big curve, giant type, ribbons of scrolling text, objects that sit directly on the color.
+- **Color fields:** every section is one flat field. Classes: `sec--dark` (midnight), `sec--gold` (PawZ gold), `sec--cream`. Order today: hero (midnight photo), how it works (gold), meet Emelyn (midnight), who it's for (cream), safety (midnight), proof (gold), pricing (midnight), FAQ (cream), giant band (gold), booking (midnight), final CTA (gold), footer (black).
+- **Arcs:** each section starts with `<div class="arc">`, a dome in the section's own color that overlaps the section above. `js/flow.js` flattens it as it scrolls into view.
+- **Ribbons:** `<div class="ribbon" data-phrase="...">` at the top of a section draws a wavy band of scrolling text across the boundary. Two today (red after the hero, navy before proof). Only signature phrases, in normal case so "PawZ" keeps its capital Z.
+- **Giant band:** `.giant` before booking. Decorative (`aria-hidden`); the final CTA carries the same words for screen readers.
+- **Highlights:** gold text on midnight; on gold fields the highlight is a small navy box with gold text (an inline PawZ Box); on cream it is a gold marker stroke. Gold text never sits on a light color.
+- **Red:** still buttons only, plus the one red ribbon. Her brand guide reserves red for the call to action, so there are no red sections. If Zach wants a red field, that is a brand-rule change to clear with Emelyn.
+
 ## The lick opener
+- Sequence: gold screen, logo pops, a red then a navy curved wipe, the clip (pup hops out, runs up, boops the lens, licks), a slobber layer wipes up with the tongue and drips away to reveal the hero. About 5 seconds.
 - Plays once per visit (sessionStorage), never with reduced motion, and can be skipped (button or Escape). If the video cannot load or autoplay (slow network, iOS Low Power Mode) it falls back to a quick slobber wipe.
 - **Switch:** `data-intro="on"` or `"off"` on the `<html>` tag in `index.html`. `/?intro=0` skips it once, `/?intro=1` replays it (handy for demos).
 - **Replace the clip:** export from Kling without the watermark, upright (3:4 or 9:16), ending on the lick. Then:
-  `ffmpeg -ss START -i clip.mp4 -an -vf "scale=720:-2" -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p -movflags +faststart assets/intro/lick-720.mp4` (and again at 1080 wide, crf 28). Keep it about 3 seconds. The slobber wipe starts 0.24 s before the clip ends, and the screen shake fires 1.1 s before the end (the nose boop), so keep those moments in the same place or adjust the two numbers in `js/intro.js`.
+  `ffmpeg -ss START -i clip.mp4 -an -vf "scale=720:-2,setpts=PTS/1.2" -r 24 -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p -movflags +faststart assets/intro/lick-720.mp4` (and again at 1080 wide, crf 28). Keep it about 2.5 seconds. The slobber wipe starts 0.24 s before the clip ends, and the screen shake fires 0.9 s before the end (the nose boop), so keep those moments in the same place or adjust the two numbers in `js/intro.js`.
 - With the opener on, the hero skips its own start-lights and logo roll-in. With it off (or on a repeat visit), the original hero start sequence plays.
 
 ## Add a booking calendar
 Set `calendarEmbed: { type: "iframe", src: "https://...", height: 760, name: "Square Appointments" }`. The "Request a session" tab then shows the live calendar first and the request form under "Can't find a time?". **Set the calendar's own "after booking" redirect to `/thank-you.html`.** [CONFIRM which platform Emelyn uses]
 
 ## Scroll scene footage
-See `assets/scene/README.md` for what each beat uses today and how to swap in a new Kling clip (pull frames with ffmpeg, update `SHOTS` and `CHAPTERS` in `js/scene.js`).
-
-### Kling footage: what was made and what is left
-Made with Kling 4.0 (1080p, no watermark) through the Kling connector, from Zach's van still and Emelyn's real photos:
-- **Arrival:** an empty-street plate was made from the van still (van removed), then a clip that starts on the empty street and ends on the parked van.
-- **Slow-mo slobber:** starts from a frame of the pup on the mill.
-- **Exploded mill:** a studio still of her real slat mill was made from the real photo, then a clip that starts and ends on that still.
-- **Nap:** a still of the van with the door open, the pup in the doorway and a dog bed in the foreground, then a clip of the pup hopping out and falling asleep.
+See `assets/scene/README.md`: what each beat uses, the "seamless" idea (footage on a flat color that matches the page, so the van is on the page and not in a video box), how to swap in a clip, and the Kling prompts that worked.
 
 Still wanted:
-1. **Door + push-in (16:9, 6 s, one continuous shot).** First frame: the parked-van still. Last frame: both mills from above. Prompt: "One continuous shot, no cuts. The black van is parked at the curb. Its large sliding side door glides smoothly open toward the rear. The camera then moves steadily forward through the open doorway into the bright, clean van interior, arriving at two red-framed slat treadmills side by side. Smooth dolly move, natural daylight, photorealistic. No people, no text." A first attempt stalled in Kling and never finished.
-2. **Lick opener without the watermark.** The opener still uses Zach's original clip with the frame cropped. Re-download it from Kling history without the watermark (or regenerate at 9:16) and re-encode per "The lick opener" above.
+1. **A better treadmill shot with more cartoonish energy.** Zach is working on this: zoom in on the dog, face a little exaggerated (bigger eyes, lips flopping, tongue flying), slow motion. Either no saliva or clearly playful saliva. Replaces shot `s`.
+2. **A push-in that ends on her real slat mills.** The current one is cut at the doorway because Kling drew motorized treadmills inside. Give Kling a real interior photo as the last frame.
+3. **Lick opener without the watermark.** The opener still uses Zach's original clip with the frame cropped. Re-download it from Kling history without the watermark (or regenerate at 9:16) and re-encode per "The lick opener" above.
 
-Session network note: generating from a cloud session needs `kling.ai`, `s15-kling.klingai.com` and `v15-kling.klingai.com` on the environment's allowed hosts (the "Landing pages (Kling access)" environment has them).
+Session network note: generating from a cloud session needs `kling.ai`, `s15-kling.klingai.com` and `v15-kling.klingai.com` on the environment's allowed hosts (the "Landing pages (Kling access)" environment has them, plus `sweet-tape.com` for the reference site).
 
 ## Turn on the Meta pixel
 1. Set `metaPixelId` in `site-config.js`. PageView fires on every page, `Lead` on the thank-you page, and a custom `CTAClick` on CTA taps.
