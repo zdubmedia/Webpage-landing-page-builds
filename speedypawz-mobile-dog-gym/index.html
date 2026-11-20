@@ -30,14 +30,17 @@
 <link rel="stylesheet" href="css/site.css">
 <script>
 /* Sets up motion + the lick opener before first paint.
-   data-intro="off" on <html> turns the opener off. ?intro=0 skips it once, ?intro=1 replays it. */
+   data-intro on <html>: "on" plays the opener on every fresh load, "once" one time per visit, "off" never.
+   ?intro=0 skips it once, ?intro=1 forces it. Coming back with the Back button never replays it. */
 (function () {
   var d = document.documentElement, c = 'js', q = location.search, seen = 0;
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   try { seen = sessionStorage.getItem('spz_intro'); } catch (e) {}
   if (!reduce) {
     c += ' motion';
-    var intro = d.getAttribute('data-intro') === 'on' && !/[?&]intro=0/.test(q) && (!seen || /[?&]intro=1/.test(q));
+    var mode = d.getAttribute('data-intro'), back = 0;
+    try { back = performance.getEntriesByType('navigation')[0].type === 'back_forward'; } catch (e) {}
+    var intro = (mode === 'on' || mode === 'once') && !/[?&]intro=0/.test(q) && ((mode === 'on' ? !back : !seen) || /[?&]intro=1/.test(q));
     c += intro ? ' lick-on' : ' hero-go';
   }
   d.className = c;
@@ -108,14 +111,14 @@
   </defs>
 </svg>
 
-<!-- Lick opener: gold screen, logo pops, red and navy wipes, the pup runs up and licks the lens, slobber drips away to reveal the page -->
+<!-- Lick opener: gold screen, logo pops, the pup runs up, boops and licks the lens, blackout, then navy, red and gold curves roll up to reveal the page -->
 <div class="lick" id="lick">
   <img class="lick__mark" src="assets/logo/knockout-navy-480.webp" width="480" height="413" alt="" aria-hidden="true">
+  <video class="lick__video" muted playsinline preload="auto" disablepictureinpicture aria-hidden="true" tabindex="-1"></video>
+  <img class="lick__logo" src="assets/logo/badge-360.webp" width="360" height="360" alt="" aria-hidden="true">
+  <div class="lick__wipe lick__wipe--gold" aria-hidden="true"></div>
   <div class="lick__wipe lick__wipe--red" aria-hidden="true"></div>
   <div class="lick__wipe lick__wipe--mid" aria-hidden="true"></div>
-  <video class="lick__video" muted playsinline preload="none" disablepictureinpicture aria-hidden="true" tabindex="-1"></video>
-  <img class="lick__logo" src="assets/logo/badge-360.webp" width="360" height="360" alt="" aria-hidden="true">
-  <div class="lick__goo" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
   <button class="lick__skip" type="button">Skip intro</button>
 </div>
 
@@ -206,7 +209,7 @@
           <source type="image/webp" srcset="assets/photos/van-driveway-640.webp 640w, assets/photos/van-driveway.webp 1320w" sizes="(min-width: 1100px) 1060px, 100vw">
           <img src="assets/photos/van-driveway-640.jpg" width="1320" height="605" alt="" loading="lazy" decoding="async">
         </picture>
-        <!-- The films (js/scene.js adds the video tags here once the page has loaded) -->
+        <!-- The films (js/scene.js adds them here once the page has loaded) -->
         <div class="scene__films"></div>
         <!-- Pit stop: labels that pop in over the exploded slat mill -->
         <ul class="scene__tags" role="list">
@@ -264,10 +267,6 @@
         </li>
       </ol>
       <div class="scene__bar">
-        <button class="scene__toggle" type="button" aria-label="Pause the video">
-          <svg class="ico-pause" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1.5" fill="currentColor"/><rect x="14" y="4" width="5" height="16" rx="1.5" fill="currentColor"/></svg>
-          <svg class="ico-play" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z" fill="currentColor"/></svg>
-        </button>
         <div class="scene__pips" role="group" aria-label="Jump to a step">
           <button type="button" aria-label="Lap 1"><i></i></button>
           <button type="button" aria-label="Lap 2"><i></i></button>
@@ -275,7 +274,7 @@
           <button type="button" aria-label="Pit stop"><i></i></button>
           <button type="button" aria-label="Finish line"><i></i></button>
         </div>
-        <button class="btn btn--red btn--sm scene__play" type="button" hidden>Tap to play</button>
+        <p class="scene__hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Keep scrolling</p>
       </div>
     </div>
   </div>

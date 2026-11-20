@@ -21,9 +21,9 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `css/site.css` | All styles. Tokens at the top match the visual design guide. |
 | `js/main.js` | Config rendering, review mode, dog illustrations, race-track progress, sticky CTA, flip cards, counters, pace dial, PawZ Reel, easter egg, pixel. |
 | `js/booking.js` | Tabs, 3-step session form, quick-call form, validation, Netlify AJAX submit. |
-| `js/intro.js` | The lick opener: gold screen, logo, red and navy wipes, the pup runs up and licks the lens, slobber drips away to reveal the hero. |
+| `js/intro.js` | The lick opener: gold screen with the logo, the pup runs up, boops and licks the lens, his nose fills the screen, blackout, then navy, red and gold curves roll up to reveal the hero. |
 | `js/flow.js` | The flow layer: wavy ribbon marquees, section arcs that flatten as they rise, the giant "zoomies / snoozies" type band. Decoration only. |
-| `js/scene.js` | The "How it works" scene. It plays by itself when the section is on screen (no scrolling needed): five short films, one per step, then it loops. Dots jump to a step, the round button pauses. |
+| `js/scene.js` | The "How it works" scene. It sticks to the screen while you scroll through five steps; arriving at a step plays that step's short film through by itself. |
 | `vendor/` | GSAP 3.13 + ScrollTrigger, self-hosted (free "no charge" license). |
 | `assets/fonts/` | Self-hosted Poppins, Nunito, Racing Sans One (latin subsets). |
 | `assets/photos/` | Photos plus WebP/AVIF versions. See `assets/photos/README.md` for every slot. |
@@ -32,7 +32,7 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `assets/speedypawz.vcf` | "Save our number" contact card. |
 | `assets/video/` | Drop the intro video here (see below). |
 | `assets/intro/` | The lick opener clip, two sizes (`lick-720.mp4` phones, `lick-1080.mp4` desktop). |
-| `assets/scene/` | The five scene films in `film/` (desktop and phone versions). See its README to swap in new clips. |
+| `assets/scene/` | The five scene films: videos in `film/`, and the same films as still frames in `seq/` for phones that refuse to autoplay video. See its README to swap in new clips. |
 | `brand/` | Brand guide, visual design guide, original build brief. Redirected away on the live site. |
 | `netlify.toml` | Publish settings, redirects, caching headers. |
 | `FOR-EMELYN.md` | One-page owner note. |
@@ -64,21 +64,23 @@ Zach's reference for the feel is sweet-tape.com: one flat color fills the whole 
 - **Red:** still buttons only, plus the one red ribbon. Her brand guide reserves red for the call to action, so there are no red sections. If Zach wants a red field, that is a brand-rule change to clear with Emelyn.
 
 ## The lick opener
-- Sequence: gold screen, logo pops, a red then a navy curved wipe, the clip (pup hops out, runs up, boops the lens, licks), a slobber layer wipes up with the tongue and drips away to reveal the hero. About 5 seconds.
-- Plays once per visit (sessionStorage), never with reduced motion, and can be skipped (button or Escape). If the video cannot load or autoplay (slow network, iOS Low Power Mode) it falls back to a quick slobber wipe.
-- **Switch:** `data-intro="on"` or `"off"` on the `<html>` tag in `index.html`. `/?intro=0` skips it once, `/?intro=1` replays it (handy for demos).
-- **Replace the clip:** export from Kling without the watermark, upright (3:4 or 9:16), ending on the lick. Then:
-  `ffmpeg -ss START -i clip.mp4 -an -vf "scale=720:-2,setpts=PTS/1.2" -r 24 -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p -movflags +faststart assets/intro/lick-720.mp4` (and again at 1080 wide, crf 28). Keep it about 2.5 seconds. The slobber wipe starts 0.24 s before the clip ends, and the screen shake fires 0.9 s before the end (the nose boop), so keep those moments in the same place or adjust the two numbers in `js/intro.js`.
-- With the opener on, the hero skips its own start-lights and logo roll-in. With it off (or on a repeat visit), the original hero start sequence plays.
+- Sequence: gold screen, logo pops, the clip (pup hops out, runs up, boops the lens, licks), his nose fills the screen, blackout, then navy, red and gold curves roll up and away to reveal the hero. About 4.5 seconds.
+- Plays on **every fresh page load** (Zach wants to see it each time while we pitch). It does not replay when someone comes back with the Back button, never plays with reduced motion, and can be skipped (button or Escape).
+- **Switch:** `data-intro` on the `<html>` tag in `index.html`: `"on"` (every load), `"once"` (one time per visit, a sensible setting once real ad traffic is running), `"off"`. `/?intro=0` skips it once, `/?intro=1` forces it.
+- **Low Power Mode:** an iPhone in Low Power Mode refuses to start any video by itself. The opener asks the browser first; if the answer is no, it plays the same clip from still frames (`assets/intro/seq/`, 39 frames) so the pup still shows up. The scene below does the same.
+- **Replace the clip:** export from Kling without the watermark, upright (3:4 or 9:16), ending with the nose filling the frame. Then:
+  `ffmpeg -ss START -i clip.mp4 -an -vf "scale=720:-2,setpts=PTS/1.2" -r 24 -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p -movflags +faststart assets/intro/lick-720.mp4` (and again at 1080 wide, crf 28). Keep it about 2.5 seconds. Then rebuild the frames: `ffmpeg -i assets/intro/lick-720.mp4 -vf "fps=15,scale=540:680" -start_number 0 -c:v libwebp -quality 48 assets/intro/seq/%03d.webp` and set the frame count (`SEQ.n`) at the top of `js/intro.js`. The blackout fires 0.1 s before the clip ends and the screen shake 0.95 s before the end (the first nose boop).
+- With the opener on, the hero skips its own start-lights and logo roll-in. With it off, the original hero start sequence plays.
 
 ## Add a booking calendar
 Set `calendarEmbed: { type: "iframe", src: "https://...", height: 760, name: "Square Appointments" }`. The "Request a session" tab then shows the live calendar first and the request form under "Can't find a time?". **Set the calendar's own "after booking" redirect to `/thank-you.html`.** [CONFIRM which platform Emelyn uses]
 
 ## "How it works" scene
-- It **plays by itself** once the section is on screen, so nobody has to know to keep scrolling. Order: van pulls up and the door opens (Lap 1), Emelyn clips the harness on and gives a treat (Lap 2), the trot (Lap 3), the slat mill comes apart (Pit stop), the nap and photo update (Finish line). Then it loops. About 32 seconds a lap.
-- It pauses when the section leaves the screen. The dots under it jump to any step. The round button pauses and plays.
+- **How it moves:** the scene sticks to the screen while you scroll through five steps. Arriving at a step plays that step's film all the way through by itself (the van starts pulling up just before the scene locks in place). Scroll on and the next step plays. When a film ends, a small "Keep scrolling" nudge appears so nobody sits waiting. The dots show where you are; tap one to jump.
+- **Why it is smooth now:** the sticking is plain CSS (`position: sticky`), so scrolling stays native, and the films play at their own speed instead of being dragged frame by frame with the thumb.
+- **Step length:** each step is 84% of a screen of scrolling. To change it, edit `84svh` in the `.scene-on .scene` rule in `css/site.css`.
+- **No play buttons, ever.** Films are videos where the browser allows them. Where it refuses to start videos on its own (iPhone Low Power Mode), the same films play from still frames on a canvas (`assets/scene/seq/`), a little less smooth but automatic.
 - Reduced motion: no films, the real van photo and the five step cards show instead.
-- **iPhone Low Power Mode** does not allow videos to start on their own. Those visitors see the real van photo with a "Tap to play" button; one tap plays everything.
 - See `assets/scene/README.md` for what each step uses, the "seamless" idea (film on a flat color that matches the page, so the van is on the page and not in a video box), how to swap in a clip, and the Kling prompts that worked.
 
 Still wanted:

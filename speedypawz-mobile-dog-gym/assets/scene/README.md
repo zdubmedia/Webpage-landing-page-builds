@@ -1,6 +1,6 @@
 # "How it works" scene films
 
-The "How it works" section plays by itself once it is on screen: five short films, one per step, with the step card changing as each one starts. Then it loops. The engine is `js/scene.js`.
+The "How it works" section sticks to the screen while the visitor scrolls through five steps. Arriving at a step plays that step's short film through by itself; scrolling on plays the next one. The engine is `js/scene.js`.
 
 ## The idea: the van is on the page, not in a video box
 
@@ -24,6 +24,16 @@ Each film has a desktop file (`name.mp4`, 1280 x 720) and a phone file (`name-m.
 
 Nothing here loads until the page itself has finished loading. Then the first film loads when the section is near, and each next film loads while the one before it plays.
 
+## The frame copies (`seq/`)
+
+An iPhone in Low Power Mode will not start a video by itself, and we never want a play button here. So each film also exists as a folder of still frames (`seq/van`, `seq/warmup`, `seq/trot`, `seq/mill`, `seq/nap`; about 5 MB in all), which `js/scene.js` plays on a canvas when the browser refuses the video. Only those phones download them.
+
+Rebuild a folder whenever you replace its film (12 frames a second; the van uses 15):
+```
+ffmpeg -i film/3-trot-m.mp4 -vf "fps=12,scale=640:472" -start_number 0 -c:v libwebp -quality 46 seq/trot/%03d.webp
+```
+Then set that film's frame count (`n`) in the `FILMS` list in `js/scene.js`.
+
 `nap-still.webp` is one frame of the nap, used as a sticker in the big "zoomies / snoozies" band.
 
 **Push-in note:** the push-in is cut at 3.75 s on purpose. After that point Kling drew ordinary motorized-looking treadmills inside the van, which is wrong for a "no motor" business. The scene hands off to the Lap 2 film instead.
@@ -44,7 +54,7 @@ Nothing here loads until the page itself has finished loading. Then the first fi
    ```
 3. **Give the new file a new name** (for example `3-trot-v2.mp4`) and update the name in `js/scene.js`. Files in `/assets` are cached by browsers for a year, so overwriting an old name will not reach people who already visited.
 4. For a gold seamless film, the gold in the clip will not be exactly brand gold. Shift the background to `#F7B334` (any video tool with a color replace limited to the background, or the small script ZDub used in the build session). Without this you get a faint box around the film.
-5. In `js/scene.js`, the `FILMS` list at the top holds one line per film: file name, which step card it belongs to, the look (`seamless` or `tile`), and the page color behind it.
+5. In `js/scene.js`, the `FILMS` list at the top holds one line per film: video file name, frame folder and frame count, the look (`seamless` or `tile`), and the page color behind it.
 
 ## Prompts that worked (Kling 4.0, image to video)
 

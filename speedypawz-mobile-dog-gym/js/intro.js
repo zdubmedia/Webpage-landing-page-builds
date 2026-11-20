@@ -1,24 +1,28 @@
 /* Speedy PawZ: the lick opener.
-   Gold screen > logo pops > red and navy wipes > the pup runs up, boops the lens and licks it >
-   a slobber layer covers the screen and drips away to reveal the page.
+   Gold screen with the logo > the pup hops out, runs up, boops the lens, licks it > his nose fills the screen >
+   blackout > navy, red and gold curves roll up and away to reveal the page.
 
-   Plays once per visit (sessionStorage), never with reduced motion, and bails out
-   quickly if the video cannot load or autoplay. The page underneath is complete
-   the whole time, so nothing depends on this finishing.
-   Switch: data-intro="on|off" on <html>. ?intro=0 skips once, ?intro=1 replays. */
+   Plays on every fresh page load (not when someone comes back with the Back button), never with reduced motion.
+   The page underneath is complete the whole time, so nothing depends on this finishing.
+
+   Phones that refuse to start videos on their own (iPhone Low Power Mode) get the same clip as a set of still
+   frames played on a canvas (assets/intro/seq), so the pup always shows up.
+
+   Switch: data-intro="on|once|off" on <html> (once = one time per visit). ?intro=0 skips once, ?intro=1 forces it. */
 (function () {
   'use strict';
   var html = document.documentElement;
   var root = document.getElementById('lick');
   if (!root || !html.classList.contains('lick-on')) return;
+  var SPZ = window.SPZ = window.SPZ || {};
 
   var video = root.querySelector('.lick__video');
   var skip = root.querySelector('.lick__skip');
   var t0 = performance.now();
-  var LOGO_MS = 650;        // logo holds at least this long
-  var WIPE_MS = 520;        // red + navy wipes before the footage
-  var GIVE_UP_MS = 3200;    // no video by now: go straight to the reveal
-  var state = 'logo';       // logo > playing > licked > done
+  var LOGO_MS = 700;        // logo holds at least this long
+  var GIVE_UP_MS = 4200;    // no footage by now: go straight to the blackout and reveal
+  var SEQ = { n: 39, fps: 15, w: 540, h: 680, dir: 'assets/intro/seq/' };
+  var state = 'logo';       // logo > playing > hit > done
   var timers = [];
   function later(fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; }
 
@@ -34,58 +38,97 @@
     try { window.dispatchEvent(new Event('spz:intro-done')); } catch (e) {}
   }
 
-  // The lick: slobber wipes up, the footage fades out underneath, then it all drips away.
-  function lick(fast) {
-    if (state === 'licked' || state === 'done') return;
-    state = 'licked';
-    root.classList.add('is-licked');
-    later(function () { root.classList.add('is-clear'); }, fast ? 200 : 380);
-    later(function () { root.classList.add('is-drip'); }, fast ? 320 : 640);
-    later(finish, fast ? 1250 : 1850);
+  // Nose on the lens: blackout, then the three curves roll up and off the top to show the page.
+  function hit() {
+    if (state === 'hit' || state === 'done') return;
+    state = 'hit';
+    root.classList.add('is-hit');                                                  // blackout
+    later(function () { root.classList.add('is-clear'); }, 130);                   // footage gone underneath
+    later(function () { root.classList.add('is-roll'); html.classList.add('hero-in'); }, 300);
+    later(finish, 1250);
   }
 
-  function play() {
+  /* ---- Footage: the video, or the same clip as frames where autoplay is refused ---- */
+  var booped = false;
+  function beats(t, d) {
+    if (!booped && t > d - 0.95) { booped = true; root.classList.add('is-boop'); }   // nose bumps the lens
+    if (t >= d - 0.1) { hit(); return true; }                                          // nose fills the screen
+    return false;
+  }
+  function showFootage() { state = 'playing'; root.classList.add('is-playing'); }
+  function afterLogo(fn) { later(fn, Math.max(0, LOGO_MS - (performance.now() - t0))); }
+
+  function watchVideo() {
+    if (state !== 'playing') return;
+    if (beats(video.currentTime, video.duration || 2.6) || video.ended) { hit(); return; }
+    requestAnimationFrame(watchVideo);
+  }
+  function playVideo() {
     if (state !== 'logo') return;
     var p;
-    try { p = video.play(); } catch (e) { lick(true); return; }
-    if (p && p.then) {
-      p.then(function () {
-        if (state !== 'logo') return;
-        state = 'playing';
-        root.classList.add('is-playing');
-        watch();
-      }).catch(function () { lick(true); });   // autoplay blocked (for example iOS Low Power Mode)
-    } else { state = 'playing'; root.classList.add('is-playing'); watch(); }
+    try { video.currentTime = 0; p = video.play(); } catch (e) { useFrames(); return; }
+    if (p && p.then) p.then(function () { if (state === 'logo') { showFootage(); watchVideo(); } }, useFrames);
+    else { showFootage(); watchVideo(); }
   }
 
-  var booped = false;
-  function watch() {
-    if (state !== 'playing') return;
-    var d = video.duration || 3.3, t = video.currentTime;
-    if (!booped && t > d - 0.9) { booped = true; root.classList.add('is-boop'); }   // nose bumps the lens
-    if (t >= d - 0.24 || video.ended) { lick(false); return; }                        // tongue comes up
-    requestAnimationFrame(watch);
+  var framesOn = false;
+  function useFrames() {
+    if (framesOn || state !== 'logo') return;
+    framesOn = true;
+    SPZ.noAutoplay = true;                       // js/scene.js reads this and uses frames too
+    try { video.pause(); } catch (e) {}
+    var c = document.createElement('canvas');
+    c.width = SEQ.w; c.height = SEQ.h; c.className = video.className; c.setAttribute('aria-hidden', 'true');
+    video.parentNode.insertBefore(c, video);
+    video.style.display = 'none';
+    var ctx = c.getContext('2d'), imgs = [], loaded = 0;
+    function name(i) { return SEQ.dir + (i < 10 ? '00' : '0') + i + '.webp'; }
+    function start() {
+      if (state !== 'logo') return;
+      showFootage();
+      var began = performance.now(), dur = SEQ.n / SEQ.fps, last = -1;
+      (function tick(now) {
+        if (state !== 'playing') return;
+        var t = Math.min(dur, ((now || performance.now()) - began) / 1000), i = Math.min(SEQ.n - 1, Math.floor(t * SEQ.fps));
+        if (i !== last && imgs[i] && imgs[i]._ok) { ctx.drawImage(imgs[i], 0, 0, SEQ.w, SEQ.h); last = i; }
+        if (beats(t, dur) || t >= dur) { hit(); return; }
+        requestAnimationFrame(tick);
+      })();
+    }
+    for (var i = 0; i < SEQ.n; i++) (function (i) {
+      var im = new Image();
+      im.onload = function () {
+        im._ok = true;
+        if (i === 0) ctx.drawImage(im, 0, 0, SEQ.w, SEQ.h);
+        if (++loaded === SEQ.n) afterLogo(start);
+      };
+      im.onerror = function () { if (++loaded === SEQ.n) afterLogo(start); };
+      im.src = name(i);
+      imgs[i] = im;
+    })(i);
   }
 
-  function ready() {
-    var wait = Math.max(0, LOGO_MS - (performance.now() - t0));
-    later(function () { if (state === 'logo') root.classList.add('is-wipe'); }, wait);
-    later(play, wait + WIPE_MS);
-  }
-
-  // Pick the lighter file on phones
+  // Ask the browser straight away whether it will play. If it will, hold the clip at the start until the logo has had its moment.
   var size = window.innerWidth >= 900 ? 1080 : 720;
-  video.addEventListener('canplay', ready, { once: true });
-  video.addEventListener('error', function () { lick(true); });
-  video.addEventListener('ended', function () { lick(false); });
+  video.addEventListener('error', useFrames);
   video.src = 'assets/intro/lick-' + size + '.mp4';
-  video.load();
+  var probe;
+  try { probe = video.play(); } catch (e) { probe = null; useFrames(); }
+  if (probe && probe.then) {
+    probe.then(function () {
+      if (state !== 'logo' || framesOn) return;
+      video.pause();
+      afterLogo(playVideo);
+    }, useFrames);
+  } else if (probe !== null) {
+    video.addEventListener('canplay', function () { afterLogo(playVideo); }, { once: true });
+  }
   root.classList.add('is-logo');
 
-  later(function () { if (state === 'logo') lick(true); }, GIVE_UP_MS);
+  later(function () { if (state === 'logo') hit(); }, GIVE_UP_MS);
   later(function () { root.classList.add('can-skip'); }, 700);
-  later(finish, 9000);   // hard stop, whatever happens
+  later(finish, 9500);   // hard stop, whatever happens
 
-  skip.addEventListener('click', function () { lick(true); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && state !== 'done') lick(true); });
+  skip.addEventListener('click', hit);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && state !== 'done') hit(); });
 })();
