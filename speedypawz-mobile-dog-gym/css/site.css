@@ -276,9 +276,9 @@ ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
 .scene { position: relative; }
 .scene__pin { position: relative; }
 .scene__stage { position: relative; margin: 0 auto; width: min(100% - 32px, 1060px); aspect-ratio: 1320 / 605; border-radius: 24px; overflow: hidden; background: var(--midnight); box-shadow: var(--shadow-photo); }
-.scene__still, .scene__still img, .scene__canvas, .scene__svg, .scene__drops { position: absolute; inset: 0; width: 100%; height: 100%; }
+.scene__still, .scene__still img, .scene__canvas, .scene__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .scene__still img { object-fit: cover; }
-.scene__canvas, .scene__diagram, .scene__phone, .scene__drops, .scene__pips { display: none; }
+.scene__canvas, .scene__phone, .scene__pips { display: none; }
 .beats { display: grid; gap: 14px; width: min(100% - 32px, 1060px); }
 .scene .beats { margin: 24px auto 0; }
 @media (min-width: 700px) { .beats { max-width: 760px; } }
@@ -293,8 +293,8 @@ ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
 
 /* Scroll-scrubbed mode (class added by scene.js) */
 .scene-on .scene__pin { height: 100vh; height: 100svh; overflow: hidden; background: var(--husky-cream); }
-.scene-on .scene__canvas, .scene-on .scene__drops { display: block; }
-.scene-on .scene__diagram, .scene-on .scene__phone { display: block; opacity: 0; visibility: hidden; }
+.scene-on .scene__canvas { display: block; }
+.scene-on .scene__phone { display: block; opacity: 0; visibility: hidden; }
 .scene-on .scene__pips { display: flex; }
 .scene-on .beats { display: grid; align-items: start; }
 .scene-on .beat { grid-area: 1 / 1; position: relative; opacity: 0; visibility: hidden; transform: translateY(16px) scale(.96); transition: opacity .35s, transform .35s var(--ease-back), visibility 0s .35s; }
@@ -306,7 +306,7 @@ ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
 @media (orientation: portrait) {
   .scene-on .scene__pin { display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: calc(var(--track-h) + 14px) 16px 18px; }
   .scene-on .beats { order: 0; width: 100%; max-width: 560px; margin: 0 auto; }
-  .scene-on .scene__stage { order: 1; width: 100%; max-width: 560px; aspect-ratio: 720 / 530; }
+  .scene-on .scene__stage { order: 1; width: 100%; max-width: 560px; aspect-ratio: 640 / 472; }
   .scene-on .scene__pips { order: 2; }
 }
 /* Landscape: footage fills the screen, text card floats top left */
@@ -323,27 +323,16 @@ ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
 }
 .how .cta-row { margin-top: 36px; }
 
-/* Slobber drops that land on the "lens" during the workout */
-.scene__drops { pointer-events: none; }
-.scene__drops i {
-  position: absolute; left: var(--x); top: var(--y); width: var(--s); height: calc(var(--s) * 1.18);
-  border-radius: 50% 50% 50% 50% / 44% 44% 56% 56%;
-  background: radial-gradient(circle at 32% 26%, rgba(255, 255, 255, .95) 0 7%, rgba(255, 255, 255, .38) 9% 28%, rgba(205, 230, 255, .22) 58%, rgba(255, 255, 255, .5) 100%);
-  box-shadow: inset 0 -3px 6px rgba(255, 255, 255, .45), 0 3px 8px rgba(0, 0, 0, .28);
-  -webkit-backdrop-filter: blur(3px) brightness(1.12); backdrop-filter: blur(3px) brightness(1.12);
-  transform: scale(0); opacity: 0; transition: transform .4s var(--ease-back), opacity .35s;
+/* Pit-stop label chips over the exploded mill */
+.scene__tags { position: absolute; z-index: 2; left: 0; right: 0; bottom: 10px; display: none; flex-wrap: wrap; justify-content: center; gap: 6px; padding: 0 10px; margin: 0; list-style: none; pointer-events: none; }
+.scene-on .scene__tags { display: flex; }
+.scene__tags li { font: 800 12.5px/1.2 var(--font-display); color: var(--white); background: rgba(31, 27, 48, .92); border: 1px solid rgba(255, 255, 255, .16); padding: 7px 12px; border-radius: 999px; opacity: 0; transform: translateY(10px) scale(.9); transition: opacity .3s, transform .35s var(--ease-back); }
+.scene__tags li.is-gold { background: var(--pawz-gold); color: var(--midnight); border-color: var(--pawz-gold); }
+.scene__tags li.is-on { opacity: 1; transform: none; }
+@media (orientation: landscape) {
+  .scene__tags { bottom: 66px; gap: 10px; }
+  .scene__tags li { font-size: 17px; padding: 10px 18px; }
 }
-.scene__drops i.is-on { transform: scale(1) translateY(6px); opacity: 1; }
-.scene__drops i:nth-child(1) { --x: 12%; --y: 22%; --s: clamp(26px, 5vw, 58px); }
-.scene__drops i:nth-child(2) { --x: 78%; --y: 14%; --s: clamp(18px, 3.4vw, 40px); }
-.scene__drops i:nth-child(3) { --x: 64%; --y: 62%; --s: clamp(30px, 6vw, 70px); }
-.scene__drops i:nth-child(4) { --x: 30%; --y: 70%; --s: clamp(14px, 2.6vw, 30px); }
-.scene__drops i:nth-child(5) { --x: 88%; --y: 46%; --s: clamp(16px, 3vw, 34px); }
-.scene__drops i:nth-child(6) { --x: 44%; --y: 10%; --s: clamp(12px, 2.2vw, 26px); }
-
-/* Pit-stop diagram labels */
-.dg-label text { font-size: 34px; }
-@media (orientation: landscape) and (min-width: 900px) { .dg-label text { font-size: 24px; } }
 
 /* Dog parts (shared by scene, dial and easter egg) */
 .leg { transform-box: fill-box; transform-origin: 50% 8%; }

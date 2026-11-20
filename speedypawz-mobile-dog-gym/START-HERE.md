@@ -66,13 +66,18 @@ Set `calendarEmbed: { type: "iframe", src: "https://...", height: 760, name: "Sq
 ## Scroll scene footage
 See `assets/scene/README.md` for what each beat uses today and how to swap in a new Kling clip (pull frames with ffmpeg, update `SHOTS` and `CHAPTERS` in `js/scene.js`).
 
-### Kling shots still wanted
-All: her real black Ford Transit with the Speedy PawZ badge, sunny Woodland street, photo-real, no text, no watermark, 1080p or higher. Give Kling the real van photo and a real photo of the dog as reference images.
-1. **Arrival (16:9, 5 s):** "Locked-off wide shot of a quiet suburban street. A black Ford Transit van with a round red and gold dog-gym logo on the side drives in from the right, slows and parks at the curb in the center of frame. Bright morning light."
-2. **Door + push-in (16:9, 5 to 8 s):** "The van's sliding side door glides open. The camera pushes smoothly forward through the doorway into a clean van interior with two red-framed slat treadmills side by side. One continuous shot, no cuts."
-3. **Slow-mo run (16:9 and 9:16, 5 s):** "Extreme slow motion close-up of a happy black lab mix in a yellow bandana running on a red-framed slat treadmill inside a van. Tongue flapping, jowls rippling, drops of slobber flying toward the lens and landing on it. A woman's hand holds a treat at the edge of frame."
-4. **Exploded mill (16:9, 5 s):** "Studio product shot of a red-framed dog slat treadmill on a dark navy background. The parts separate and float apart in an exploded view (slat belt, two red wheels, frame, clear side panels), hold, then come back together. No motor anywhere."
-5. **Nap (16:9, 5 s):** "The dog hops down from the van's side door, trots across a living room to a dog bed, circles once and flops down asleep. Warm afternoon light."
+### Kling footage: what was made and what is left
+Made with Kling 4.0 (1080p, no watermark) through the Kling connector, from Zach's van still and Emelyn's real photos:
+- **Arrival:** an empty-street plate was made from the van still (van removed), then a clip that starts on the empty street and ends on the parked van.
+- **Slow-mo slobber:** starts from a frame of the pup on the mill.
+- **Exploded mill:** a studio still of her real slat mill was made from the real photo, then a clip that starts and ends on that still.
+- **Nap:** a still of the van with the door open, the pup in the doorway and a dog bed in the foreground, then a clip of the pup hopping out and falling asleep.
+
+Still wanted:
+1. **Door + push-in (16:9, 6 s, one continuous shot).** First frame: the parked-van still. Last frame: both mills from above. Prompt: "One continuous shot, no cuts. The black van is parked at the curb. Its large sliding side door glides smoothly open toward the rear. The camera then moves steadily forward through the open doorway into the bright, clean van interior, arriving at two red-framed slat treadmills side by side. Smooth dolly move, natural daylight, photorealistic. No people, no text." A first attempt stalled in Kling and never finished.
+2. **Lick opener without the watermark.** The opener still uses Zach's original clip with the frame cropped. Re-download it from Kling history without the watermark (or regenerate at 9:16) and re-encode per "The lick opener" above.
+
+Session network note: generating from a cloud session needs `kling.ai`, `s15-kling.klingai.com` and `v15-kling.klingai.com` on the environment's allowed hosts (the "Landing pages (Kling access)" environment has them).
 
 ## Turn on the Meta pixel
 1. Set `metaPixelId` in `site-config.js`. PageView fires on every page, `Lead` on the thank-you page, and a custom `CTAClick` on CTA taps.
@@ -113,6 +118,6 @@ Any static server from this folder, e.g. `python3 -m http.server 8000`. Form POS
 15. Is the meet-and-greet free?
 16. Intro video
 17. Owner permission for every client dog photo
-19. Emelyn's OK on the AI footage (it shows an AI version of her and of a client's dog), and a watermark-free export from Kling
+19. Emelyn's OK on the AI footage (the opener shows an AI version of her in the background, and every clip shows an AI dog modeled on a client's dog), and a watermark-free export of the opener clip
 20. Original photo/video files for the six crops taken from Instagram screenshots
 18. Privacy policy legal review

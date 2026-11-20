@@ -196,79 +196,18 @@
         </picture>
         <!-- Scroll-scrubbed footage -->
         <canvas class="scene__canvas"></canvas>
-        <!-- Happy slobber on the lens during the workout -->
-        <div class="scene__drops"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-
-        <!-- Pit stop: the slat mill comes apart -->
-        <svg class="scene__svg scene__diagram" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <pattern id="p-grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#F7B334" stroke-opacity=".08" stroke-width="2"/></pattern>
-            <linearGradient id="g-red" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9474A"/><stop offset="1" stop-color="#A51E2B"/></linearGradient>
-            <radialGradient id="g-spot" cx=".5" cy=".55" r=".6"><stop offset="0" stop-color="#3B3956"/><stop offset="1" stop-color="#1F1B30"/></radialGradient>
-          </defs>
-          <rect width="1200" height="700" fill="url(#g-spot)"/>
-          <rect width="1200" height="700" fill="url(#p-grid)"/>
-          <g transform="translate(600 430) scale(.82)">
-            <!-- base frame -->
-            <g id="dgBase">
-              <rect x="-300" y="70" width="600" height="22" rx="9" fill="#121117" stroke="#5E566E" stroke-width="3"/>
-              <g fill="url(#g-red)"><rect x="-210" y="62" width="34" height="14" rx="4"/><rect x="-100" y="62" width="34" height="14" rx="4"/><rect x="10" y="62" width="34" height="14" rx="4"/><rect x="120" y="62" width="34" height="14" rx="4"/></g>
-              <rect x="-282" y="90" width="22" height="42" rx="6" fill="#121117" stroke="#5E566E" stroke-width="3"/><rect x="260" y="90" width="22" height="42" rx="6" fill="#121117" stroke="#5E566E" stroke-width="3"/>
-              <rect x="-292" y="126" width="42" height="14" rx="6" fill="url(#g-red)"/><rect x="250" y="126" width="42" height="14" rx="6" fill="url(#g-red)"/>
-            </g>
-            <!-- slat belt -->
-            <g id="dgBelt">
-              <path id="dgLoop" d="M-280 -56 H280 A56 56 0 0 1 280 56 H-280 A56 56 0 0 1 -280 -56 Z" fill="none" stroke="#121117" stroke-width="22"/>
-              <path d="M-280 56 H280" stroke="#8C8698" stroke-width="12" stroke-dasharray="20 6" opacity=".55"/>
-              <g id="dgSlats" fill="#CFCBD8" stroke="#121117" stroke-width="2"></g>
-            </g>
-            <!-- free-spinning wheels -->
-            <g id="dgWheelL" transform="translate(-280 0)"><g class="dg-wheel">
-              <circle r="50" fill="#1F1B30" stroke="url(#g-red)" stroke-width="12"/>
-              <g stroke="url(#g-red)" stroke-width="10" stroke-linecap="round"><path d="M0 -44V44M-38 -22L38 22M-38 22L38 -22"/></g>
-              <circle r="13" fill="#E6E3EA" stroke="#121117" stroke-width="3"/>
-            </g></g>
-            <g id="dgWheelR" transform="translate(280 0)"><g class="dg-wheel">
-              <circle r="50" fill="#1F1B30" stroke="url(#g-red)" stroke-width="12"/>
-              <g stroke="url(#g-red)" stroke-width="10" stroke-linecap="round"><path d="M0 -44V44M-38 -22L38 22M-38 22L38 -22"/></g>
-              <circle r="13" fill="#E6E3EA" stroke="#121117" stroke-width="3"/>
-            </g></g>
-            <!-- clear side panel -->
-            <g id="dgPanel">
-              <rect x="-220" y="-200" width="380" height="140" rx="6" fill="#fff" fill-opacity=".1" stroke="#CFCBD8" stroke-width="3"/>
-              <path d="M-190 -80 L-110 -180" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".25"/>
-              <rect x="-228" y="-208" width="14" height="150" rx="5" fill="#121117" stroke="#5E566E" stroke-width="2"/><rect x="154" y="-208" width="14" height="150" rx="5" fill="#121117" stroke="#5E566E" stroke-width="2"/>
-              <rect x="-228" y="-212" width="396" height="12" rx="5" fill="#121117" stroke="#5E566E" stroke-width="2"/>
-            </g>
-            <!-- red arch -->
-            <g id="dgArch">
-              <path d="M-150 -214 L-84 -330 H84 L150 -214" fill="none" stroke="url(#g-red)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-            </g>
-          </g>
-          <!-- labels (appear when the mill is apart) -->
-          <g class="dg-labels" font-family="Poppins, Arial, sans-serif" font-weight="800">
-            <g class="dg-label" id="dgL1">
-              <path d="M297 372 V356" stroke="#F7B334" stroke-width="4" stroke-linecap="round"/>
-              <rect class="dg-pill" x="197" y="304" width="200" height="50" rx="25" fill="#F7B334"/>
-              <text x="297" y="339" text-anchor="middle" fill="#1F1B30">No motor</text>
-            </g>
-            <g class="dg-label" id="dgL2">
-              <path d="M903 372 V352" stroke="#F7B334" stroke-width="4" stroke-linecap="round"/>
-              <text x="1036" y="338" text-anchor="end" fill="#fff">Free-spinning wheels</text>
-            </g>
-            <g class="dg-label" id="dgL3">
-              <text x="600" y="522" text-anchor="middle" fill="#fff">Dog-powered slats</text>
-            </g>
-            <g class="dg-label" id="dgL4">
-              <text x="600" y="664" text-anchor="middle" fill="#F7B334">Stops when they stop</text>
-            </g>
-          </g>
-        </svg>
+        <!-- Pit stop: labels that pop in over the exploded slat mill -->
+        <ul class="scene__tags" role="list">
+          <li class="is-gold">No motor</li>
+          <li>Free-spinning wheels</li>
+          <li>Dog-powered slats</li>
+          <li>Stops when they stop</li>
+        </ul>
 
         <!-- Finish line: the photo update -->
         <svg class="scene__svg scene__phone" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
           <defs><clipPath id="c-shot"><rect x="-96" y="-30" width="192" height="150" rx="14"/></clipPath></defs>
-          <g id="phoneMock"><g transform="translate(900 356) scale(.84)">
+          <g id="phoneMock"><g transform="translate(972 236) scale(.6)">
             <rect x="-130" y="-250" width="260" height="500" rx="38" fill="#1F1B30" stroke="#121117" stroke-width="4"/>
             <rect x="-114" y="-230" width="228" height="460" rx="28" fill="#F6EEDE"/>
             <rect x="-40" y="-222" width="80" height="16" rx="8" fill="#1F1B30"/>

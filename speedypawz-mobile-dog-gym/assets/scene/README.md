@@ -4,41 +4,40 @@ The "How it works" section is a pinned, scroll-scrubbed scene. The footage is a 
 
 ## What is here now
 
-| Beat | Source | Files |
-|---|---|---|
-| Lap 1: we pull up to your curb | Kling clip B, shot 1 (door slides open, pup hops in) | `a-00` to `a-23` |
-| Lap 2: warms up at their own pace | Real photo of Emelyn giving love pats | `pats` |
-| Lap 3: a happy 30-minute workout | Kling clip B, shot 2 (pup trotting on the mill) | `b-00` to `b-24` |
-| Pit stop: no motor | Kling clip B, shot 3 (both mills from above), then the SVG mill comes apart | `c-00` to `c-10` |
-| Finish line: photo update + nap | Kling clip B, last frame (pup asleep) + SVG phone | `nap` |
+| Beat | Shot | Source | Files |
+|---|---|---|---|
+| Lap 1: we pull up to your curb | Van drives in from off-screen and parks | Kling 4.0, 1080p, made in this build | `v-00` to `v-28` |
+| Lap 1 (continued) | Side door slides open, pup hops in | Zach's Kling clip, 720p | `a-00` to `a-23` |
+| Lap 2: warms up at their own pace | Emelyn giving love pats | Real photo | `pats` |
+| Lap 3: a happy 30-minute workout | Slow-motion run, tongue flapping, slobber hits the lens | Kling 4.0, 1080p | `s-00` to `s-38` |
+| Pit stop: no motor | Slat mill comes apart and goes back together | Kling 4.0, 1080p, from a studio still of her real mill | `x-00` to `x-47` |
+| Finish line: tired, happy pup | Pup hops out, curls up on a dog bed, falls asleep | Kling 4.0, 1080p | `n-00` to `n-55` |
 
 Two sets, same names:
-- `d/` desktop: 1280 x 660 WebP, about 2.6 MB total
-- `m/` phone: 720 x 530 WebP (center crop of the same frames), about 1.4 MB total
+- `d/` desktop: 1280 x 720 WebP, about 7.6 MB total
+- `m/` phone: 640 x 472 WebP (a 4:3-ish crop of the same frames), about 3.8 MB total
 
-Frames load only after the page has finished loading, a few at a time, first frame of each beat first.
+Nothing here loads until the page itself has finished loading. Then the scene loads one beat ahead of where the visitor is, a few frames at a time.
+
+All Kling 4.0 clips were downloaded without a watermark. The source clips (1080p MP4) are in Zach's Kling account history.
 
 ## Swapping in a new clip
 
-1. Export the clip from Kling **without the watermark**, 1080p or higher, 16:9.
-2. Pull every 2nd frame (12 fps is plenty for scrubbing):
+1. Generate or export the clip without a watermark, 1080p, 16:9.
+2. Pull 8 frames per second:
    ```
-   ffmpeg -i new-clip.mp4 -vf "select='not(mod(n,2))',scale=1280:-2,crop=1280:660:0:0" -vsync 0 -start_number 0 -c:v libwebp -quality 62 d/a-%02d.webp
-   ffmpeg -i new-clip.mp4 -vf "select='not(mod(n,2))',scale=1280:-2,crop=896:660:192:0,scale=720:530" -vsync 0 -start_number 0 -c:v libwebp -quality 56 m/a-%02d.webp
+   ffmpeg -i clip.mp4 -vf "fps=8,scale=1280:720" -start_number 0 -c:v libwebp -quality 56 d/p-%02d.webp
+   ffmpeg -i clip.mp4 -vf "fps=8,scale=1280:720,crop=976:720:152:0,scale=640:472" -start_number 0 -c:v libwebp -quality 52 m/p-%02d.webp
    ```
-   Change `a` to the shot letter you are replacing. In the phone command, `192` is how far from the left the crop starts: move it so the subject stays in frame.
-3. In `js/scene.js`, update the frame count in `SHOTS` (for example `a: 36`). To add a brand-new shot, add a letter to `SHOTS`, to the loading list in `startLoading`, and a line in `CHAPTERS` saying where on the scroll (0 to 1) it plays and which beat text shows.
+   `p` is the shot letter. In the phone command, `152` is how far from the left the crop starts (0 to 304): move it so the subject stays in frame.
+3. In `js/scene.js`: add the letter and frame count to `SHOTS`, and point a line in `CHAPTERS` at it (where on the 0 to 1 scroll it plays, and which beat text shows).
 
-## Shots still wanted (see START-HERE.md for prompts)
+## Still wanted
 
-1. Van drives in from off-screen and parks at the curb.
-2. One continuous push-in through the open side door to the mills.
-3. Slow-motion close-up of the pup running, tongue flapping, slobber flying at the lens.
-4. Photo-real slat mill coming apart and going back together.
-5. Pup hops out, trots to a dog bed and flops down for a nap.
+- **Door + push-in (one continuous shot):** the side door slides open and the camera pushes through the doorway to the two mills. A Kling job for this stalled during the build. When it exists, it replaces shot `a` (the only 720p shot left). Prompt and reference frames are in START-HERE.md.
 
 ## Rules
-- Her real van and logo. Keep the subject in the center 70 percent of the frame so the phone crop still works.
+- Her real van and logo. Keep the subject in the center 75 percent of the frame so the phone crop still works.
 - Leave the top-left of the frame calm on desktop: the text card sits there.
 - Never show a dog forced, strapped in to run, or alone and stressed.
 - AI footage that shows Emelyn or a client's dog needs her OK before the page goes live.

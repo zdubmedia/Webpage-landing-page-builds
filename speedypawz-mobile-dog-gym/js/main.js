@@ -268,7 +268,7 @@
     if (!has(CFG.calendarEmbed)) items.push({ text: 'Booking platform for the calendar embed (config.calendarEmbed)' });
     if (!has((CFG.vsl || {}).src)) items.push({ text: 'Intro video (assets/video/intro.mp4, config.vsl.src)' });
     if (CFG.freeMeetAndGreet == null) items.push({ text: 'Is the meet-and-greet free? (config.freeMeetAndGreet)' });
-    items.push({ text: 'Lick opener: AI footage of a client dog and the van. Get Emelyn\'s OK, then re-export from Kling without the watermark' });
+    items.push({ text: 'AI footage (opener + scroll scene) shows an AI dog modeled on a client dog, and the opener shows an AI Emelyn. Get her OK. Opener clip still needs a watermark-free export' });
     items.push({ text: 'Owner permission for every client dog photo' });
     items.push({ text: 'Privacy policy legal review (privacy.html)' });
 
