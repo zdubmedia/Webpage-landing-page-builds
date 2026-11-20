@@ -198,22 +198,21 @@
     <h2 id="how-title">We bring the gym to <span class="hl">YOU</span></h2>
   </div>
 
-  <!-- Five laps, one under the other. Each lap's film advances as the visitor scrolls (js/scene.js). No JS or reduced motion: the still pictures show. -->
+  <!-- Five laps, one under the other. Each lap's film starts by itself once its picture has scrolled onto the screen (js/scene.js). No JS or reduced motion: the still pictures show. -->
   <ol class="laps" id="vanScene" role="list" data-confirm="AI footage shows an AI version of Emelyn and a client dog: get Emelyn's OK">
-    <li class="lap lap--gold lap--seamless" data-seq="van" data-n="108" style="--fx: .58">
+    <li class="lap lap--gold lap--seamless" style="--fx: .58">
       <div class="lap__inner">
         <div class="beat reveal">
         <span class="beat__lap">Lap 1</span>
         <h3 class="beat__title">We pull up to <span class="hl">your curb.</span></h3>
         <p>No driving, no loading up the car, no waiting room.</p>
       </div>
-        <div class="lap__media" aria-hidden="true">
+        <div class="lap__media" aria-hidden="true" data-film="assets/scene/film/1-van" data-film-m="assets/scene/film/1-van-m" data-seq="assets/scene/seq/van/" data-n="108" data-fps="15" data-w="640" data-h="360" data-play="once" data-first="1">
           <img class="lap__poster" src="assets/scene/seq/van/052.webp" width="640" height="360" alt="" loading="lazy" decoding="async">
-          <canvas class="lap__film" width="640" height="360"></canvas>
         </div>
       </div>
     </li>
-    <li class="lap lap--dark" data-seq="warmup" data-n="60">
+    <li class="lap lap--dark">
       <div class="arc" aria-hidden="true"></div>
       <div class="lap__inner">
         <div class="beat reveal">
@@ -221,13 +220,12 @@
         <h3 class="beat__title">Your pup warms up at <span class="hl">their own pace.</span></h3>
         <p>Praise, toys and treats. Never force. We take time to get comfy before the first step.</p>
       </div>
-        <div class="lap__media" aria-hidden="true">
+        <div class="lap__media" aria-hidden="true" data-film="assets/scene/film/2-warmup" data-seq="assets/scene/seq/warmup/" data-n="60" data-fps="12" data-w="640" data-h="472" data-play="loop" data-hold="1400" data-vpos="50% 33%" data-first="1">
           <img class="lap__poster" src="assets/scene/seq/warmup/040.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
-          <canvas class="lap__film" width="640" height="472"></canvas>
         </div>
       </div>
     </li>
-    <li class="lap lap--cream" data-seq="trot" data-n="60">
+    <li class="lap lap--cream">
       <div class="arc" aria-hidden="true"></div>
       <div class="lap__inner">
         <div class="beat reveal">
@@ -235,13 +233,12 @@
         <h3 class="beat__title">A happy <span class="hl nw">30-minute</span> workout.</h3>
         <p>Two dog-powered slat mills, no motor. Your dog sets the speed while Emelyn coaches the whole time.</p>
       </div>
-        <div class="lap__media" aria-hidden="true">
+        <div class="lap__media" aria-hidden="true" data-film="assets/scene/film/3-trot" data-film-m="assets/scene/film/3-trot-m" data-seq="assets/scene/seq/trot/" data-n="60" data-fps="12" data-w="640" data-h="472" data-play="loop" data-first="1">
           <img class="lap__poster" src="assets/scene/seq/trot/020.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
-          <canvas class="lap__film" width="640" height="472"></canvas>
         </div>
       </div>
     </li>
-    <li class="lap lap--navy lap--seamless" data-seq="mill" data-n="72">
+    <li class="lap lap--navy lap--seamless">
       <div class="arc" aria-hidden="true"></div>
       <div class="lap__inner">
         <div class="beat reveal">
@@ -249,9 +246,8 @@
         <h3 class="beat__title">No motor. <span class="hl">Your dog powers every step.</span></h3>
         <p>The slats only roll when their paws move them, so they can slow down, speed up or stop whenever they want.</p>
       </div>
-        <div class="lap__media" aria-hidden="true">
+        <div class="lap__media" aria-hidden="true" data-film="assets/scene/film/4-mill" data-film-m="assets/scene/film/4-mill-m" data-seq="assets/scene/seq/mill/" data-n="72" data-fps="12" data-w="640" data-h="360" data-play="loop" data-hold="1200" data-first="1">
           <img class="lap__poster" src="assets/scene/seq/mill/036.webp" width="640" height="360" alt="" loading="lazy" decoding="async">
-          <canvas class="lap__film" width="640" height="360"></canvas>
           <!-- Pit stop: labels that pop in over the exploded slat mill -->
           <ul class="lap__tags" role="list">
             <li class="is-gold">No motor</li>
@@ -262,7 +258,7 @@
         </div>
       </div>
     </li>
-    <li class="lap lap--gold" data-seq="nap" data-n="84">
+    <li class="lap lap--gold">
       <div class="arc" aria-hidden="true"></div>
       <div class="lap__inner">
         <div class="beat reveal">
@@ -270,9 +266,8 @@
         <h3 class="beat__title">Photo update, plus a <span class="hl">tired, happy pup.</span></h3>
         <p>You get pictures after every session. Plenty of pups settle in for a deep nap afterward.</p>
       </div>
-        <div class="lap__media" aria-hidden="true">
+        <div class="lap__media" aria-hidden="true" data-film="assets/scene/film/5-nap" data-film-m="assets/scene/film/5-nap-m" data-seq="assets/scene/seq/nap/" data-n="84" data-fps="12" data-w="640" data-h="472" data-play="once" data-first="1">
           <img class="lap__poster" src="assets/scene/seq/nap/083.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
-          <canvas class="lap__film" width="640" height="472"></canvas>
           <!-- Finish line: the photo update drops in -->
           <svg class="lap__phone" viewBox="-140 -260 280 520">
             <defs><clipPath id="c-shot"><rect x="-96" y="-30" width="192" height="150" rx="14"/></clipPath></defs>
@@ -376,9 +371,9 @@
       <h2 id="fit-title">Is Speedy PawZ right for <span class="hl">your pup</span>?</h2>
     </div>
     <ul class="cards3" role="list">
-      <li class="card fit-card reveal">
-        <div class="fit-card__media">
-          <picture><source type="image/avif" srcset="assets/photos/heeler-and-emelyn-mill-640.avif 640w, assets/photos/heeler-and-emelyn-mill.avif 1170w" sizes="(min-width: 900px) 340px, 92vw"><source type="image/webp" srcset="assets/photos/heeler-and-emelyn-mill-640.webp 640w, assets/photos/heeler-and-emelyn-mill.webp 1170w" sizes="(min-width: 900px) 340px, 92vw"><img class="is-top" src="assets/photos/heeler-and-emelyn-mill-640.jpg" width="640" height="512" alt="A cattle dog with perked ears, smiling on the slat mill, with Emelyn beside the mill" loading="lazy" decoding="async"></picture>
+      <li class="card fit-card reveal" data-confirm="High-energy clip is AI footage, not one of Emelyn's clients">
+        <div class="fit-card__media" data-film="assets/video/excited-pup-leash" data-seq="assets/video/seq/excited-pup-leash/" data-n="36" data-fps="12" data-w="480" data-h="384" data-play="once">
+          <picture><source type="image/avif" srcset="assets/photos/excited-pup-leash.avif"><source type="image/webp" srcset="assets/photos/excited-pup-leash.webp"><img src="assets/photos/excited-pup-leash.jpg" width="960" height="768" alt="An excited German Shepherd bouncing at the end of its leash on a driveway" loading="lazy" decoding="async"></picture>
         </div>
         <div class="fit-card__body">
           <h3>High-energy pups</h3>
@@ -386,17 +381,17 @@
         </div>
       </li>
       <li class="card fit-card reveal" data-confirm="Older dog clip is AI footage, not one of Emelyn's clients: swap for a real photo (olderDogPhoto in site-config.js)" data-confirm-key="olderDogPhoto">
-        <div class="fit-card__media" id="olderDogMedia">
-          <video class="fit-card__clip" muted playsinline preload="none" disablepictureinpicture tabindex="-1" aria-label="An older dog settling down for a rest" poster="assets/photos/older-dog-rest.jpg" data-src="assets/video/older-dog-rest.mp4" width="640" height="512"></video>
+        <div class="fit-card__media" id="olderDogMedia" data-film="assets/video/older-dog-rest" data-seq="assets/video/seq/older-dog-rest/" data-n="30" data-fps="12" data-w="480" data-h="384" data-play="once">
+          <picture><source type="image/avif" srcset="assets/photos/older-dog-rest.avif"><source type="image/webp" srcset="assets/photos/older-dog-rest.webp"><img src="assets/photos/older-dog-rest.jpg" width="960" height="768" alt="An older dog settling down on the carpet for a rest" loading="lazy" decoding="async"></picture>
         </div>
         <div class="fit-card__body">
           <h3>Older dogs slowing down</h3>
           <p>Gentle, steady movement at a pace that feels good to them. No rush, ever.</p>
         </div>
       </li>
-      <li class="card fit-card reveal">
-        <div class="fit-card__media">
-          <picture><source type="image/avif" srcset="assets/photos/emelyn-overalls-on-mill.avif"><source type="image/webp" srcset="assets/photos/emelyn-overalls-on-mill.webp"><img src="assets/photos/emelyn-overalls-on-mill.jpg" width="437" height="501" alt="Emelyn kneeling beside a dog on the slat mill inside the van" loading="lazy" decoding="async"></picture>
+      <li class="card fit-card reveal" data-confirm="Shy pup clip is AI footage (AI Emelyn and an AI puppy): get her OK">
+        <div class="fit-card__media" data-film="assets/video/shy-pup-peek" data-seq="assets/video/seq/shy-pup-peek/" data-n="36" data-fps="12" data-w="480" data-h="384" data-play="once">
+          <picture><source type="image/avif" srcset="assets/photos/shy-pup-peek.avif"><source type="image/webp" srcset="assets/photos/shy-pup-peek.webp"><img src="assets/photos/shy-pup-peek.jpg" width="960" height="768" alt="A fluffy puppy peeking out from behind Emelyn inside the van" loading="lazy" decoding="async"></picture>
         </div>
         <div class="fit-card__body">
           <h3>Shy pups</h3>
@@ -423,7 +418,7 @@
       <p class="lead">Our slat mills have no motor. Your dog powers every step, so they can slow down, speed up or stop whenever they want.</p>
     </div>
     <div class="safety__grid">
-      <div class="dial-card reveal">
+      <div class="dial-card reveal" data-confirm="Dial clips are AI footage (a dog alone on a treadmill with a smooth belt, not her slat mill): get Emelyn's OK or swap for her own footage">
         <div class="dial" id="paceDial" role="slider" tabindex="0" aria-label="Pace" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45" aria-valuetext="Happy trot">
           <svg class="dial__svg" viewBox="0 0 320 196" aria-hidden="true">
             <defs><pattern id="p-cap" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#fff"/><rect width="4" height="4" fill="#121117"/><rect x="4" y="4" width="4" height="4" fill="#121117"/></pattern></defs>
@@ -441,7 +436,7 @@
           <button type="button" data-pace="92">Full zoomies</button>
         </div>
         <div class="dial__film" aria-hidden="true">
-          <canvas width="640" height="472"></canvas>
+          <canvas width="560" height="350"></canvas>
           <span class="dial__streaks"></span>
         </div>
         <svg class="mini-mill" viewBox="0 -30 520 220" aria-hidden="true">

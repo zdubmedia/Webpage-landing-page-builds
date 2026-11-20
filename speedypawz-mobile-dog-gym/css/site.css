@@ -277,7 +277,7 @@ ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
 .vsl__play-txt { font-family: var(--font-display); font-weight: 800; background: rgba(40, 39, 66, .95); padding: 10px 18px; border-radius: 16px; }
 .vsl.is-playing .vsl__play { display: none; }
 
-/* ---------- How it works: five laps stacked down the page. Each lap's film advances as you scroll (js/scene.js). ---------- */
+/* ---------- How it works: five laps stacked down the page. Each lap's film plays by itself once it is on screen (js/scene.js). ---------- */
 .how { padding-top: calc(var(--sec-pad) + 10px); }
 .laps { list-style: none; margin: 26px 0 0; padding: 0; }
 .lap { position: relative; --bg: var(--pawz-gold); background: var(--bg); padding: 30px 0 calc(40px + var(--arc-h)); }
@@ -299,10 +299,11 @@ ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
 /* The picture. A rounded, slightly tilted tile by default. */
 .lap__media { position: relative; aspect-ratio: 640 / 472; border-radius: 24px; overflow: hidden; background: var(--midnight); box-shadow: var(--shadow-photo); transform: rotate(-1.2deg); }
 .lap:nth-child(odd) .lap__media { transform: rotate(1.2deg); }
-.lap__poster, .lap__film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.lap__film { opacity: 0; }
-.lap.has-film .lap__film { opacity: 1; }
-.lap.has-film .lap__poster { visibility: hidden; }
+/* A film (video or canvas, added by js/scene.js) sits on top of its still picture and takes over once it starts */
+.lap__poster, .film { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.film { opacity: 0; pointer-events: none; }
+.has-film > .film { opacity: 1; }
+.lap__media.has-film .lap__poster { visibility: hidden; }
 /* Seamless laps (van on gold, exploded mill on navy): no tile, the film sits straight on the page color. */
 .lap--seamless .lap__media, .lap--seamless:nth-child(odd) .lap__media { aspect-ratio: 16 / 9; border-radius: 0; overflow: visible; background: none; box-shadow: none; transform: none; }
 .lap--navy .lap__media::before { content: ""; position: absolute; z-index: -1; left: -100vw; right: -100vw; top: 50%; bottom: calc(-40px - var(--arc-h)); background: #3A4660; }   /* the studio floor color carries on below the mill */
@@ -312,7 +313,7 @@ ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
     -webkit-mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent); }
   .lap--navy .lap__media { -webkit-mask-image: none; mask-image: none; }
   .lap--seamless .lap__tags { padding-left: calc(24px + 15vw * var(--fx, .5)); padding-right: calc(8px + 15vw * (1 - var(--fx, .5))); }
-  .lap--navy .lap__poster, .lap--navy .lap__film { -webkit-mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent); }
+  .lap--navy .lap__poster, .lap--navy .film { -webkit-mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(180deg, transparent, #000 8%, #000 92%, transparent); }
 }
 @media (min-width: 900px) {
   .lap { padding: 56px 0 calc(64px + var(--arc-h)); }
@@ -406,9 +407,10 @@ ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
 .cards3 { display: grid; gap: 20px; max-width: 420px; margin: 0 auto; }
 @media (min-width: 820px) { .cards3 { grid-template-columns: repeat(3, 1fr); max-width: none; gap: 24px; } }
 .fit-card { overflow: hidden; display: flex; flex-direction: column; }
-.fit-card__media { aspect-ratio: 4 / 3.2; overflow: hidden; background: var(--pawz-gold-light); }
+.fit-card__media { position: relative; aspect-ratio: 4 / 3.2; overflow: hidden; background: var(--pawz-gold-light); }
 .fit-card__media img, .fit-card__media svg, .fit-card__media video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .fit-card__media img { object-position: 50% 30%; }
+.fit-card__media[data-film] img { object-position: 50% 50%; }
 .fit-card__media img.is-top { object-position: 50% 0; }   /* keep the whole head in frame */
 .fit-card__body { padding: 20px 22px 24px; }
 .fit-card h3 { font-weight: 800; font-size: 21px; margin-bottom: 6px; }
@@ -433,8 +435,8 @@ ul[role="list"], ol[role="list"] { list-style: none; margin: 0; padding: 0; }
 .dial__stops button[aria-pressed="true"] { background: var(--pawz-gold); border-color: var(--pawz-gold); color: var(--midnight); }
 .mini-mill { width: 100%; max-width: 420px; margin: 10px auto 0; overflow: hidden; }
 /* Real footage under the dial: the pup's trot speeds up and slows down with the needle. The drawing above is the fallback. */
-.dial__film { display: none; position: relative; width: 100%; max-width: 420px; aspect-ratio: 640 / 400; margin: 12px auto 2px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 0 2px rgba(255, 255, 255, .1), 0 12px 26px rgba(0, 0, 0, .35); transition: box-shadow .3s; }
-.dial__film canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
+.dial__film { display: none; position: relative; width: 100%; max-width: 420px; aspect-ratio: 560 / 350; margin: 12px auto 2px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 0 2px rgba(255, 255, 255, .1), 0 12px 26px rgba(0, 0, 0, .35); transition: box-shadow .3s; }
+.dial__film canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .dial-card.has-film .dial__film { display: block; }
 .dial-card.has-film .mini-mill { display: none; }
 .dial-card[data-zone="2"] .dial__film { box-shadow: 0 0 0 3px var(--pawz-gold), 0 0 34px rgba(247, 179, 52, .45), 0 12px 26px rgba(0, 0, 0, .35); }

@@ -185,7 +185,7 @@
     // Older dog photo
     if (has(CFG.olderDogPhoto)) {
       var m = $('#olderDogMedia');
-      if (m) { m.classList.remove('fit-card__media--illus'); m.innerHTML = ''; var im = new Image(); im.src = CFG.olderDogPhoto; im.alt = 'An older dog walking gently on the slat mill'; im.loading = 'lazy'; im.width = 437; im.height = 497; m.appendChild(im); }
+      if (m) { m.classList.remove('fit-card__media--illus'); m.removeAttribute('data-film'); m.innerHTML = ''; var im = new Image(); im.src = CFG.olderDogPhoto; im.alt = 'An older dog walking gently on the slat mill'; im.loading = 'lazy'; im.width = 437; im.height = 497; m.appendChild(im); }
     }
 
     // Year
@@ -467,29 +467,37 @@
 
     if (REDUCED) { window.SPZ.stepSlats(slats, 0, 0); return; }
 
-    /* Real footage: the trot clip from the How it works section, looped, playing faster or slower with the dial.
-       Frames 18 to 57 loop cleanly (same point in the stride); the last few blend into the first few. */
+    /* Real footage under the dial. Zach's pace clip is cut into three loops, one per zone:
+       Sniff and stroll = the walk, Happy trot = the close-up of the feet, Full zoomies = the sprint.
+       Frames live in assets/dial (numbered as in the source clip, 24 a second). Each loop blends its last
+       few frames into the frames just before its start, so the join does not jump. */
     var film = $('.dial__film canvas', card);
     if (film) (function () {
-      var ctx = film.getContext('2d'), A = 18, B = 57, LEN = B - A, FADE = 3, imgs = [], got = 0, asked = false, pos = 0, on = false, seen = false, lastT = 0, drawnKey = '';
-      function src(k) { return 'assets/scene/seq/trot/0' + (k < 10 ? '0' : '') + k + '.webp'; }
+      var ctx = film.getContext('2d'), FADE = 4, W = film.width, H = film.height;
+      var LOOPS = [[11, 37], [44, 68], [83, 113]];           // [first frame, frame after the last] for each zone
+      var imgs = [], want = 0, got = 0, asked = false, on = false, seen = false, lastT = 0, pos = 0, zoneNow = -1, drawnKey = '';
+      function src(k) { return 'assets/dial/' + (k < 10 ? '00' : k < 100 ? '0' : '') + k + '.webp'; }
       function ask() {
         if (asked) return; asked = true;
-        for (var k = A - FADE; k < B; k++) (function (k) {
+        LOOPS.forEach(function (L) { for (var k = L[0] - FADE; k < L[1]; k++) (function (k) {
+          want++;
           var im = new Image();
-          im.onload = function () { im._ok = true; if (++got === LEN + FADE) { on = true; card.classList.add('has-film'); if (seen) requestAnimationFrame(step); } };
+          im.onload = function () { im._ok = true; if (++got === want) { on = true; card.classList.add('has-film'); if (seen) requestAnimationFrame(step); } };
           im.src = src(k); imgs[k] = im;
-        })(k);
+        })(k); });
       }
       function step(now) {
         if (!on || !seen) return;
+        var z = zone(value), L = LOOPS[z], len = L[1] - L[0];
+        if (z !== zoneNow) { zoneNow = z; pos = 0; drawnKey = ''; }
         var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0; lastT = now;
-        pos = (pos + dt * 12 * (0.45 + value / 100 * 2.35)) % LEN;           // 12 frames a second is the clip's own slow-motion speed
-        var k = Math.floor(pos), key = k + '', tail = k >= LEN - FADE ? (k - (LEN - FADE) + 1) / (FADE + 1) : 0;
+        var within = z === 0 ? value / 34 : z === 1 ? (value - 34) / 33 : (value - 67) / 33;   // a little faster toward the top of each zone
+        pos = (pos + dt * 24 * (0.85 + 0.3 * within)) % len;
+        var k = Math.floor(pos), key = z + ':' + k;
         if (key !== drawnKey) {
           drawnKey = key;
-          ctx.globalAlpha = 1; ctx.drawImage(imgs[A + k], 0, 0, 640, 472);
-          if (tail) { ctx.globalAlpha = tail; ctx.drawImage(imgs[A + k - LEN], 0, 0, 640, 472); ctx.globalAlpha = 1; }   // blend into the frames just before the loop start
+          ctx.globalAlpha = 1; ctx.drawImage(imgs[L[0] + k], 0, 0, W, H);
+          if (k >= len - FADE) { ctx.globalAlpha = (k - (len - FADE) + 1) / (FADE + 1); ctx.drawImage(imgs[L[0] + k - len], 0, 0, W, H); ctx.globalAlpha = 1; }
         }
         requestAnimationFrame(step);
       }
@@ -509,21 +517,6 @@
       window.SPZ.stepSlats(slats, speed, dt);
       requestAnimationFrame(loop);
     }
-  }
-
-  /* ---------- Short clips inside cards (older dog): play once when the card is on screen ----------
-     If the phone will not start a video on its own (Low Power Mode), the still picture simply stays. No play button. */
-  function cardClips() {
-    if (REDUCED || !('IntersectionObserver' in window)) return;
-    $$('video[data-src]').forEach(function (v) {
-      var done = false;
-      new IntersectionObserver(function (es, io) {
-        if (!es[0].isIntersecting || done) return;
-        done = true; io.disconnect();
-        v.muted = true; v.src = v.getAttribute('data-src');
-        var p = v.play(); if (p && p.catch) p.catch(function () { v.removeAttribute('src'); v.load(); });
-      }, { threshold: 0.6 }).observe(v);
-    });
   }
 
   /* ---------- The PawZ Reel (section removed; kept in case it comes back) ---------- */
@@ -670,7 +663,6 @@
   flips();
   counters();
   paceDial();
-  cardClips();
   reel();
   easterEgg();
   magnetic();

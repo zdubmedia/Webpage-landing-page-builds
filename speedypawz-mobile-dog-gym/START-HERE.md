@@ -23,7 +23,7 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `js/booking.js` | Tabs, 3-step session form, quick-call form, validation, Netlify AJAX submit. |
 | `js/intro.js` | The lick opener: gold screen with the logo, the pup hops out of the van and runs up, one big lick, then red, navy and gold curves follow the tongue up the screen and reveal the hero. |
 | `js/flow.js` | The flow layer: wavy ribbon marquees, section arcs that flatten as they rise, the giant "zoomies / snoozies" type band. Decoration only. |
-| `js/scene.js` | The "How it works" laps: five laps down the page, each with a short film that moves forward as you scroll. Nothing sticks and nothing plays by itself. |
+| `js/scene.js` | Every short film on the page: the five "How it works" laps and the clips in the "Who it's for" cards. Each one starts by itself once it has scrolled onto the screen. |
 | `vendor/` | GSAP 3.13 + ScrollTrigger, self-hosted (free "no charge" license). |
 | `assets/fonts/` | Self-hosted Poppins, Nunito, Racing Sans One (latin subsets). |
 | `assets/photos/` | Photos plus WebP/AVIF versions. See `assets/photos/README.md` for every slot. |
@@ -32,7 +32,7 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `assets/speedypawz.vcf` | "Save our number" contact card. |
 | `assets/video/` | Drop the intro video here (see below). |
 | `assets/intro/` | The lick opener clip, two sizes (`lick-720.mp4` phones, `lick-1080.mp4` desktop). |
-| `assets/scene/` | The five lap films, stored as folders of still frames in `seq/`. See its README to swap in new clips. |
+| `assets/scene/` | The five lap films: videos in `film/`, and the same films as still frames in `seq/` for phones that refuse to autoplay video. See its README to swap in new clips. |
 | `brand/` | Brand guide, visual design guide, original build brief. Redirected away on the live site. |
 | `netlify.toml` | Publish settings, redirects, caching headers. |
 | `FOR-EMELYN.md` | One-page owner note. |
@@ -77,9 +77,11 @@ Zach's reference for the feel is sweet-tape.com: one flat color fills the whole 
 Set `calendarEmbed: { type: "iframe", src: "https://...", height: 760, name: "Square Appointments" }`. The "Request a session" tab then shows the live calendar first and the request form under "Can't find a time?". **Set the calendar's own "after booking" redirect to `/thank-you.html`.** [CONFIRM which platform Emelyn uses]
 
 ## "How it works" laps
-- **How it moves:** five laps sit one under the other (Lap 1, Lap 2, Lap 3, Pit stop, Finish line), each a color band with its step card and a picture. The picture is a short film that moves forward as you scroll down and runs back as you scroll up. It is all one plain vertical scroll: nothing sticks, nothing plays by itself, no dots or buttons.
-- **Pace:** a lap's film starts as its picture comes up from the bottom of the screen and finishes a little above the middle. To stretch or tighten that, change `START` and `END` at the top of `js/scene.js`.
-- **Why frames, not video:** phones cannot scrub a video smoothly with the thumb, and an iPhone in Low Power Mode will not play video by itself. Each film is a folder of still frames drawn on a canvas, which works everywhere.
+- **Layout:** five laps sit one under the other (Lap 1, Lap 2, Lap 3, Pit stop, Finish line), each a color band with its step card and a picture under it. Plain vertical scroll, nothing sticks, no dots or buttons.
+- **How the films play:** when a lap's picture has scrolled far enough onto the screen (a bit more than half of it showing, so the step card above it is in view), its film starts by itself and plays through, even if you stop scrolling. Lap 1 (van) and the Finish line (nap) play once and rest on their last frame. Lap 2, Lap 3 and the Pit stop loop. A film pauses when it leaves the screen and starts over the next time it comes back.
+- **To change once/loop:** `data-play="once"` or `"loop"` on that lap's `<div class="lap__media">` in `index.html`. `data-hold` is the pause in milliseconds before a loop starts over.
+- **To change when a film starts:** the `0.55` in `js/scene.js` (how much of the picture must be showing).
+- **No play buttons, ever.** Films are videos where the browser allows them to start on their own. Where it refuses (iPhone Low Power Mode), the same films play from still frames on a canvas, a little less smooth but automatic.
 - Reduced motion or no JavaScript: each lap shows one still picture.
 - See `assets/scene/README.md` for what each lap uses, how to swap in a clip, and the Kling prompts that worked.
 
@@ -93,10 +95,13 @@ Session network note: generating from a cloud session needs `kling.ai`, `s15-kli
 ## Photos and clips changed after Zach's phone reviews
 - **Meet your coach, first card:** `emelyn-and-pup-van` (her whole head in frame). It is a crop of an Instagram frame, so it is small (477 px wide). A full-size original from Emelyn would be sharper.
 - **"The pups who started it all":** `huskies-on-the-mills`, both huskies in frame. The source was Emelyn's Instagram story, with the caption text and arrows cleaned off by an AI edit; nothing else was changed. Zach has since sent a clean photo of both huskies sitting on the mills (wide, not upright); it does not fit this upright card without cutting a dog off, so it is not placed yet.
-- **High-energy pups card:** `heeler-and-emelyn-mill`, the cattle dog with Emelyn, cropped from an Instagram screenshot so the like and comment icons are out of frame.
-- **Older dogs card:** a 2.5 second clip (`assets/video/older-dog-rest.mp4`) that plays once when the card comes on screen, then rests on the dog lying down. If the phone will not autoplay, the still (`older-dog-rest`) shows. **This is AI footage, not one of Emelyn's clients.** Swap in a real photo by setting `olderDogPhoto` in `site-config.js`.
-- **Shy pups card:** unchanged (Emelyn beside the black dog on the mill).
-- **Pace dial:** the little drawing under the dial is replaced by the real trot footage (the Lap 3 frames, looped). It runs slower or faster with the needle. The drawing remains as the fallback.
+- **"Who it's for" cards are short clips now.** Each plays once when the card comes on screen, then rests on its last frame (which is also the still that shows before it plays). Files: `assets/video/<name>.mp4`, the still `assets/photos/<name>.jpg`, and a frame copy in `assets/video/seq/<name>/` for phones that will not autoplay.
+  - High-energy pups: `excited-pup-leash` (German Shepherd bouncing on a leash).
+  - Older dogs: `older-dog-rest` (dog settles down on the carpet). Setting `olderDogPhoto` in `site-config.js` swaps in a real photo.
+  - Shy pups: `shy-pup-peek` (puppy peeks out from behind Emelyn in the van).
+  - **All three are AI footage, not Emelyn's clients, and the shy pup clip shows an AI Emelyn.** Review mode flags each one. Real clips from her would be better.
+  - Not placed now: `heeler-and-emelyn-mill` (the cattle dog photo) and `emelyn-overalls-on-mill`.
+- **Pace dial:** under the dial is Zach's pace clip, cut into three loops in `assets/dial/`: the walk for Sniff and stroll, the close-up of the feet for Happy trot, the sprint for Full zoomies. Moving the needle switches loops. The loop frame ranges are the `LOOPS` list in the pace dial part of `js/main.js`. The little drawing remains as the fallback. **This is AI footage too**, and it shows a dog alone on a treadmill with a smooth belt rather than her slat mill; review mode flags it.
 - **The PawZ Reel** photo carousel is gone from the proof section, at Zach's request. Stats, reviews, then "Part of the pack".
 - **Note on swapping photos:** files in `/assets` are cached by browsers for a year. Give a replacement photo a new file name (and update `index.html`) instead of overwriting the old one.
 

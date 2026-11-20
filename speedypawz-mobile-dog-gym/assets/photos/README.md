@@ -13,10 +13,12 @@ Rules: never alter faces or real dogs (crop, color and exposure only). No AI ups
 | `emelyn-and-son.jpg` | Meet Emelyn flip card 2 [CONFIRM OK to show Adan] | 340 | 438 | 1200+ |
 | `huskies-on-the-mills.jpg` | Meet Emelyn flip card 3 [CONFIRM these are Kira and Kiko]. From her Instagram story; the caption text and arrows were cleaned off with an AI edit. Swap for her original. | 340 | 880 | 1200+ |
 | `husky-bandana-mill.jpg` | Not placed now | 340 | 438 | 1200+ |
-| `heeler-and-emelyn-mill.jpg` | Who it's for: high-energy (cropped from an Instagram screenshot, icons out of frame) | 380 | 1170 | 1600+ |
+| `excited-pup-leash.jpg` | Who it's for: high-energy. Still for the clip `assets/video/excited-pup-leash.mp4`. AI footage. | 380 | 960 | n/a |
+| `shy-pup-peek.jpg` | Who it's for: shy pups. Still for the clip `assets/video/shy-pup-peek.mp4`. AI footage (AI Emelyn). | 380 | 960 | n/a |
+| `heeler-and-emelyn-mill.jpg` | Not placed now (real photo, cropped from an Instagram screenshot) | 380 | 1170 | 1600+ |
 | `older-dog-rest.jpg` | Who it's for: older dogs. Still for the short clip `assets/video/older-dog-rest.mp4`. AI footage, not a client: swap for a real photo. | 380 | 960 | 1200+ |
 | `black-lab-smiling-mill.jpg` | Sticker in the zoomies band | 120 | 437 | 1200+ |
-| `emelyn-overalls-on-mill.jpg` | Who it's for: shy pups | 380 | 437 | 1200+ |
+| `emelyn-overalls-on-mill.jpg` | Not placed now | 380 | 437 | 1200+ |
 | `emelyn-selfie-van.jpg` | Not placed right now (spare) | 380 | 438 | 1200+ |
 | `van-mystery-machine.jpg` | Community trophy card | 380 | 1320 | 1600+ |
 | `emelyn-velma-trunk-or-treat.jpg` | Not placed now | 380 | 1130 | 1600+ |
