@@ -10,7 +10,7 @@
   var mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   var REDUCED = mqReduce.matches || CFG.motion === false;
   if (CFG.motion === false) { html.classList.add('no-motion'); }
-  if (REDUCED) { html.classList.remove('motion'); }
+  if (REDUCED) { html.classList.remove('motion', 'hero-go'); }
   window.SPZ = window.SPZ || {};
   window.SPZ.reduced = REDUCED;
 
@@ -268,6 +268,7 @@
     if (!has(CFG.calendarEmbed)) items.push({ text: 'Booking platform for the calendar embed (config.calendarEmbed)' });
     if (!has((CFG.vsl || {}).src)) items.push({ text: 'Intro video (assets/video/intro.mp4, config.vsl.src)' });
     if (CFG.freeMeetAndGreet == null) items.push({ text: 'Is the meet-and-greet free? (config.freeMeetAndGreet)' });
+    items.push({ text: 'Lick opener: AI footage of a client dog and the van. Get Emelyn\'s OK, then re-export from Kling without the watermark' });
     items.push({ text: 'Owner permission for every client dog photo' });
     items.push({ text: 'Privacy policy legal review (privacy.html)' });
 
@@ -452,15 +453,16 @@
     var root = $('#pawzReel');
     if (!root) return;
     var slides = $$('.reel__slide', root), n = slides.length, disc = $('.reel__disc', root);
-    var count = $('.reel__n', root), soundBtn = $('.reel__sound', root);
+    var count = $('.reel__n', root), soundBtn = $('.reel__sound', root), frame = $('.reel__frame', root);
+    var total = $('.reel__total', root); if (total) total.textContent = n;
     var idx = 0, rot = 0, step = 360 / n, touched = false, inView = false, timer = null, audio = null, soundOn = false;
     slides.forEach(function (s, i) {
       var img = $('img', s), srcEl = $('source[type="image/webp"]', s);
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'reel__win'; b.tabIndex = -1; b.setAttribute('aria-hidden', 'true');
       var a = i * step * Math.PI / 180, r = 37;
-      b.style.left = (50 + r * Math.sin(a) - 10.5) + '%';
-      b.style.top = (50 - r * Math.cos(a) - 10.5) + '%';
+      b.style.left = (50 + r * Math.sin(a) - 10) + '%';
+      b.style.top = (50 - r * Math.cos(a) - 10) + '%';
       var t = new Image(); t.alt = ''; t.loading = 'lazy'; t.decoding = 'async';
       t.src = srcEl ? srcEl.getAttribute('srcset').split(' ')[0] : img.getAttribute('src');
       b.appendChild(t);
@@ -486,6 +488,7 @@
       disc.style.transform = 'rotate(' + rot + 'deg)';
       slides.forEach(function (s, k) { s.classList.toggle('is-active', k === idx); s.setAttribute('aria-hidden', k === idx ? 'false' : 'true'); });
       count.textContent = idx + 1;
+      frame.classList.toggle('is-wide', slides[idx].hasAttribute('data-wide'));
       click();
     }
     function interact() { touched = true; stop(); }

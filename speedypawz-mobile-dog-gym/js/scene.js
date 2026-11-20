@@ -1,154 +1,200 @@
-/* Speedy PawZ: "How it works" van scene.
-   Pinned, scroll-scrubbed with GSAP ScrollTrigger.
-   - Default: SVG illustration (street > van rolls in > door slides > zoom inside > mills > nap + photo update).
-   - Upgrade: set SPZ_CONFIG.vanSequence.frameCount > 0 and drop frames in assets/van-sequence/ (0001.webp ...)
-     to scrub a photo-realistic image sequence instead. Beat text works the same either way.
-   - Reduced motion, no JS or no GSAP: the static van + 4 beat cards stay as they are in the HTML. */
+/* Speedy PawZ: "How it works" scroll scene.
+   Pinned and scroll-scrubbed with GSAP ScrollTrigger. Five beats:
+
+     Lap 1        footage  a-00..   van at the curb, side door slides open, pup hops in
+     Lap 2        photo    pats     real photo: love pats before the first step
+     Lap 3        footage  b-00..   pup trotting on the slat mill (slobber drops land on the lens)
+     Pit stop     footage  c-00..   both mills from above, then the SVG mill comes apart: no motor
+     Finish line  photo    nap      pup asleep, phone pops up with the photo update
+
+   Footage lives in assets/scene/d (desktop, 1280x660) and assets/scene/m (phone, 720x530).
+   To swap in new clips, see assets/scene/README.md and edit SHOTS / CHAPTERS below.
+   Reduced motion, no JS or no GSAP: the real van photo + five beat cards stay as they are in the HTML. */
 (function () {
   'use strict';
-  var CFG = window.SPZ_CONFIG || {};
   var SPZ = window.SPZ || {};
   var html = document.documentElement;
   var scene = document.getElementById('vanScene');
   if (!scene || SPZ.reduced || !window.gsap || !window.ScrollTrigger) return;
 
-  var gsap = window.gsap;
-  gsap.registerPlugin(window.ScrollTrigger);
+  var gsap = window.gsap, ScrollTrigger = window.ScrollTrigger;
+  gsap.registerPlugin(ScrollTrigger);
   html.classList.add('scene-on');
 
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
-  var pin = $('.scene__pin', scene);
-  var beats = $$('.beat', scene);
-  var interior = $('.scene__interior', scene), finale = $('.scene__finale', scene);
+  var pin = $('.scene__pin', scene), stage = $('.scene__stage', scene);
+  var canvas = $('.scene__canvas', scene), ctx = canvas.getContext('2d');
+  var beats = $$('.beat', scene), pips = $$('.scene__pips i', scene), drops = $$('.scene__drops i', scene);
+  var diagram = $('.scene__diagram', scene), phoneLayer = $('.scene__phone', scene);
   var portrait = window.matchMedia('(orientation: portrait)');
-  var seq = CFG.vanSequence || {};
-  var useFrames = +seq.frameCount > 0;
+  var small = portrait.matches || window.innerWidth < 760;
+  var BASE = 'assets/scene/' + (small ? 'm' : 'd') + '/';
 
-  /* ---- Beat text ---- */
+  /* ---- Footage ---- */
+  var SHOTS = { a: 24, b: 25, c: 11 };          // frames per shot
+  var cache = {};
+  function load(name, cb) {
+    if (cache[name]) return cache[name];
+    var im = new Image();
+    im.decoding = 'async';
+    im.onload = function () { im._ok = true; if (cb) cb(); else redraw(); };
+    im.src = BASE + name + '.webp';
+    cache[name] = im;
+    return im;
+  }
+  function frameName(shot, i) { return shot + '-' + (i < 10 ? '0' : '') + i; }
+  // nearest loaded frame in the same shot, so scrubbing never shows a blank
+  function frame(shot, i) {
+    var n = SHOTS[shot];
+    for (var d = 0; d < n; d++) {
+      var lo = cache[frameName(shot, i - d)], hi = cache[frameName(shot, i + d)];
+      if (i - d >= 0 && lo && lo._ok) return lo;
+      if (i + d < n && hi && hi._ok) return hi;
+    }
+    return null;
+  }
+  var started = false;
+  function startLoading() {
+    if (started) return; started = true;
+    // first frame of every beat first, then fill in, a few at a time
+    var order = ['a-00', 'pats', 'b-00', 'c-00', 'nap'];
+    ['a', 'b', 'c'].forEach(function (s) { for (var i = 1; i < SHOTS[s]; i++) order.push(frameName(s, i)); });
+    (function pump() {
+      var k = 0;
+      while (order.length && k++ < 5) load(order.shift());
+      if (order.length) setTimeout(pump, 70);
+    })();
+  }
+  // The scene sits right under the hero, so hold the frames back until the page has
+  // finished loading (or the visitor starts moving, or the lick opener is done).
+  // That keeps them from competing with the hero image and fonts.
+  var armed = false;
+  function arm() {
+    if (armed) return; armed = true;
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { startLoading(); io.disconnect(); } }, { rootMargin: '150% 0px' });
+      io.observe(scene);
+    } else { startLoading(); }
+  }
+  ['scroll', 'touchstart', 'pointerdown', 'keydown'].forEach(function (t) { window.addEventListener(t, arm, { once: true, passive: true }); });
+  window.addEventListener('spz:intro-done', function () { setTimeout(arm, 300); });
+  function afterLoad() { if (!html.classList.contains('lick-on')) setTimeout(arm, 1500); }
+  if (document.readyState === 'complete') afterLoad(); else window.addEventListener('load', afterLoad);
+
+  /* ---- Canvas drawing ---- */
+  function sizeCanvas() {
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var w = Math.round(stage.clientWidth * dpr), h = Math.round(stage.clientHeight * dpr);
+    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+  }
+  // cover-fit, with an extra zoom toward a focus point (0 to 1)
+  function drawCover(img, zoom, fx, fy, alpha) {
+    if (!img || !img._ok) return false;
+    var cw = canvas.width, ch = canvas.height;
+    var s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * (zoom || 1);
+    var w = img.naturalWidth * s, h = img.naturalHeight * s;
+    var x = (cw - w) * (fx == null ? 0.5 : fx), y = (ch - h) * (fy == null ? 0.5 : fy);
+    ctx.globalAlpha = alpha == null ? 1 : alpha;
+    ctx.drawImage(img, x, y, w, h);
+    ctx.globalAlpha = 1;
+    return true;
+  }
+
+  /* ---- Chapters: where each piece of footage sits on the 0 to 1 scroll ---- */
+  var ease = function (t) { return t * t * (3 - 2 * t); };
+  var CHAPTERS = [
+    { from: 0.00, to: 0.22, beat: 0, draw: function (t, a) { return drawCover(frame('a', Math.min(SHOTS.a - 1, Math.floor(t * SHOTS.a))), 1, 0.5, 0.5, a); } },
+    { from: 0.22, to: 0.37, beat: 1, draw: function (t, a) { return drawCover(cache.pats, 1 + 0.12 * ease(t), small ? 0.5 : 0.55, 0.6, a); } },
+    { from: 0.37, to: 0.56, beat: 2, draw: function (t, a) { return drawCover(frame('b', Math.min(SHOTS.b - 1, Math.floor(t * SHOTS.b))), 1, 0.6, 0.4, a); } },
+    { from: 0.56, to: 0.84, beat: 3, draw: function (t, a) { return drawCover(frame('c', Math.min(SHOTS.c - 1, Math.floor(Math.min(1, t / 0.3) * SHOTS.c))), 1, 0.5, 0.5, a); } },
+    { from: 0.84, to: 1.01, beat: 4, draw: function (t, a) { return drawCover(cache.nap, (small ? 1.3 : 1.22) + 0.14 * ease(Math.min(1, t)), small ? 0.16 : 0.12, 0.92, a); } }
+  ];
+  var FADE = 0.014;
+  var progress = 0, drew = false;
+  function redraw() {
+    sizeCanvas();
+    var p = progress, i;
+    for (i = CHAPTERS.length - 1; i > 0; i--) if (p >= CHAPTERS[i].from) break;
+    var c = CHAPTERS[i], t = (p - c.from) / (c.to - c.from);
+    var ok = true;
+    if (i > 0 && p - c.from < FADE) {               // short crossfade from the previous chapter
+      CHAPTERS[i - 1].draw(1, 1);
+      ok = c.draw(t, (p - c.from) / FADE);
+    } else { ok = c.draw(t, 1); }
+    if (ok && !drew) { drew = true; canvas.classList.add('is-live'); }
+  }
+
+  /* ---- Beat text + pips + slobber drops ---- */
   var activeBeat = -1;
   function setBeat(i) {
     if (i === activeBeat) return;
     activeBeat = i;
-    beats.forEach(function (b, k) { b.classList.toggle('is-active', k === i); b.setAttribute('aria-hidden', k === i ? 'false' : 'true'); });
-    pin.setAttribute('data-phase', i < 2 ? 'street' : i === 2 ? 'inside' : 'home');
+    beats.forEach(function (b, k) { b.classList.toggle('is-active', k === i); });
+    pips.forEach(function (d, k) { d.classList.toggle('is-on', k === i); });
   }
-  function beatFor(p) { return p < 0.27 ? 0 : p < 0.52 ? 1 : p < 0.78 ? 2 : 3; }
-  // Screen readers: the list stays readable; only visibility changes.
-  beats.forEach(function (b) { b.removeAttribute('aria-hidden'); });
+  function beatFor(p) { for (var i = CHAPTERS.length - 1; i > 0; i--) if (p >= CHAPTERS[i].from - 0.01) return CHAPTERS[i].beat; return 0; }
+  function setDrops(p) {
+    drops.forEach(function (d, k) { d.classList.toggle('is-on', p > 0.41 + k * 0.022 && p < 0.555); });
+  }
   setBeat(0);
 
-  var endDist = function () { return (portrait.matches ? 1.6 : 2.0) * window.innerHeight; };
-
-  /* ---- Option A: image-sequence (photo-realistic upgrade) ---- */
-  if (useFrames) {
-    html.classList.add('scene-frames-on');
-    var canvas = $('.scene__frames', scene);
-    canvas.hidden = false;
-    var ctx = canvas.getContext('2d');
-    var n = +seq.frameCount, imgs = new Array(n), digits = +seq.digits || 4;
-    var name = function (i) { var s = String(i + 1); while (s.length < digits) s = '0' + s; return (seq.path || 'assets/van-sequence/') + s + '.' + (seq.ext || 'webp'); };
-    var cur = 0;
-    function draw(i) {
-      var img = imgs[i];
-      if (!img || !img.complete || !img.naturalWidth) { // nearest loaded frame
-        for (var d = 1; d < n; d++) { if (imgs[i - d] && imgs[i - d].naturalWidth) { img = imgs[i - d]; break; } if (imgs[i + d] && imgs[i + d].naturalWidth) { img = imgs[i + d]; break; } }
-        if (!img) return;
-      }
-      var cw = canvas.clientWidth, ch = canvas.clientHeight, dpr = Math.min(2, window.devicePixelRatio || 1);
-      if (canvas.width !== Math.round(cw * dpr)) { canvas.width = Math.round(cw * dpr); canvas.height = Math.round(ch * dpr); }
-      var s = Math.max(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
-      var w = img.naturalWidth * s, h = img.naturalHeight * s;
-      ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
-    }
-    function load(i) { if (imgs[i]) return; var im = new Image(); im.decoding = 'async'; im.onload = function () { if (i === cur) draw(cur); }; im.src = name(i); imgs[i] = im; }
-    // Progressive preload: first frame, then every 8th, then fill the gaps
-    load(0);
-    var order = [];
-    for (var a = 8; a < n; a += 8) order.push(a);
-    for (var b = 1; b < n; b++) if (b % 8) order.push(b);
-    (function pump() { var k = 0; while (order.length && k++ < 6) load(order.shift()); if (order.length) setTimeout(pump, 60); })();
-    window.ScrollTrigger.create({
-      trigger: pin, start: 'top top', end: function () { return '+=' + endDist(); }, pin: true, scrub: true, anticipatePin: 1, invalidateOnRefresh: true,
-      onUpdate: function (st) { cur = Math.round(st.progress * (n - 1)); draw(cur); setBeat(beatFor(st.progress)); }
-    });
-    window.addEventListener('resize', function () { draw(cur); });
-    return;
+  /* ---- Pit-stop diagram: build the slats, then the explode timeline ---- */
+  var NS = 'http://www.w3.org/2000/svg', slatG = $('#dgSlats'), slats = [];
+  for (var i = 0; i < 20; i++) {
+    var r = document.createElementNS(NS, 'rect');
+    r.setAttribute('x', -276 + i * 28); r.setAttribute('y', -67); r.setAttribute('width', 22); r.setAttribute('height', 22); r.setAttribute('rx', 4);
+    slatG.appendChild(r); slats.push(r);
   }
-
-  /* ---- Option B: the SVG scene ---- */
-  var world = $('#world'), vanMove = $('#vanMove'), vanBody = $('#vanBody'), door = $('#vanDoor');
-  var rims = $$('#van .rim'), lines = $('#speedLines');
-  var phone = $('#phoneMock'), notif = $('#notif'), hand = $('#coachHand');
-
-
-  // Slat mills inside the van
-  var mills = $$('.scene__interior .mill').map(function (m) {
-    return { slats: SPZ.buildSlats($('.slats', m), 40, 660), dog: $('.dog', m) };
-  });
-  mills.forEach(function (m) { if (m.dog) SPZ.setDogRate(m.dog, 0.8); });
-
-  gsap.set(vanMove, { x: 1000 });
-  gsap.set(interior, { autoAlpha: 0 });
-  gsap.set(finale, { autoAlpha: 0 });
-  gsap.set(phone, { y: 520 });
+  var labels = $$('.dg-label', scene);
+  var phone = $('#phoneMock'), notif = $('#notif');
+  gsap.set([diagram, phoneLayer], { autoAlpha: 0 });
+  gsap.set(labels, { autoAlpha: 0, y: 10 });
+  gsap.set(phone, { y: 560 });
   gsap.set(notif, { scale: 0.7, transformOrigin: '50% 0%', opacity: 0 });
 
-  var tl = gsap.timeline({ defaults: { ease: 'none' } });
-  // 1) Van rolls in and brakes
-  tl.to(vanMove, { x: 0, duration: 2.2, ease: 'power2.out' }, 0)
-    .to(rims, { rotation: -1220, duration: 2.2, ease: 'power2.out', transformOrigin: '50% 50%' }, 0)
-    .fromTo(lines, { opacity: 0.85 }, { opacity: 0, duration: 1.6, ease: 'power1.in' }, 0)
-    .to(vanBody, { rotation: -1.6, transformOrigin: '15% 100%', duration: 0.25, ease: 'power2.out' }, 1.95)
-    .to(vanBody, { rotation: 0, duration: 0.5, ease: 'back.out(3)' }, 2.2)
-  // 2) Side door slides open
-    .to(door, { x: 150, duration: 1.2, ease: 'power2.inOut' }, 2.9)
-  // 3) Zoom through the doorway into the van
-    .to(world, { scale: 7, svgOrigin: '646 483', duration: 1.7, ease: 'power2.in' }, 4.4)
-    .to(interior, { autoAlpha: 1, duration: 0.7 }, 5.3)
-    .fromTo(hand, { x: -120 }, { x: 0, duration: 0.9, ease: 'power2.out' }, 5.6)
-  // 4) Home: nap + photo update
-    .to(finale, { autoAlpha: 1, duration: 0.7 }, 7.7)
-    .to(phone, { y: 0, duration: 0.9, ease: 'back.out(1.4)' }, 8.1)
-    .to(notif, { scale: 1, opacity: 1, duration: 0.5, ease: 'back.out(2)' }, 8.7)
-    .to({}, { duration: 0.8 }, 9.2);
+  // One timeline, 100 units long, so positions read as scroll percent.
+  var tl = gsap.timeline({ defaults: { ease: 'none' }, onUpdate: function () { progress = tl.progress(); redraw(); setBeat(beatFor(progress)); setDrops(progress); } });
+  tl.to({}, { duration: 100 }, 0)
+    // diagram fades in over the overhead shot, comes apart, holds, goes back together
+    .to(diagram, { autoAlpha: 1, duration: 2.2 }, 63.2)
+    .to('#dgArch', { y: -78, duration: 5, ease: 'power2.inOut' }, 66)
+    .to('#dgPanel', { y: -34, duration: 5, ease: 'power2.inOut' }, 66)
+    .to('#dgBase', { y: 76, duration: 5, ease: 'power2.inOut' }, 66)
+    .to('#dgWheelL', { x: '-=92', duration: 5, ease: 'power2.inOut' }, 66)
+    .to('#dgWheelR', { x: '+=92', duration: 5, ease: 'power2.inOut' }, 66)
+    .to('#dgLoop', { opacity: 0.25, duration: 3 }, 66)
+    .to(slats, { x: function (k) { return (k - 9.5) * 4.6; }, y: function (k) { return k % 2 ? -7 : 7; }, duration: 5, ease: 'power2.inOut' }, 66)
+    .to('.dg-wheel', { rotation: 300, transformOrigin: '50% 50%', duration: 14 }, 66)
+    .to(labels, { autoAlpha: 1, y: 0, duration: 1.4, stagger: 0.5, ease: 'power2.out' }, 70)
+    .to(labels, { autoAlpha: 0, duration: 1 }, 77.6)
+    .to(['#dgArch', '#dgPanel', '#dgBase'], { y: 0, duration: 3.6, ease: 'power2.inOut' }, 78.4)
+    .to('#dgWheelL', { x: '+=92', duration: 3.6, ease: 'power2.inOut' }, 78.4)
+    .to('#dgWheelR', { x: '-=92', duration: 3.6, ease: 'power2.inOut' }, 78.4)
+    .to(slats, { x: 0, y: 0, duration: 3.6, ease: 'power2.inOut' }, 78.4)
+    .to('#dgLoop', { opacity: 1, duration: 2 }, 80)
+    .to(diagram, { autoAlpha: 0, duration: 2 }, 83)
+    // finish line: phone pops up with the photo update
+    .set(phoneLayer, { autoAlpha: 1 }, 88)
+    .to(phone, { y: 0, duration: 4.5, ease: 'back.out(1.3)' }, 88.5)
+    .to(notif, { scale: 1, opacity: 1, duration: 2.4, ease: 'back.out(2)' }, 92);
 
-  var inside = false, speed = 120, lastT = 0, vel = 0, lastRate = 0;
-  var st = window.ScrollTrigger.create({
+  var st = ScrollTrigger.create({
     trigger: pin,
     start: 'top top',
-    end: function () { return '+=' + endDist(); },
+    end: function () { return '+=' + Math.round((portrait.matches ? 3.6 : 4.2) * window.innerHeight); },
     pin: true,
-    scrub: 0.6,
+    scrub: 0.5,
     anticipatePin: 1,
     invalidateOnRefresh: true,
     animation: tl,
-    onToggle: function (self) { html.classList.toggle('scene-active', self.isActive); },
-    onUpdate: function (self) {
-      var p = self.progress;
-      setBeat(beatFor(p));
-      vel = Math.abs(self.getVelocity());
-      var nowInside = p > 0.5 && p < 0.86;
-      if (nowInside && !inside) { inside = true; lastT = 0; requestAnimationFrame(loop); }
-      inside = nowInside;
-    }
+    onToggle: function (self) { html.classList.toggle('scene-active', self.isActive); if (self.isActive) startLoading(); },
+    onRefresh: redraw
   });
 
-  // Slats + trot follow scroll speed, with smoothing
-  function loop(now) {
-    if (!inside) return;
-    var dt = lastT ? Math.min(0.05, (now - lastT) / 1000) : 0; lastT = now;
-    vel *= 0.92;
-    var target = 110 + Math.min(vel, 2600) * 0.12;
-    speed += (target - speed) * 0.07;
-    mills.forEach(function (m) { SPZ.stepSlats(m.slats, speed, dt); });
-    var rate = Math.max(0.6, Math.min(2.6, speed / 130));
-    if (Math.abs(rate - lastRate) > 0.06) { lastRate = rate; mills.forEach(function (m) { SPZ.setDogRate(m.dog, rate); }); }
-    requestAnimationFrame(loop);
-  }
-
-  // Keep pin math right after fonts and images settle
-  window.addEventListener('load', function () { window.ScrollTrigger.refresh(); });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { window.ScrollTrigger.refresh(); });
+  window.addEventListener('resize', redraw);
+  window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+  window.addEventListener('spz:intro-done', function () { ScrollTrigger.refresh(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { ScrollTrigger.refresh(); });
   SPZ.sceneTrigger = st;
 })();

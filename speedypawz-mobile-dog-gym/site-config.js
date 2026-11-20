@@ -6,6 +6,7 @@
   - Visit the page with ?review=1 to see a gold CONFIRM note on every open item.
   - Visit with ?review=0 to turn review mode off again.
   - No em dashes and no emojis in any text you type here.
+  - The lick opener is switched on the <html> tag in index.html: data-intro="on" or "off".
 */
 window.SPZ_CONFIG = {
   business: {
@@ -84,15 +85,6 @@ window.SPZ_CONFIG = {
     src: null,
     captions: null, // "assets/video/intro.vtt"
     poster: "assets/photos/emelyn-van-door-black-dog.jpg"
-  },
-
-  // Photo-realistic van frames. Set frameCount to the number of frames in assets/van-sequence/ (0001.webp, 0002.webp ...).
-  // 0 keeps the illustrated SVG van scene.
-  vanSequence: {
-    frameCount: 0,
-    path: "assets/van-sequence/",
-    ext: "webp",
-    digits: 4
   },
 
   // Live booking calendar. Example: { type: "iframe", src: "https://...", height: 760, name: "Square Appointments" }

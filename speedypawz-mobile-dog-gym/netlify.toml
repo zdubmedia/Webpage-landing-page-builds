@@ -34,7 +34,7 @@
   force = true
 
 [[redirects]]
-  from = "/assets/van-sequence/README.md"
+  from = "/assets/scene/README.md"
   to = "/"
   status = 301
   force = true

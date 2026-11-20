@@ -16,7 +16,15 @@ Rules: never alter faces or real dogs (crop, color and exposure only). No AI ups
 | `emelyn-selfie-van.jpg` | PawZ Reel | 380 | 438 | 1200+ |
 | `van-mystery-machine.jpg` | Community trophy card, PawZ Reel | 380 | 1320 | 1600+ |
 | `emelyn-velma-trunk-or-treat.jpg` | PawZ Reel | 380 | 1130 | 1600+ |
+| `van-driveway.jpg` | How it works (first image, and the whole stage with reduced motion), PawZ Reel | 1060 | 1320 | 2400+ |
+| `coach-beside-mill.jpg` | Safety section photo, PawZ Reel | 480 | 984 | 1600+ |
+| `client-dog-trot-mill.jpg` | PawZ Reel, photo inside the phone notification | 520 | 1187 | 1600+ |
+| `emelyn-client-dog-van.jpg` | PawZ Reel | 520 | 978 | 1600+ |
+| `love-pats.jpg` | PawZ Reel, and Lap 2 of the scroll scene (`assets/scene/*/pats.webp`) | full screen | 1320 | 2400+ |
+| `van-emelyn-at-door.jpg` | Not placed yet (spare real van photo) | n/a | 1320 | 2400+ |
 | *(empty)* older dog photo | Who it's for: older dogs (set `olderDogPhoto` in `site-config.js`) | 380 | none | 1200+ |
+
+The six files above from `van-driveway` down were cropped out of Instagram screenshots (captions and icons cropped off). They are sharper than the first batch but still screenshots: ask Emelyn for the original videos or photos.
 
 Small crops (about 440 px wide) are never shown wider than about 480 CSS px. Keep it that way until originals arrive.
 

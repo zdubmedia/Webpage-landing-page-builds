@@ -21,7 +21,8 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `css/site.css` | All styles. Tokens at the top match the visual design guide. |
 | `js/main.js` | Config rendering, review mode, dog illustrations, race-track progress, sticky CTA, flip cards, counters, pace dial, PawZ Reel, easter egg, pixel. |
 | `js/booking.js` | Tabs, 3-step session form, quick-call form, validation, Netlify AJAX submit. |
-| `js/scene.js` | The pinned, scroll-scrubbed van scene (GSAP ScrollTrigger) and the frame-sequence upgrade. |
+| `js/intro.js` | The lick opener: black screen, logo, the pup runs up and licks the lens, slobber drips away to reveal the hero. |
+| `js/scene.js` | The pinned, scroll-scrubbed "How it works" scene (GSAP ScrollTrigger): Kling footage frames, a real photo, the exploded slat mill, the nap + photo update. |
 | `vendor/` | GSAP 3.13 + ScrollTrigger, self-hosted (free "no charge" license). |
 | `assets/fonts/` | Self-hosted Poppins, Nunito, Racing Sans One (latin subsets). |
 | `assets/photos/` | Photos plus WebP/AVIF versions. See `assets/photos/README.md` for every slot. |
@@ -29,7 +30,8 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `assets/og-image.jpg` | 1200x630 share image. |
 | `assets/speedypawz.vcf` | "Save our number" contact card. |
 | `assets/video/` | Drop the intro video here (see below). |
-| `assets/van-sequence/` | Optional photo-realistic frames for the van scene (see its README). |
+| `assets/intro/` | The lick opener clip, two sizes (`lick-720.mp4` phones, `lick-1080.mp4` desktop). |
+| `assets/scene/` | Scroll-scene frames, desktop (`d/`) and phone (`m/`) sets. See its README to swap in new clips. |
 | `brand/` | Brand guide, visual design guide, original build brief. Redirected away on the live site. |
 | `netlify.toml` | Publish settings, redirects, caching headers. |
 | `FOR-EMELYN.md` | One-page owner note. |
@@ -51,11 +53,26 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 2. In `site-config.js`: `vsl: { src: "assets/video/intro.mp4", captions: "assets/video/intro.vtt", poster: "..." }`.
 The "See Speedy PawZ in action" section appears below the hero. It autoplays muted while on screen, with a big "Tap to watch with sound" button. Portrait or landscape is detected automatically.
 
+## The lick opener
+- Plays once per visit (sessionStorage), never with reduced motion, and can be skipped (button or Escape). If the video cannot load or autoplay (slow network, iOS Low Power Mode) it falls back to a quick slobber wipe.
+- **Switch:** `data-intro="on"` or `"off"` on the `<html>` tag in `index.html`. `/?intro=0` skips it once, `/?intro=1` replays it (handy for demos).
+- **Replace the clip:** export from Kling without the watermark, upright (3:4 or 9:16), ending on the lick. Then:
+  `ffmpeg -ss START -i clip.mp4 -an -vf "scale=720:-2" -c:v libx264 -crf 27 -preset slow -pix_fmt yuv420p -movflags +faststart assets/intro/lick-720.mp4` (and again at 1080 wide, crf 28). Keep it about 3 seconds. The slobber wipe starts 0.24 s before the clip ends, and the screen shake fires 1.1 s before the end (the nose boop), so keep those moments in the same place or adjust the two numbers in `js/intro.js`.
+- With the opener on, the hero skips its own start-lights and logo roll-in. With it off (or on a repeat visit), the original hero start sequence plays.
+
 ## Add a booking calendar
 Set `calendarEmbed: { type: "iframe", src: "https://...", height: 760, name: "Square Appointments" }`. The "Request a session" tab then shows the live calendar first and the request form under "Can't find a time?". **Set the calendar's own "after booking" redirect to `/thank-you.html`.** [CONFIRM which platform Emelyn uses]
 
-## Add the photo-realistic van scene
-See `assets/van-sequence/README.md`. Drop frames `0001.webp...`, set `vanSequence.frameCount`. The SVG scene is replaced, beats stay.
+## Scroll scene footage
+See `assets/scene/README.md` for what each beat uses today and how to swap in a new Kling clip (pull frames with ffmpeg, update `SHOTS` and `CHAPTERS` in `js/scene.js`).
+
+### Kling shots still wanted
+All: her real black Ford Transit with the Speedy PawZ badge, sunny Woodland street, photo-real, no text, no watermark, 1080p or higher. Give Kling the real van photo and a real photo of the dog as reference images.
+1. **Arrival (16:9, 5 s):** "Locked-off wide shot of a quiet suburban street. A black Ford Transit van with a round red and gold dog-gym logo on the side drives in from the right, slows and parks at the curb in the center of frame. Bright morning light."
+2. **Door + push-in (16:9, 5 to 8 s):** "The van's sliding side door glides open. The camera pushes smoothly forward through the doorway into a clean van interior with two red-framed slat treadmills side by side. One continuous shot, no cuts."
+3. **Slow-mo run (16:9 and 9:16, 5 s):** "Extreme slow motion close-up of a happy black lab mix in a yellow bandana running on a red-framed slat treadmill inside a van. Tongue flapping, jowls rippling, drops of slobber flying toward the lens and landing on it. A woman's hand holds a treat at the edge of frame."
+4. **Exploded mill (16:9, 5 s):** "Studio product shot of a red-framed dog slat treadmill on a dark navy background. The parts separate and float apart in an exploded view (slat belt, two red wheels, frame, clear side panels), hold, then come back together. No motor anywhere."
+5. **Nap (16:9, 5 s):** "The dog hops down from the van's side door, trots across a living room to a dog bed, circles once and flops down asleep. Warm afternoon light."
 
 ## Turn on the Meta pixel
 1. Set `metaPixelId` in `site-config.js`. PageView fires on every page, `Lead` on the thank-you page, and a custom `CTAClick` on CTA taps.
@@ -96,4 +113,6 @@ Any static server from this folder, e.g. `python3 -m http.server 8000`. Form POS
 15. Is the meet-and-greet free?
 16. Intro video
 17. Owner permission for every client dog photo
+19. Emelyn's OK on the AI footage (it shows an AI version of her and of a client's dog), and a watermark-free export from Kling
+20. Original photo/video files for the six crops taken from Instagram screenshots
 18. Privacy policy legal review

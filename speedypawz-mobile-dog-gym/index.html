@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-intro="on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -27,8 +27,23 @@
       imagesizes="100vw">
 <link rel="preload" as="image" type="image/webp" href="assets/logo/badge-360.webp">
 <link rel="stylesheet" href="css/site.css">
-<script>document.documentElement.className = 'js motion';</script>
+<script>
+/* Sets up motion + the lick opener before first paint.
+   data-intro="off" on <html> turns the opener off. ?intro=0 skips it once, ?intro=1 replays it. */
+(function () {
+  var d = document.documentElement, c = 'js', q = location.search, seen = 0;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try { seen = sessionStorage.getItem('spz_intro'); } catch (e) {}
+  if (!reduce) {
+    c += ' motion';
+    var intro = d.getAttribute('data-intro') === 'on' && !/[?&]intro=0/.test(q) && (!seen || /[?&]intro=1/.test(q));
+    c += intro ? ' lick-on' : ' hero-go';
+  }
+  d.className = c;
+})();
+</script>
 <script src="site-config.js" defer></script>
+<script src="js/intro.js" defer></script>
 <script src="js/main.js" defer></script>
 <script src="js/booking.js" defer></script>
 <script src="vendor/gsap.min.js" defer></script>
@@ -89,6 +104,14 @@
     <symbol id="i-golf" viewBox="0 0 24 24"><path d="M8 2.6a1 1 0 0 1 1.4-.9l8.2 3.8a1 1 0 0 1 0 1.8L10 10.8V18.2c2.7.3 4.5 1.2 4.5 2.1 0 1.2-2.9 2-6.5 2s-6.5-.8-6.5-2c0-.9 1.9-1.8 4.5-2.1V3.4A1 1 0 0 1 8 2.6z"/></symbol>
   </defs>
 </svg>
+
+<!-- Lick opener: black screen, logo, the pup runs up and licks the lens, slobber drips away to reveal the page -->
+<div class="lick" id="lick">
+  <video class="lick__video" muted playsinline preload="none" disablepictureinpicture aria-hidden="true" tabindex="-1"></video>
+  <img class="lick__logo" src="assets/logo/badge-360.webp" width="360" height="360" alt="" aria-hidden="true">
+  <div class="lick__goo" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <button class="lick__skip" type="button">Skip intro</button>
+</div>
 
 <a class="skip-link" href="#main">Skip to content</a>
 
@@ -162,204 +185,90 @@
     <h2 id="how-title">We bring the gym to <span class="hl">YOU</span></h2>
   </div>
 
-  <div class="scene" id="vanScene">
+  <div class="scene" id="vanScene" data-confirm="AI footage shows an AI version of Emelyn and a client dog: get Emelyn's OK">
     <div class="scene__pin">
       <div class="scene__stage" aria-hidden="true">
-        <!-- Layer 1: the street and the van -->
-        <svg class="scene__svg scene__street" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <linearGradient id="g-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE0A3"/><stop offset=".55" stop-color="#FCEFD8"/><stop offset="1" stop-color="#F6EEDE"/></linearGradient>
-            <radialGradient id="g-sun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF3CF"/><stop offset=".45" stop-color="#FCD98A" stop-opacity=".9"/><stop offset="1" stop-color="#FCD98A" stop-opacity="0"/></radialGradient>
-            <linearGradient id="g-road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#46415A"/><stop offset="1" stop-color="#2C2838"/></linearGradient>
-            <linearGradient id="g-van" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3A3946"/><stop offset=".35" stop-color="#22212B"/><stop offset="1" stop-color="#121117"/></linearGradient>
-            <linearGradient id="g-glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8D9AB8"/><stop offset=".5" stop-color="#4B5672"/><stop offset="1" stop-color="#262B3E"/></linearGradient>
-            <linearGradient id="g-inside" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF4DA"/><stop offset=".6" stop-color="#E9DFCB"/><stop offset="1" stop-color="#3A3744"/></linearGradient>
-            <pattern id="p-check" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#fff"/><rect width="8" height="8" fill="#121117"/><rect x="8" y="8" width="8" height="8" fill="#121117"/></pattern>
-            <clipPath id="c-body"><path d="M8 232 L8 178 Q10 160 30 156 L70 148 L128 38 Q138 14 168 12 L572 12 Q594 12 596 34 L596 232 L534 232 A54 54 0 0 0 426 232 L169 232 A54 54 0 0 0 61 232 Z"/></clipPath>
-            <clipPath id="c-door"><rect x="272" y="18" width="150" height="212" rx="6"/></clipPath>
-          </defs>
-          <g id="world">
-            <rect width="1200" height="700" fill="url(#g-sky)"/>
-            <circle cx="210" cy="140" r="170" fill="url(#g-sun)"/>
-            <circle cx="210" cy="140" r="54" fill="#FFF1C8"/>
-            <!-- soft clouds -->
-            <g fill="#fff" opacity=".75"><ellipse cx="760" cy="120" rx="80" ry="20"/><ellipse cx="800" cy="104" rx="44" ry="22"/><ellipse cx="1040" cy="180" rx="64" ry="15"/><ellipse cx="1066" cy="168" rx="34" ry="16"/></g>
-            <!-- hills -->
-            <path d="M0 430 C 200 372 380 400 560 420 S 900 372 1200 404 L1200 530 L0 530 Z" fill="#DCE2C4"/>
-            <path d="M0 470 C 240 430 420 455 640 462 S 1000 432 1200 452 L1200 530 L0 530 Z" fill="#C5D1AA"/>
-            <!-- houses -->
-            <g>
-              <path d="M40 520 V400 L140 336 L240 400 V520 Z" fill="#FFF7EA"/><path d="M28 404 L140 330 L252 404 L240 412 L140 346 L40 412 Z" fill="#5E566E"/>
-              <rect x="70" y="430" width="48" height="40" rx="4" fill="#CFD7E6"/><rect x="160" y="440" width="40" height="80" rx="4" fill="#9F8E7A"/>
-              <path d="M940 520 V420 L1030 366 L1120 420 V520 Z" fill="#FBEFD9"/><path d="M928 424 L1030 360 L1132 424 L1120 432 L1030 376 L940 432 Z" fill="#5E566E"/>
-              <rect x="964" y="446" width="44" height="36" rx="4" fill="#CFD7E6"/><rect x="1050" y="450" width="40" height="70" rx="4" fill="#9F8E7A"/>
-            </g>
-            <!-- trees -->
-            <g>
-              <rect x="314" y="430" width="12" height="94" rx="5" fill="#6E5848"/><circle cx="320" cy="410" r="46" fill="#87A67F"/><circle cx="292" cy="436" r="32" fill="#7A9B73"/><circle cx="350" cy="434" r="30" fill="#93B08A"/>
-              <rect x="866" y="436" width="11" height="88" rx="5" fill="#6E5848"/><circle cx="872" cy="420" r="40" fill="#7A9B73"/><circle cx="900" cy="440" r="28" fill="#87A67F"/>
-              <rect x="1166" y="430" width="11" height="94" rx="5" fill="#6E5848"/><circle cx="1172" cy="408" r="44" fill="#87A67F"/>
-            </g>
-            <!-- sidewalk, curb, street -->
-            <rect y="520" width="1200" height="54" fill="#ECE3D2"/>
-            <g stroke="#DACEB7" stroke-width="3"><path d="M80 520v54M240 520v54M400 520v54M560 520v54M720 520v54M880 520v54M1040 520v54"/></g>
-            <rect y="572" width="1200" height="14" fill="#D3C8B2"/><rect y="572" width="1200" height="3" fill="#F5EEE0"/>
-            <rect y="586" width="1200" height="114" fill="url(#g-road)"/>
-            <g fill="#F6EEDE" opacity=".55"><rect x="30" y="664" width="70" height="7" rx="3.5"/><rect x="190" y="664" width="70" height="7" rx="3.5"/><rect x="350" y="664" width="70" height="7" rx="3.5"/><rect x="510" y="664" width="70" height="7" rx="3.5"/><rect x="670" y="664" width="70" height="7" rx="3.5"/><rect x="830" y="664" width="70" height="7" rx="3.5"/><rect x="990" y="664" width="70" height="7" rx="3.5"/><rect x="1150" y="664" width="70" height="7" rx="3.5"/></g>
+        <!-- Real photo: shows first, and is the whole stage with reduced motion or no JS -->
+        <picture class="scene__still">
+          <source type="image/avif" srcset="assets/photos/van-driveway-640.avif 640w, assets/photos/van-driveway.avif 1320w" sizes="(min-width: 1100px) 1060px, 100vw">
+          <source type="image/webp" srcset="assets/photos/van-driveway-640.webp 640w, assets/photos/van-driveway.webp 1320w" sizes="(min-width: 1100px) 1060px, 100vw">
+          <img src="assets/photos/van-driveway-640.jpg" width="1320" height="605" alt="" loading="lazy" decoding="async">
+        </picture>
+        <!-- Scroll-scrubbed footage -->
+        <canvas class="scene__canvas"></canvas>
+        <!-- Happy slobber on the lens during the workout -->
+        <div class="scene__drops"><i></i><i></i><i></i><i></i><i></i><i></i></div>
 
-            <!-- the van -->
-            <g id="vanMove">
-              <ellipse cx="602" cy="640" rx="318" ry="13" fill="#121117" opacity=".28"/>
-              <g id="van" transform="translate(300 360)">
-                <g id="vanBody">
-                  <path d="M8 232 L8 178 Q10 160 30 156 L70 148 L128 38 Q138 14 168 12 L572 12 Q594 12 596 34 L596 232 L534 232 A54 54 0 0 0 426 232 L169 232 A54 54 0 0 0 61 232 Z" fill="url(#g-van)" stroke="#0B0A0F" stroke-width="3"/>
-                  <path d="M150 16 L568 16" stroke="#5A5868" stroke-width="3" stroke-linecap="round" opacity=".8"/>
-                  <!-- doorway (seen when the door slides) -->
-                  <g id="doorway">
-                    <rect x="272" y="18" width="150" height="212" rx="6" fill="url(#g-inside)"/>
-                    <g clip-path="url(#c-door)">
-                      <rect x="284" y="96" width="9" height="104" fill="#C53336"/><rect x="384" y="104" width="8" height="96" fill="#C53336"/>
-                      <rect x="276" y="96" width="140" height="8" fill="#C53336"/>
-                      <rect x="272" y="196" width="150" height="16" fill="#2A2833"/>
-                      <g fill="#121117" opacity=".7"><rect x="280" y="200" width="6" height="8"/><rect x="292" y="200" width="6" height="8"/><rect x="304" y="200" width="6" height="8"/><rect x="316" y="200" width="6" height="8"/><rect x="328" y="200" width="6" height="8"/><rect x="340" y="200" width="6" height="8"/><rect x="352" y="200" width="6" height="8"/><rect x="364" y="200" width="6" height="8"/><rect x="376" y="200" width="6" height="8"/><rect x="388" y="200" width="6" height="8"/><rect x="400" y="200" width="6" height="8"/></g>
-                      <rect x="272" y="18" width="150" height="24" fill="#fff" opacity=".55"/>
-                    </g>
-                  </g>
-                  <!-- racing checker stripe -->
-                  <g clip-path="url(#c-body)"><rect x="0" y="206" width="272" height="16" fill="url(#p-check)"/><rect x="422" y="206" width="180" height="16" fill="url(#p-check)"/></g>
-                  <!-- windshield + front door -->
-                  <path d="M76 146 L130 42 Q136 30 152 30 L156 30 L156 146 Z" fill="url(#g-glass)"/>
-                  <path d="M96 120 L128 58" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".25"/>
-                  <rect x="166" y="32" width="96" height="88" rx="10" fill="url(#g-glass)"/>
-                  <path d="M180 108 L214 42" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".22"/>
-                  <path d="M160 20 V228 M266 20 V228" stroke="#0B0A0F" stroke-width="3"/>
-                  <rect x="236" y="132" width="20" height="6" rx="3" fill="#4C4A58"/>
-                  <!-- mirror -->
-                  <path d="M150 104 h-18 a6 6 0 0 0 -6 6 v10 a6 6 0 0 0 6 6 h18 z" fill="#1A1920" stroke="#0B0A0F" stroke-width="2"/>
-                  <!-- front: headlight, grille, bumper -->
-                  <path d="M12 166 Q14 158 30 156 L52 152 L48 172 L14 176 Z" fill="#FFF1C8" stroke="#0B0A0F" stroke-width="2"/>
-                  <rect x="8" y="182" width="26" height="26" rx="4" fill="#121117"/>
-                  <g stroke="#4C4A58" stroke-width="2"><path d="M12 189h18M12 195h18M12 201h18"/></g>
-                  <rect x="2" y="214" width="78" height="22" rx="8" fill="#2E2D36" stroke="#0B0A0F" stroke-width="2"/>
-                  <!-- rear window, taillight, rear bumper -->
-                  <rect x="440" y="32" width="138" height="80" rx="10" fill="url(#g-glass)"/>
-                  <path d="M456 102 L490 40" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".22"/>
-                  <rect x="586" y="58" width="12" height="72" rx="5" fill="#C53336" stroke="#0B0A0F" stroke-width="2"/>
-                  <rect x="540" y="214" width="62" height="22" rx="8" fill="#2E2D36" stroke="#0B0A0F" stroke-width="2"/>
-                  <!-- sliding door -->
-                  <g id="vanDoor">
-                    <rect x="272" y="18" width="150" height="212" rx="6" fill="url(#g-van)" stroke="#0B0A0F" stroke-width="3"/>
-                    <rect x="284" y="32" width="126" height="64" rx="10" fill="url(#g-glass)"/>
-                    <path d="M300 88 L326 40" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".22"/>
-                    <image href="assets/logo/badge-180.webp" x="296" y="100" width="102" height="102"/>
-                    <rect x="272" y="206" width="150" height="16" fill="url(#p-check)"/>
-                    <rect x="278" y="146" width="7" height="22" rx="3.5" fill="#4C4A58"/>
-                  </g>
-                </g>
-                <!-- wheels -->
-                <g class="wheel" id="wheelF" transform="translate(115 232)">
-                  <circle r="47" fill="#121117"/><circle r="38" fill="#2B2A33"/>
-                  <g class="rim"><circle r="26" fill="#C53336"/><g fill="#9F1427"><circle cx="0" cy="-15" r="5"/><circle cx="14.3" cy="-4.6" r="5"/><circle cx="8.8" cy="12.1" r="5"/><circle cx="-8.8" cy="12.1" r="5"/><circle cx="-14.3" cy="-4.6" r="5"/></g><circle r="7" fill="#E6E3EA"/></g>
-                </g>
-                <g class="wheel" id="wheelR" transform="translate(480 232)">
-                  <circle r="47" fill="#121117"/><circle r="38" fill="#2B2A33"/>
-                  <g class="rim"><circle r="26" fill="#C53336"/><g fill="#9F1427"><circle cx="0" cy="-15" r="5"/><circle cx="14.3" cy="-4.6" r="5"/><circle cx="8.8" cy="12.1" r="5"/><circle cx="-8.8" cy="12.1" r="5"/><circle cx="-14.3" cy="-4.6" r="5"/></g><circle r="7" fill="#E6E3EA"/></g>
-                </g>
-              </g>
-              <!-- speed lines while driving -->
-              <g id="speedLines" stroke="#5E566E" stroke-width="6" stroke-linecap="round" opacity="0"><path d="M930 470h90M950 520h120M940 570h70"/></g>
-            </g>
-          </g>
-        </svg>
-
-        <!-- Layer 2: inside the van -->
-        <svg class="scene__svg scene__interior" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+        <!-- Pit stop: the slat mill comes apart -->
+        <svg class="scene__svg scene__diagram" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
           <defs>
-            <linearGradient id="g-wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFBF2"/><stop offset=".7" stop-color="#EEE6D6"/><stop offset="1" stop-color="#DCD2BF"/></linearGradient>
-            <linearGradient id="g-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A4658"/><stop offset="1" stop-color="#211F29"/></linearGradient>
-            <linearGradient id="g-win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF6DE"/><stop offset="1" stop-color="#FCD98A"/></linearGradient>
+            <pattern id="p-grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M50 0H0V50" fill="none" stroke="#F7B334" stroke-opacity=".08" stroke-width="2"/></pattern>
             <linearGradient id="g-red" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9474A"/><stop offset="1" stop-color="#A51E2B"/></linearGradient>
-            <clipPath id="c-beltA"><rect x="40" y="-74" width="620" height="22" rx="6"/></clipPath>
+            <radialGradient id="g-spot" cx=".5" cy=".55" r=".6"><stop offset="0" stop-color="#3B3956"/><stop offset="1" stop-color="#1F1B30"/></radialGradient>
           </defs>
-          <rect width="1200" height="700" fill="url(#g-wall)"/>
-          <rect width="1200" height="60" fill="#FFFDF7"/><rect x="120" y="22" width="960" height="12" rx="6" fill="#FFF" opacity=".95"/><rect x="120" y="30" width="960" height="40" fill="#FFF3CF" opacity=".5"/>
-          <rect x="120" y="96" width="300" height="150" rx="22" fill="url(#g-win)"/><rect x="780" y="96" width="300" height="150" rx="22" fill="url(#g-win)"/>
-          <path d="M150 230 L230 112 M800 230 L880 112" stroke="#fff" stroke-width="16" stroke-linecap="round" opacity=".5"/>
-          <rect y="430" width="1200" height="270" fill="url(#g-floor)"/>
-          <rect y="426" width="1200" height="6" fill="#CFC4AF"/>
-          <g stroke="#4C4858" stroke-width="3" opacity=".6"><path d="M0 452h1200M0 480h1200M0 514h1200M0 556h1200M0 604h1200M0 660h1200"/></g>
-
-          <!-- Back mill (smaller) -->
-          <g id="millBack" transform="translate(430 455) scale(.7)">
-            <g class="mill" data-mill="back">
-              <rect x="22" y="-46" width="656" height="16" rx="8" fill="#121117"/>
-              <g clip-path="url(#c-beltA)"><rect x="40" y="-74" width="620" height="22" fill="#2B2A33"/><g class="slats" fill="#4C4858"></g></g>
-              <rect x="20" y="-56" width="660" height="14" rx="7" fill="url(#g-red)"/>
-              <circle cx="40" cy="-60" r="14" fill="#121117"/><circle cx="660" cy="-60" r="14" fill="#121117"/>
-              <rect x="56" y="-250" width="16" height="190" rx="8" fill="url(#g-red)"/>
-              <rect x="36" y="-258" width="56" height="15" rx="7.5" fill="url(#g-red)"/>
-              <rect x="638" y="-104" width="14" height="46" rx="7" fill="url(#g-red)"/>
-              <g class="mill-dog" transform="translate(360 -74)" data-dog="husky" data-variant="b"></g>
-              <rect x="56" y="-104" width="596" height="13" rx="6.5" fill="url(#g-red)" stroke="#9F1427" stroke-width="2"/>
+          <rect width="1200" height="700" fill="url(#g-spot)"/>
+          <rect width="1200" height="700" fill="url(#p-grid)"/>
+          <g transform="translate(600 430) scale(.82)">
+            <!-- base frame -->
+            <g id="dgBase">
+              <rect x="-300" y="70" width="600" height="22" rx="9" fill="#121117" stroke="#5E566E" stroke-width="3"/>
+              <g fill="url(#g-red)"><rect x="-210" y="62" width="34" height="14" rx="4"/><rect x="-100" y="62" width="34" height="14" rx="4"/><rect x="10" y="62" width="34" height="14" rx="4"/><rect x="120" y="62" width="34" height="14" rx="4"/></g>
+              <rect x="-282" y="90" width="22" height="42" rx="6" fill="#121117" stroke="#5E566E" stroke-width="3"/><rect x="260" y="90" width="22" height="42" rx="6" fill="#121117" stroke="#5E566E" stroke-width="3"/>
+              <rect x="-292" y="126" width="42" height="14" rx="6" fill="url(#g-red)"/><rect x="250" y="126" width="42" height="14" rx="6" fill="url(#g-red)"/>
+            </g>
+            <!-- slat belt -->
+            <g id="dgBelt">
+              <path id="dgLoop" d="M-280 -56 H280 A56 56 0 0 1 280 56 H-280 A56 56 0 0 1 -280 -56 Z" fill="none" stroke="#121117" stroke-width="22"/>
+              <path d="M-280 56 H280" stroke="#8C8698" stroke-width="12" stroke-dasharray="20 6" opacity=".55"/>
+              <g id="dgSlats" fill="#CFCBD8" stroke="#121117" stroke-width="2"></g>
+            </g>
+            <!-- free-spinning wheels -->
+            <g id="dgWheelL" transform="translate(-280 0)"><g class="dg-wheel">
+              <circle r="50" fill="#1F1B30" stroke="url(#g-red)" stroke-width="12"/>
+              <g stroke="url(#g-red)" stroke-width="10" stroke-linecap="round"><path d="M0 -44V44M-38 -22L38 22M-38 22L38 -22"/></g>
+              <circle r="13" fill="#E6E3EA" stroke="#121117" stroke-width="3"/>
+            </g></g>
+            <g id="dgWheelR" transform="translate(280 0)"><g class="dg-wheel">
+              <circle r="50" fill="#1F1B30" stroke="url(#g-red)" stroke-width="12"/>
+              <g stroke="url(#g-red)" stroke-width="10" stroke-linecap="round"><path d="M0 -44V44M-38 -22L38 22M-38 22L38 -22"/></g>
+              <circle r="13" fill="#E6E3EA" stroke="#121117" stroke-width="3"/>
+            </g></g>
+            <!-- clear side panel -->
+            <g id="dgPanel">
+              <rect x="-220" y="-200" width="380" height="140" rx="6" fill="#fff" fill-opacity=".1" stroke="#CFCBD8" stroke-width="3"/>
+              <path d="M-190 -80 L-110 -180" stroke="#fff" stroke-width="10" stroke-linecap="round" opacity=".25"/>
+              <rect x="-228" y="-208" width="14" height="150" rx="5" fill="#121117" stroke="#5E566E" stroke-width="2"/><rect x="154" y="-208" width="14" height="150" rx="5" fill="#121117" stroke="#5E566E" stroke-width="2"/>
+              <rect x="-228" y="-212" width="396" height="12" rx="5" fill="#121117" stroke="#5E566E" stroke-width="2"/>
+            </g>
+            <!-- red arch -->
+            <g id="dgArch">
+              <path d="M-150 -214 L-84 -330 H84 L150 -214" fill="none" stroke="url(#g-red)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
             </g>
           </g>
-          <!-- Front mill -->
-          <g id="millFront" transform="translate(250 650) scale(.9)">
-            <g class="mill" data-mill="front">
-              <rect x="22" y="-46" width="656" height="16" rx="8" fill="#121117"/>
-              <g clip-path="url(#c-beltA)"><rect x="40" y="-74" width="620" height="22" fill="#2B2A33"/><g class="slats" fill="#4C4858"></g></g>
-              <rect x="20" y="-56" width="660" height="14" rx="7" fill="url(#g-red)"/>
-              <circle cx="40" cy="-60" r="14" fill="#121117"/><circle cx="660" cy="-60" r="14" fill="#121117"/>
-              <rect x="56" y="-250" width="16" height="190" rx="8" fill="url(#g-red)"/>
-              <rect x="36" y="-258" width="56" height="15" rx="7.5" fill="url(#g-red)"/>
-              <rect x="638" y="-104" width="14" height="46" rx="7" fill="url(#g-red)"/>
-              <g class="mill-dog" transform="translate(330 -74)" data-dog="husky"></g>
-              <rect x="56" y="-104" width="596" height="13" rx="6.5" fill="url(#g-red)" stroke="#9F1427" stroke-width="2"/>
+          <!-- labels (appear when the mill is apart) -->
+          <g class="dg-labels" font-family="Poppins, Arial, sans-serif" font-weight="800">
+            <g class="dg-label" id="dgL1">
+              <path d="M297 372 V356" stroke="#F7B334" stroke-width="4" stroke-linecap="round"/>
+              <rect class="dg-pill" x="197" y="304" width="200" height="50" rx="25" fill="#F7B334"/>
+              <text x="297" y="339" text-anchor="middle" fill="#1F1B30">No motor</text>
+            </g>
+            <g class="dg-label" id="dgL2">
+              <path d="M903 372 V352" stroke="#F7B334" stroke-width="4" stroke-linecap="round"/>
+              <text x="1036" y="338" text-anchor="end" fill="#fff">Free-spinning wheels</text>
+            </g>
+            <g class="dg-label" id="dgL3">
+              <text x="600" y="522" text-anchor="middle" fill="#fff">Dog-powered slats</text>
+            </g>
+            <g class="dg-label" id="dgL4">
+              <text x="600" y="664" text-anchor="middle" fill="#F7B334">Stops when they stop</text>
             </g>
           </g>
-          <!-- Emelyn's hand with a treat -->
-          <g id="coachHand"><g transform="translate(169 70)">
-            <path d="M-600 368 C 60 360 110 372 150 384 L 152 410 C 110 404 60 406 -600 418 Z" fill="#C53336" stroke="#121117" stroke-width="4"/>
-            <path d="M148 380 C 172 376 190 384 192 396 C 194 408 178 414 152 412 Z" fill="#E3B48F" stroke="#121117" stroke-width="4"/>
-            <g transform="translate(196 388) rotate(-12)"><path d="M-4 -6 a6 6 0 1 1 6 -4 h16 a6 6 0 1 1 6 4 a6 6 0 1 1 -6 4 h-16 a6 6 0 1 1 -6 -4z" fill="#F7B334" stroke="#121117" stroke-width="3"/></g>
-          </g></g>
         </svg>
 
-        <!-- Layer 3: home, nap, photo update -->
-        <svg class="scene__svg scene__finale" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <linearGradient id="g-room" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF3E4"/><stop offset="1" stop-color="#F1E6D1"/></linearGradient>
-            <clipPath id="c-shot"><rect x="-96" y="-30" width="192" height="150" rx="14"/></clipPath>
-          </defs>
-          <rect width="1200" height="700" fill="url(#g-room)"/>
-          <rect y="500" width="1200" height="200" fill="#E2D2B6"/>
-          <g stroke="#D3C09F" stroke-width="3"><path d="M0 540h1200M0 590h1200M0 646h1200"/></g>
-          <!-- window light -->
-          <path d="M300 0 L540 0 L700 500 L350 500 Z" fill="#FFF3CF" opacity=".55"/>
-          <!-- rug -->
-          <ellipse cx="560" cy="580" rx="290" ry="74" fill="#282742"/>
-          <ellipse cx="560" cy="580" rx="262" ry="60" fill="none" stroke="#F7B334" stroke-width="6" stroke-dasharray="18 14"/>
-          <!-- sleeping dog -->
-          <g id="napDog" transform="translate(575 572)">
-            <ellipse cx="10" cy="-8" rx="150" ry="62" fill="#3B3A48" stroke="#121117" stroke-width="5"/>
-            <path d="M-120 10 C -90 -20 60 -24 140 0 C 120 28 -80 34 -120 10 Z" fill="#F6EEDE" stroke="#121117" stroke-width="5"/>
-            <path d="M120 -40 C 170 -40 186 0 150 18 C 130 26 104 16 110 4" fill="#3B3A48" stroke="#121117" stroke-width="5"/>
-            <path d="M150 18 C 140 22 124 22 116 14" stroke="#F6EEDE" stroke-width="8" stroke-linecap="round"/>
-            <g transform="translate(-118 -18)">
-              <path d="M-26 -50 L-14 -92 L6 -54 Z" fill="#3B3A48" stroke="#121117" stroke-width="5" stroke-linejoin="round"/>
-              <path d="M10 -54 L30 -88 L40 -48 Z" fill="#3B3A48" stroke="#121117" stroke-width="5" stroke-linejoin="round"/>
-              <ellipse cx="0" cy="-20" rx="56" ry="46" fill="#3B3A48" stroke="#121117" stroke-width="5"/>
-              <path d="M-50 -6 C -40 -40 40 -40 50 -6 C 44 24 -44 24 -50 -6 Z" fill="#F6EEDE"/>
-              <ellipse cx="-58" cy="6" rx="34" ry="20" fill="#F6EEDE" stroke="#121117" stroke-width="5"/>
-              <ellipse cx="-86" cy="2" rx="8" ry="7" fill="#121117"/>
-              <path d="M-30 -18 q 9 7 18 0 M 8 -18 q 9 7 18 0" fill="none" stroke="#121117" stroke-width="5" stroke-linecap="round"/>
-              <path d="M-30 -42 q 6 -3 10 0 M 10 -42 q 6 -3 10 0" stroke="#F6EEDE" stroke-width="6" stroke-linecap="round"/>
-            </g>
-            <ellipse cx="-70" cy="30" rx="48" ry="16" fill="#F6EEDE" stroke="#121117" stroke-width="5"/>
-            <g class="zzz" fill="#282742" font-family="Poppins, Arial, sans-serif" font-weight="900"><text x="-150" y="-110" font-size="34">z</text><text x="-120" y="-150" font-size="44">z</text><text x="-84" y="-196" font-size="56">z</text></g>
-          </g>
-          <!-- phone -->
-          <g id="phoneMock"><g transform="translate(805 330) scale(.86)">
+        <!-- Finish line: the photo update -->
+        <svg class="scene__svg scene__phone" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice">
+          <defs><clipPath id="c-shot"><rect x="-96" y="-30" width="192" height="150" rx="14"/></clipPath></defs>
+          <g id="phoneMock"><g transform="translate(900 356) scale(.84)">
             <rect x="-130" y="-250" width="260" height="500" rx="38" fill="#1F1B30" stroke="#121117" stroke-width="4"/>
             <rect x="-114" y="-230" width="228" height="460" rx="28" fill="#F6EEDE"/>
             <rect x="-40" y="-222" width="80" height="16" rx="8" fill="#1F1B30"/>
@@ -370,12 +279,10 @@
               <text x="-50" y="-64" font-family="Nunito, Arial, sans-serif" font-weight="700" font-size="12" fill="#4A4658">now</text>
               <text x="-92" y="-36" font-family="Poppins, Arial, sans-serif" font-weight="800" font-size="15" fill="#1F1B30">Your pup did great</text>
               <text x="-92" y="-17" font-family="Poppins, Arial, sans-serif" font-weight="800" font-size="15" fill="#1F1B30">today! Photo inside.</text>
-              <g transform="translate(0 46)"><g clip-path="url(#c-shot)"><image href="assets/photos/husky-bandana-mill.webp" x="-96" y="-40" width="192" height="220" preserveAspectRatio="xMidYMid slice"/></g></g>
+              <g transform="translate(0 46)"><g clip-path="url(#c-shot)"><image href="assets/photos/client-dog-trot-mill-640.webp" x="-170" y="-40" width="340" height="170" preserveAspectRatio="xMidYMid slice"/></g></g>
             </g></g>
           </g></g>
         </svg>
-
-        <canvas class="scene__frames" width="1200" height="700" hidden></canvas>
       </div>
 
       <ol class="beats" role="list">
@@ -395,11 +302,17 @@
           <p>Two dog-powered slat mills, no motor. Your dog sets the speed while Emelyn coaches the whole time.</p>
         </li>
         <li class="beat" data-beat="3">
+          <span class="beat__lap">Pit stop</span>
+          <h3 class="beat__title">No motor. <span class="hl">Your dog powers every step.</span></h3>
+          <p>The slats only roll when their paws move them, so they can slow down, speed up or stop whenever they want.</p>
+        </li>
+        <li class="beat" data-beat="4">
           <span class="beat__lap">Finish line</span>
           <h3 class="beat__title">Photo update, plus a <span class="hl">tired, happy pup.</span></h3>
           <p>You get pictures after every session. Plenty of pups settle in for a deep nap afterward.</p>
         </li>
       </ol>
+      <div class="scene__pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
     </div>
   </div>
   <div class="wrap cta-row">
@@ -577,6 +490,10 @@
         <p class="dial__caption">Drag to try it. Your dog's choice, every time.</p>
       </div>
       <div class="safety__list reveal">
+        <figure class="coach-photo">
+          <picture><source type="image/avif" srcset="assets/photos/coach-beside-mill-640.avif 640w, assets/photos/coach-beside-mill.avif 984w" sizes="(min-width: 900px) 480px, 92vw"><source type="image/webp" srcset="assets/photos/coach-beside-mill-640.webp 640w, assets/photos/coach-beside-mill.webp 984w" sizes="(min-width: 900px) 480px, 92vw"><img src="assets/photos/coach-beside-mill-640.jpg" width="984" height="534" alt="Emelyn kneeling beside the slat mill, smiling at a client's dog as it walks" loading="lazy" decoding="async"></picture>
+          <figcaption class="pawz-box">Coached at <span class="hl">your dog's pace</span></figcaption>
+        </figure>
         <ul class="icon-list" role="list">
           <li><span class="icon-list__ico"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>Emelyn is with your dog the entire session</li>
           <li><span class="icon-list__ico"><svg aria-hidden="true"><use href="#i-treat"/></svg></span>Praise, toys and treats. Never force.</li>
@@ -640,15 +557,16 @@
     <div class="reel reveal" id="pawzReel" role="region" aria-roledescription="carousel" aria-label="The PawZ Reel: photos from the van" tabindex="0">
       <h3 class="reel__title">The PawZ Reel</h3>
       <div class="reel__viewer">
-        <div class="reel__frame">
-          <figure class="reel__slide is-active" data-i="0"><picture><source type="image/avif" srcset="assets/photos/dog-on-slat-mill-640.avif"><source type="image/webp" srcset="assets/photos/dog-on-slat-mill-640.webp"><img src="assets/photos/dog-on-slat-mill-640.jpg" width="640" height="519" alt="A dog trotting on the red slat mill inside the van" loading="lazy" decoding="async"></picture><figcaption>Happy trot on the slat mill</figcaption></figure>
+        <div class="reel__frame is-wide">
+          <figure class="reel__slide is-active" data-wide data-i="0"><picture><source type="image/avif" srcset="assets/photos/client-dog-trot-mill-640.avif"><source type="image/webp" srcset="assets/photos/client-dog-trot-mill-640.webp"><img src="assets/photos/client-dog-trot-mill-640.jpg" width="640" height="284" alt="A client's dog trotting on the slat mill while Emelyn cheers" loading="lazy" decoding="async"></picture><figcaption>Mid-trot, tongue out</figcaption></figure>
           <figure class="reel__slide" data-i="1"><picture><source type="image/avif" srcset="assets/photos/black-lab-smiling-mill.avif"><source type="image/webp" srcset="assets/photos/black-lab-smiling-mill.webp"><img src="assets/photos/black-lab-smiling-mill.jpg" width="437" height="497" alt="A black lab grinning on the mill" loading="lazy" decoding="async"></picture><figcaption>All smiles, mid-session</figcaption></figure>
-          <figure class="reel__slide" data-i="2"><picture><source type="image/avif" srcset="assets/photos/emelyn-overalls-on-mill.avif"><source type="image/webp" srcset="assets/photos/emelyn-overalls-on-mill.webp"><img src="assets/photos/emelyn-overalls-on-mill.jpg" width="437" height="501" alt="Emelyn coaching a dog on the mill" loading="lazy" decoding="async"></picture><figcaption>Coaching right beside the mill</figcaption></figure>
+          <figure class="reel__slide" data-wide data-i="2"><picture><source type="image/avif" srcset="assets/photos/coach-beside-mill-640.avif"><source type="image/webp" srcset="assets/photos/coach-beside-mill-640.webp"><img src="assets/photos/coach-beside-mill-640.jpg" width="640" height="347" alt="Emelyn coaching a dog on the mill" loading="lazy" decoding="async"></picture><figcaption>Coaching right beside the mill</figcaption></figure>
           <figure class="reel__slide" data-i="3"><picture><source type="image/avif" srcset="assets/photos/husky-bandana-mill.avif"><source type="image/webp" srcset="assets/photos/husky-bandana-mill.webp"><img src="assets/photos/husky-bandana-mill.jpg" width="438" height="501" alt="A husky in a bandana on the mill" loading="lazy" decoding="async"></picture><figcaption>Bandana day on the mill</figcaption></figure>
-          <figure class="reel__slide" data-i="4"><picture><source type="image/avif" srcset="assets/photos/emelyn-van-door-black-dog.avif"><source type="image/webp" srcset="assets/photos/emelyn-van-door-black-dog.webp"><img src="assets/photos/emelyn-van-door-black-dog.jpg" width="437" height="498" alt="Emelyn and a client's dog at the van door" loading="lazy" decoding="async"></picture><figcaption>Curbside and ready to roll</figcaption></figure>
-          <figure class="reel__slide" data-i="5"><picture><source type="image/avif" srcset="assets/photos/emelyn-selfie-van.avif"><source type="image/webp" srcset="assets/photos/emelyn-selfie-van.webp"><img src="assets/photos/emelyn-selfie-van.jpg" width="438" height="439" alt="Emelyn smiling in front of the Speedy PawZ van" loading="lazy" decoding="async"></picture><figcaption>Your coach, Emelyn</figcaption></figure>
-          <figure class="reel__slide" data-i="6"><picture><source type="image/avif" srcset="assets/photos/van-mystery-machine-480.avif"><source type="image/webp" srcset="assets/photos/van-mystery-machine-480.webp"><img src="assets/photos/van-mystery-machine-480.jpg" width="480" height="473" alt="The Speedy PawZ van dressed as the Mystery Machine" loading="lazy" decoding="async"></picture><figcaption>The van, Mystery Machine edition</figcaption></figure>
-          <figure class="reel__slide" data-i="7"><picture><source type="image/avif" srcset="assets/photos/emelyn-velma-trunk-or-treat-480.avif"><source type="image/webp" srcset="assets/photos/emelyn-velma-trunk-or-treat-480.webp"><img src="assets/photos/emelyn-velma-trunk-or-treat-480.jpg" width="480" height="650" alt="Emelyn dressed as Velma beside the van" loading="lazy" decoding="async"></picture><figcaption>Velma, reporting for duty</figcaption></figure>
+          <figure class="reel__slide" data-wide data-i="4"><picture><source type="image/avif" srcset="assets/photos/emelyn-client-dog-van-640.avif"><source type="image/webp" srcset="assets/photos/emelyn-client-dog-van-640.webp"><img src="assets/photos/emelyn-client-dog-van-640.jpg" width="640" height="387" alt="Emelyn in her checkered overalls sitting with a client's dog in the van doorway" loading="lazy" decoding="async"></picture><figcaption>Curbside and ready to roll</figcaption></figure>
+          <figure class="reel__slide" data-wide data-i="5"><picture><source type="image/avif" srcset="assets/photos/love-pats-640.avif"><source type="image/webp" srcset="assets/photos/love-pats-640.webp"><img src="assets/photos/love-pats-640.jpg" width="640" height="270" alt="Emelyn giving a dog love pats inside the van" loading="lazy" decoding="async"></picture><figcaption>Tail wags and love pats</figcaption></figure>
+          <figure class="reel__slide" data-wide data-i="6"><picture><source type="image/avif" srcset="assets/photos/van-driveway-640.avif"><source type="image/webp" srcset="assets/photos/van-driveway-640.webp"><img src="assets/photos/van-driveway-640.jpg" width="640" height="293" alt="The Speedy PawZ van parked in a driveway with the side door open, Emelyn greeting a dog" loading="lazy" decoding="async"></picture><figcaption>Right in your driveway</figcaption></figure>
+          <figure class="reel__slide" data-i="7"><picture><source type="image/avif" srcset="assets/photos/van-mystery-machine-480.avif"><source type="image/webp" srcset="assets/photos/van-mystery-machine-480.webp"><img src="assets/photos/van-mystery-machine-480.jpg" width="480" height="473" alt="The Speedy PawZ van dressed as the Mystery Machine" loading="lazy" decoding="async"></picture><figcaption>The van, Mystery Machine edition</figcaption></figure>
+          <figure class="reel__slide" data-i="8"><picture><source type="image/avif" srcset="assets/photos/emelyn-velma-trunk-or-treat-480.avif"><source type="image/webp" srcset="assets/photos/emelyn-velma-trunk-or-treat-480.webp"><img src="assets/photos/emelyn-velma-trunk-or-treat-480.jpg" width="480" height="650" alt="Emelyn dressed as Velma beside the van" loading="lazy" decoding="async"></picture><figcaption>Velma, reporting for duty</figcaption></figure>
         </div>
       </div>
       <div class="reel__deck">
@@ -660,7 +578,7 @@
         <button class="reel__btn reel__next" type="button" aria-label="Next photo"><svg aria-hidden="true"><use href="#i-right"/></svg></button>
       </div>
       <div class="reel__meta">
-        <p class="reel__count" aria-live="polite"><span class="reel__n">1</span> of 8</p>
+        <p class="reel__count" aria-live="polite"><span class="reel__n">1</span> of <span class="reel__total">9</span></p>
         <button class="reel__sound" type="button" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="#i-mute"/></svg><span>Sound off</span></button>
       </div>
     </div>
