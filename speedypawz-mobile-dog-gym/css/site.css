@@ -632,6 +632,10 @@ input:focus, textarea:focus { outline: none; border-color: var(--midnight); box-
 .sticky-cta.is-visible { transform: none; }
 .scene-active .sticky-cta { transform: translateY(115%); }
 @media (min-width: 768px) { .sticky-cta { display: none; } }
+/* Netlify's free-plan badge sits bottom-right (about 200px wide). Keep our buttons clear of it. Goes away by itself on a paid plan. */
+.host-badge .sticky-cta { padding-right: 206px; }
+.host-badge .sticky-cta .btn { padding-left: 8px; padding-right: 8px; white-space: nowrap; font-size: clamp(12px, 3.5vw, 14px); }
+.host-badge .lick__skip { left: 16px; transform: none; }
 
 /* ---------- Reveal ---------- */
 .motion .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); transition-delay: var(--d, 0s); }

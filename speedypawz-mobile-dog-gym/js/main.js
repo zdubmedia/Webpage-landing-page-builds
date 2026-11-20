@@ -327,6 +327,15 @@
     window.addEventListener('resize', update);
     update();
 
+    // Netlify's free plan adds its own "Powered by Netlify" badge in the bottom-right corner.
+    // When it is there, the CSS (.host-badge) keeps our own buttons out from under it.
+    function hostBadge() { if (document.getElementById('nl-badge-frame')) { html.classList.add('host-badge'); return true; } return false; }
+    if (!hostBadge() && 'MutationObserver' in window) {
+      var badgeWatch = new MutationObserver(function () { if (hostBadge()) badgeWatch.disconnect(); });
+      badgeWatch.observe(document.body, { childList: true });
+      setTimeout(function () { badgeWatch.disconnect(); }, 20000);
+    }
+
     var sticky = $('.sticky-cta'), heroIn = true, bookIn = false;
     function sync() {
       var show = !heroIn && !bookIn;

@@ -84,6 +84,9 @@ Still wanted:
 
 Session network note: generating from a cloud session needs `kling.ai`, `s15-kling.klingai.com` and `v15-kling.klingai.com` on the environment's allowed hosts (the "Landing pages (Kling access)" environment has them, plus `sweet-tape.com` for the reference site).
 
+## The "Powered by Netlify" badge
+The preview lives at https://speedypawz.netlify.app (Netlify site `speedypawz`, ZDub Media team, free plan). On the free plan Netlify adds its own "Powered by Netlify" pill to the bottom-right corner of every page, and tapping it opens a card that links to Netlify. We did not add it and the page cannot turn it off; it goes away on a paid Netlify plan. It breaks the "no escapes" rule, so sort this out before real ad traffic goes to the page. Until then, `js/main.js` spots the badge and the `.host-badge` rules in `css/site.css` move the sticky button and the Skip button out from under it.
+
 ## Turn on the Meta pixel
 1. Set `metaPixelId` in `site-config.js`. PageView fires on every page, `Lead` on the thank-you page, and a custom `CTAClick` on CTA taps.
 2. **Before going live with the pixel, add a cookie notice to the footer** (Meta's terms require telling visitors), and update `privacy.html` to mention Meta cookies.
