@@ -82,6 +82,7 @@
     video.parentNode.insertBefore(c, video);
     video.style.display = 'none';
     var ctx = c.getContext('2d'), imgs = [], loaded = 0;
+    var START_AT = 14;   // start once about a second of frames has arrived; the rest keep loading while it plays
     function name(i) { return SEQ.dir + (i < 10 ? '00' : '0') + i + '.webp'; }
     function start() {
       if (state !== 'logo') return;
@@ -100,9 +101,9 @@
       im.onload = function () {
         im._ok = true;
         if (i === 0) ctx.drawImage(im, 0, 0, SEQ.w, SEQ.h);
-        if (++loaded === SEQ.n) afterLogo(start);
+        if (++loaded === START_AT) afterLogo(start);
       };
-      im.onerror = function () { if (++loaded === SEQ.n) afterLogo(start); };
+      im.onerror = function () { if (++loaded === START_AT) afterLogo(start); };
       im.src = name(i);
       imgs[i] = im;
     })(i);
