@@ -1,5 +1,5 @@
 /* Speedy PawZ: the lick opener.
-   Black screen > logo pops > the pup runs up, boops the lens and licks it >
+   Gold screen > logo pops > red and navy wipes > the pup runs up, boops the lens and licks it >
    a slobber layer covers the screen and drips away to reveal the page.
 
    Plays once per visit (sessionStorage), never with reduced motion, and bails out
@@ -15,7 +15,8 @@
   var video = root.querySelector('.lick__video');
   var skip = root.querySelector('.lick__skip');
   var t0 = performance.now();
-  var LOGO_MS = 750;        // logo holds at least this long
+  var LOGO_MS = 650;        // logo holds at least this long
+  var WIPE_MS = 520;        // red + navy wipes before the footage
   var GIVE_UP_MS = 3200;    // no video by now: go straight to the reveal
   var state = 'logo';       // logo > playing > licked > done
   var timers = [];
@@ -61,14 +62,15 @@
   function watch() {
     if (state !== 'playing') return;
     var d = video.duration || 3.3, t = video.currentTime;
-    if (!booped && t > d - 1.12) { booped = true; root.classList.add('is-boop'); }   // nose bumps the lens
+    if (!booped && t > d - 0.9) { booped = true; root.classList.add('is-boop'); }   // nose bumps the lens
     if (t >= d - 0.24 || video.ended) { lick(false); return; }                        // tongue comes up
     requestAnimationFrame(watch);
   }
 
   function ready() {
     var wait = Math.max(0, LOGO_MS - (performance.now() - t0));
-    later(play, wait);
+    later(function () { if (state === 'logo') root.classList.add('is-wipe'); }, wait);
+    later(play, wait + WIPE_MS);
   }
 
   // Pick the lighter file on phones

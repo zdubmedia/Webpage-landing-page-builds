@@ -26,6 +26,7 @@
       imagesrcset="assets/photos/dog-on-slat-mill-640.avif 640w, assets/photos/dog-on-slat-mill-960.avif 960w, assets/photos/dog-on-slat-mill-1320.avif 1320w"
       imagesizes="100vw">
 <link rel="preload" as="image" type="image/webp" href="assets/logo/badge-360.webp">
+<link rel="preload" as="image" type="image/webp" href="assets/logo/knockout-navy-480.webp">
 <link rel="stylesheet" href="css/site.css">
 <script>
 /* Sets up motion + the lick opener before first paint.
@@ -49,6 +50,7 @@
 <script src="vendor/gsap.min.js" defer></script>
 <script src="vendor/ScrollTrigger.min.js" defer></script>
 <script src="js/scene.js" defer></script>
+<script src="js/flow.js" defer></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -105,8 +107,11 @@
   </defs>
 </svg>
 
-<!-- Lick opener: black screen, logo, the pup runs up and licks the lens, slobber drips away to reveal the page -->
+<!-- Lick opener: gold screen, logo pops, red and navy wipes, the pup runs up and licks the lens, slobber drips away to reveal the page -->
 <div class="lick" id="lick">
+  <img class="lick__mark" src="assets/logo/knockout-navy-480.webp" width="480" height="413" alt="" aria-hidden="true">
+  <div class="lick__wipe lick__wipe--red" aria-hidden="true"></div>
+  <div class="lick__wipe lick__wipe--mid" aria-hidden="true"></div>
   <video class="lick__video" muted playsinline preload="none" disablepictureinpicture aria-hidden="true" tabindex="-1"></video>
   <img class="lick__logo" src="assets/logo/badge-360.webp" width="360" height="360" alt="" aria-hidden="true">
   <div class="lick__goo" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
@@ -156,7 +161,6 @@
     </ul>
     <p class="hero__area"><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg>Serving Woodland, Davis, Sacramento &amp; Yolo County</p>
   </div>
-  <div class="hero__strip checker-strip checker-strip--wave" aria-hidden="true"></div>
 </header>
 
 <main id="main">
@@ -178,8 +182,15 @@
 </section>
 
 <!-- ============ HOW IT WORKS: THE VAN SCENE ============ -->
-<section class="sec sec--cream how" id="how" aria-labelledby="how-title">
-  <div class="checker-strip" aria-hidden="true"></div>
+<section class="sec sec--gold how" id="how" aria-labelledby="how-title">
+  <div class="arc" aria-hidden="true"></div>
+  <div class="ribbon ribbon--red" aria-hidden="true" data-phrase="We come to you   ●   Woodland's mobile dog gym   ●   ">
+    <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <path id="rb1" d="M-200 104 C 60 34, 300 34, 560 100 S 1020 172, 1280 100 S 1700 30, 2000 96" fill="none"/>
+      <use href="#rb1" class="ribbon__band"/>
+      <text class="ribbon__text" dy="13"><textPath href="#rb1" startOffset="0"></textPath></text>
+    </svg>
+  </div>
   <div class="wrap sec__head reveal">
     <p class="label">How it works</p>
     <h2 id="how-title">We bring the gym to <span class="hl">YOU</span></h2>
@@ -261,6 +272,7 @@
 
 <!-- ============ MEET EMELYN ============ -->
 <section class="sec sec--dark meet" id="meet" aria-labelledby="meet-title">
+  <div class="arc" aria-hidden="true"></div>
   <div class="wrap">
     <div class="sec__head reveal">
       <p class="label">Meet your coach</p>
@@ -329,11 +341,7 @@
 
 <!-- ============ WHO IT'S FOR ============ -->
 <section class="sec sec--cream fit" id="fit" aria-labelledby="fit-title">
-  <svg class="paw-trail" viewBox="0 0 1200 90" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-    <defs><mask id="m-trail1" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="90"><path class="paw-trail__reveal" d="M40 60 C 260 10, 420 80, 600 40 S 960 10, 1160 50" pathLength="1"/></mask></defs>
-    <path class="paw-trail__path" mask="url(#m-trail1)" d="M40 60 C 260 10, 420 80, 600 40 S 960 10, 1160 50"/>
-    <g class="paw-trail__paws" fill="#282742"><use href="#i-paw" x="170" y="22" width="26" height="26" transform="rotate(20 183 35)"/><use href="#i-paw" x="390" y="44" width="26" height="26" transform="rotate(70 403 57)"/><use href="#i-paw" x="590" y="22" width="26" height="26" transform="rotate(80 603 35)"/><use href="#i-paw" x="800" y="14" width="26" height="26" transform="rotate(95 813 27)"/><use href="#i-paw" x="1010" y="24" width="26" height="26" transform="rotate(110 1023 37)"/></g>
-  </svg>
+  <div class="arc" aria-hidden="true"></div>
   <div class="wrap">
     <div class="sec__head reveal">
       <p class="label">Who it's for</p>
@@ -384,6 +392,7 @@
 
 <!-- ============ SAFETY ============ -->
 <section class="sec sec--dark safety" id="safety" aria-labelledby="safety-title">
+  <div class="arc" aria-hidden="true"></div>
   <div class="wrap">
     <div class="sec__head reveal">
       <p class="label">Safety first</p>
@@ -451,7 +460,15 @@
 </section>
 
 <!-- ============ PROOF ============ -->
-<section class="sec sec--cream proof" id="proof" aria-labelledby="proof-title">
+<section class="sec sec--gold proof" id="proof" aria-labelledby="proof-title">
+  <div class="arc" aria-hidden="true"></div>
+  <div class="ribbon ribbon--mid" aria-hidden="true" data-phrase="Happy PawZ, Healthy Strides!   ●   ">
+    <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <path id="rb2" d="M-200 104 C 60 34, 300 34, 560 100 S 1020 172, 1280 100 S 1700 30, 2000 96" fill="none"/>
+      <use href="#rb2" class="ribbon__band"/>
+      <text class="ribbon__text" dy="13"><textPath href="#rb2" startOffset="0"></textPath></text>
+    </svg>
+  </div>
   <div class="wrap">
     <div class="sec__head reveal">
       <p class="label">Happy PawZ</p>
@@ -540,6 +557,7 @@
 
 <!-- ============ PRICING ============ -->
 <section class="sec sec--dark pricing" id="pricing" aria-labelledby="pricing-title">
+  <div class="arc" aria-hidden="true"></div>
   <div class="wrap">
     <div class="sec__head reveal">
       <p class="label">Pricing</p>
@@ -577,6 +595,7 @@
 
 <!-- ============ FAQ ============ -->
 <section class="sec sec--cream faq" id="faq" aria-labelledby="faq-title">
+  <div class="arc" aria-hidden="true"></div>
   <div class="wrap wrap--narrow">
     <div class="sec__head reveal">
       <p class="label">FAQ</p>
@@ -599,13 +618,29 @@
   </div>
 </section>
 
+<!-- ============ GIANT TYPE BAND (decorative; the final CTA carries the words) ============ -->
+<section class="giant sec--gold" aria-hidden="true">
+  <div class="arc" aria-hidden="true"></div>
+  <div class="giant__row giant__row--a">
+    <span>Zoomies</span>
+    <img class="giant__sticker" src="assets/photos/black-lab-smiling-mill.webp" width="437" height="497" alt="" loading="lazy" decoding="async">
+    <span>Zoomies</span>
+    <img class="giant__sticker giant__sticker--logo" src="assets/logo/badge-180.webp" width="180" height="180" alt="" loading="lazy" decoding="async">
+    <span>Zoomies</span>
+  </div>
+  <p class="giant__mid"><span>turn into</span></p>
+  <div class="giant__row giant__row--b">
+    <span>Snoozies</span>
+    <img class="giant__sticker" src="assets/scene/m/n-55.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
+    <span>Snoozies</span>
+    <img class="giant__sticker giant__sticker--logo" src="assets/logo/badge-180.webp" width="180" height="180" alt="" loading="lazy" decoding="async">
+    <span>Snoozies</span>
+  </div>
+</section>
+
 <!-- ============ BOOKING ============ -->
 <section class="sec sec--dark book" id="book" aria-labelledby="book-title" tabindex="-1">
-  <svg class="paw-trail paw-trail--light" viewBox="0 0 1200 90" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-    <defs><mask id="m-trail2" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="90"><path class="paw-trail__reveal" d="M40 40 C 260 80, 420 10, 600 50 S 960 80, 1160 40" pathLength="1"/></mask></defs>
-    <path class="paw-trail__path" mask="url(#m-trail2)" d="M40 40 C 260 80, 420 10, 600 50 S 960 80, 1160 40"/>
-    <g class="paw-trail__paws" fill="#F7B334"><use href="#i-paw" x="200" y="44" width="26" height="26" transform="rotate(100 213 57)"/><use href="#i-paw" x="420" y="22" width="26" height="26" transform="rotate(80 433 35)"/><use href="#i-paw" x="640" y="38" width="26" height="26" transform="rotate(100 653 51)"/><use href="#i-paw" x="860" y="52" width="26" height="26" transform="rotate(95 873 65)"/><use href="#i-paw" x="1060" y="34" width="26" height="26" transform="rotate(70 1073 47)"/></g>
-  </svg>
+  <div class="arc" aria-hidden="true"></div>
   <div class="wrap wrap--form">
     <div class="sec__head reveal">
       <p class="label">Book</p>
@@ -855,8 +890,8 @@
 </section>
 
 <!-- ============ FINAL CTA ============ -->
-<section class="final sec--dark" aria-labelledby="final-title">
-  <div class="checker-strip" aria-hidden="true"></div>
+<section class="final sec--gold" aria-labelledby="final-title">
+  <div class="arc" aria-hidden="true"></div>
   <div class="wrap center reveal">
     <h2 id="final-title">Ready to turn zoomies into <span class="hl">snoozies</span>?</h2>
     <a class="btn btn--red btn--shine" href="#book" data-cta="final">Request my pup's first session</a>
@@ -866,6 +901,7 @@
 </main>
 
 <footer class="footer">
+  <div class="arc" aria-hidden="true"></div>
   <div class="wrap footer__inner">
     <img class="footer__logo" src="assets/logo/badge-180.webp" width="180" height="180" alt="Speedy PawZ Mobile Dog Gym" loading="lazy" decoding="async">
     <p class="footer__sign">Happy PawZ, Healthy Strides!</p>

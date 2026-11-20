@@ -2,13 +2,18 @@
    Pinned and scroll-scrubbed with GSAP ScrollTrigger. The footage is sets of still frames
    that the page steps through as the visitor scrolls. Five beats:
 
-     Lap 1        v   van drives in and parks        then   a   side door slides open, pup hops in
+     Lap 1        v   the van rolls in from the side of the page and parks (on a flat gold field)
+                  p   the side door slides open and the camera pushes inside
      Lap 2        pats (real photo)   love pats before the first step
-     Lap 3        s   slow-motion run: tongue flapping, slobber hits the lens
+     Lap 3        s   happy slow-motion trot on the slat mill, tongue flapping
      Pit stop     x   the slat mill comes apart and goes back together (label chips pop in)
      Finish line  n   pup hops out, curls up on the bed, falls asleep (phone pops up with the photo update)
 
-   Frames live in assets/scene/d (desktop, 1280 wide) and assets/scene/m (phone, 4:3-ish crop).
+   "Seamless" shots sit on a flat background color. The page behind the footage is painted the
+   same color (sampled from each frame), so the van reads as part of the page, not a video in a box.
+   The other shots fill the screen on desktop and sit as rounded tiles on phones.
+
+   Frames live in assets/scene/d (desktop, 1280 wide) and assets/scene/m (phone).
    To swap in new clips see assets/scene/README.md, then edit SHOTS and CHAPTERS below.
    Reduced motion, no JS or no GSAP: the real van photo + five beat cards stay as they are in the HTML. */
 (function () {
@@ -25,15 +30,16 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var pin = $('.scene__pin', scene), stage = $('.scene__stage', scene);
-  var canvas = $('.scene__canvas', scene), ctx = canvas.getContext('2d');
+  var canvas = $('.scene__canvas', scene), ctx = canvas.getContext('2d', { willReadFrequently: true });
   var beats = $$('.beat', scene), pips = $$('.scene__pips i', scene), tags = $$('.scene__tags li', scene);
   var phoneLayer = $('.scene__phone', scene);
   var portrait = window.matchMedia('(orientation: portrait)');
   var small = portrait.matches || window.innerWidth < 760;
   var BASE = 'assets/scene/' + (small ? 'm' : 'd') + '/';
+  var GOLD = '#F7B334', MIDNIGHT = '#1F1B30';
 
   /* ---- Footage: frames per shot ---- */
-  var SHOTS = { v: 29, a: 24, s: 39, x: 48, n: 56 };
+  var SHOTS = { v: 29, a: 24, s: 40, x: 48, n: 56 };
   var cache = {}, requested = {};
   function load(name) {
     if (cache[name]) return cache[name];
@@ -88,30 +94,60 @@
     ctx.globalAlpha = 1;
     return true;
   }
-  function shotDraw(shot, fx, fy) {
-    return function (t, a) { return drawCover(frame(shot, Math.min(SHOTS[shot] - 1, Math.floor(t * SHOTS[shot]))), 1, fx, fy, a); };
+  // Seamless shots on phones: whole frame, full width, edges feathered into the page color
+  var edge = { top: '', bot: '' };
+  function px(x, y) { var d = ctx.getImageData(x, y, 1, 1).data; return 'rgb(' + d[0] + ',' + d[1] + ',' + d[2] + ')'; }
+  function setEdges(top, bot) {
+    if (top !== edge.top) { edge.top = top; pin.style.setProperty('--edge-top', top); }
+    if (bot !== edge.bot) { edge.bot = bot; pin.style.setProperty('--edge-bot', bot); }
   }
+  function drawSeamless(img, alpha) {
+    if (!img || !img._ok) return false;
+    var cw = canvas.width, ch = canvas.height;
+    if (!portrait.matches) {                     // desktop: fill the screen, paint the page to match
+      drawCover(img, 1, 0.5, 0.5, alpha);
+      if (alpha == null || alpha >= 1) setEdges(px(Math.round(cw / 2), 3), px(Math.round(cw / 2), ch - 4));
+      return true;
+    }
+    var s = cw / img.naturalWidth, h = img.naturalHeight * s, y0 = Math.round((ch - h) / 2), f = Math.round(h * 0.07);
+    ctx.globalAlpha = alpha == null ? 1 : alpha;
+    ctx.drawImage(img, 0, y0, cw, h);
+    ctx.globalAlpha = 1;
+    if (alpha == null || alpha >= 1) setEdges(px(Math.round(cw / 2), y0 + 3), px(Math.round(cw / 2), Math.round(y0 + h) - 4));
+    ctx.globalCompositeOperation = 'destination-out';
+    var g = ctx.createLinearGradient(0, y0, 0, y0 + f); g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, y0 - 1, cw, f + 1);
+    g = ctx.createLinearGradient(0, y0 + h - f, 0, y0 + h); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,1)');
+    ctx.fillStyle = g; ctx.fillRect(0, y0 + h - f, cw, f + 1);
+    ctx.globalCompositeOperation = 'source-over';
+    return true;
+  }
+  function at(shot, t) { return frame(shot, Math.min(SHOTS[shot] - 1, Math.floor(t * SHOTS[shot]))); }
 
   /* ---- Chapters: where each piece of footage sits on the 0 to 1 scroll ---- */
   var ease = function (t) { return t * t * (3 - 2 * t); };
   var CHAPTERS = [
-    { from: 0.00, to: 0.14, beat: 0, shot: 'v', draw: shotDraw('v', 0.6, 0.5) },
-    { from: 0.14, to: 0.30, beat: 0, shot: 'a', draw: shotDraw('a', 0.5, 0.5) },
-    { from: 0.30, to: 0.41, beat: 1, shot: 'pats', draw: function (t, a) { return drawCover(cache.pats, 1 + 0.12 * ease(t), small ? 0.5 : 0.55, 0.6, a); } },
-    { from: 0.41, to: 0.57, beat: 2, shot: 's', draw: shotDraw('s', 0.5, 0.4) },
-    { from: 0.57, to: 0.81, beat: 3, shot: 'x', draw: shotDraw('x', 0.55, 0.5) },
-    { from: 0.81, to: 1.001, beat: 4, shot: 'n', draw: function (t, a) { return shotDraw('n', 0.4, 0.6)(Math.min(1, t / 0.86), a); } }
+    { from: 0.00, to: 0.15, beat: 0, shot: 'v', seamless: true, draw: function (t, a) { return drawSeamless(at('v', t), a); } },
+    { from: 0.15, to: 0.32, beat: 0, shot: 'a', field: GOLD, draw: function (t, a) { return drawCover(at('a', t), 1, 0.5, 0.5, a); } },
+    { from: 0.32, to: 0.42, beat: 1, shot: 'pats', field: MIDNIGHT, draw: function (t, a) { return drawCover(cache.pats, 1 + 0.12 * ease(t), small ? 0.5 : 0.55, 0.6, a); } },
+    { from: 0.42, to: 0.57, beat: 2, shot: 's', field: MIDNIGHT, draw: function (t, a) { return drawCover(at('s', t), 1, 0.5, 0.4, a); } },
+    { from: 0.57, to: 0.81, beat: 3, shot: 'x', seamless: true, draw: function (t, a) { return drawSeamless(at('x', t), a); } },
+    { from: 0.81, to: 1.001, beat: 4, shot: 'n', field: GOLD, draw: function (t, a) { return drawCover(at('n', Math.min(1, t / 0.86)), 1, 0.4, 0.6, a); } }
   ];
   var FADE = 0.012;
-  var progress = 0;
+  var progress = 0, mode = null;
   function chapterAt(p) { for (var i = CHAPTERS.length - 1; i > 0; i--) if (p >= CHAPTERS[i].from) return i; return 0; }
   function redraw() {
     sizeCanvas();
     var p = progress, i = chapterAt(p), c = CHAPTERS[i], t = (p - c.from) / (c.to - c.from);
-    if (i > 0 && p - c.from < FADE) {               // short crossfade from the previous chapter
+    var tile = !c.seamless;
+    if (tile !== mode) { mode = tile; stage.classList.toggle('is-tile', tile); }
+    if (c.seamless && portrait.matches) ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (i > 0 && p - c.from < FADE && !c.seamless && !CHAPTERS[i - 1].seamless) {   // short crossfade between two full-frame shots
       CHAPTERS[i - 1].draw(1, 1);
       c.draw(t, (p - c.from) / FADE);
     } else { c.draw(t, 1); }
+    if (c.field) setEdges(c.field, c.field);
   }
 
   /* ---- Loading: hold everything back until the page has loaded, then stay one chapter ahead ---- */
@@ -154,6 +190,7 @@
     tags.forEach(function (el, k) { el.classList.toggle('is-on', t > 0.26 + k * 0.07 && t < 0.8); });
   }
   setBeat(0);
+  setEdges(GOLD, GOLD);
 
   /* ---- Finish line: the phone with the photo update ---- */
   var phone = $('#phoneMock'), notif = $('#notif');
