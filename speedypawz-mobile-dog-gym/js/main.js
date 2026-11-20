@@ -268,7 +268,7 @@
     if (!has(CFG.calendarEmbed)) items.push({ text: 'Booking platform for the calendar embed (config.calendarEmbed)' });
     if (!has((CFG.vsl || {}).src)) items.push({ text: 'Intro video (assets/video/intro.mp4, config.vsl.src)' });
     if (CFG.freeMeetAndGreet == null) items.push({ text: 'Is the meet-and-greet free? (config.freeMeetAndGreet)' });
-    items.push({ text: 'AI footage (opener + scroll scene) shows an AI dog modeled on a client dog, and the opener shows an AI Emelyn. Get her OK. Opener clip still needs a watermark-free export' });
+    items.push({ text: 'AI footage (opener + How it works films) shows an AI dog modeled on a client dog, and the opener and Lap 2 show an AI Emelyn. Get her OK. Opener and Lap 2 clips still need a watermark-free export' });
     items.push({ text: 'Owner permission for every client dog photo' });
     items.push({ text: 'Privacy policy legal review (privacy.html)' });
 
@@ -406,8 +406,21 @@
     }
     var mill = $('.mini-mill'), slats = buildSlats($('.slats', mill), 40, 460);
     var dog = $('.mill-dog .dog', mill);
-    var value = 45, speed = 0, gait = '';
+    var value = 45, speed = 0, gait = '', lastZone = -1;
+    var card = dial.closest('.dial-card') || dial;
     var LABELS = [['Sniff and stroll', 'gait-stroll'], ['Happy trot', 'gait-trot'], ['Full zoomies', 'gait-zoom']];
+    // a little burst of gold dots when the needle hits Full zoomies
+    function burst() {
+      for (var n = 0; n < 9; n++) {
+        var s = document.createElement('i'), ang = Math.PI * (0.12 + 0.76 * n / 8), dist = 54 + (n % 3) * 20;
+        s.className = 'dial__spark';
+        s.style.setProperty('--dx', (Math.cos(ang) * dist).toFixed(0) + 'px');
+        s.style.setProperty('--dy', (-Math.sin(ang) * dist).toFixed(0) + 'px');
+        s.style.animationDelay = (n % 3) * 40 + 'ms';
+        dial.appendChild(s);
+        (function (el) { setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 900); })(s);
+      }
+    }
     function zone(v) { return v < 34 ? 0 : v < 67 ? 1 : 2; }
     function set(v) {
       value = Math.max(0, Math.min(100, Math.round(v)));
@@ -418,6 +431,14 @@
       dial.setAttribute('aria-valuenow', value);
       dial.setAttribute('aria-valuetext', LABELS[z][0]);
       stops.forEach(function (b, i) { b.setAttribute('aria-pressed', i === z ? 'true' : 'false'); });
+      if (z !== lastZone) {
+        card.setAttribute('data-zone', z);
+        if (lastZone !== -1 && !REDUCED) {
+          label.classList.remove('is-pop'); void label.offsetWidth; label.classList.add('is-pop');
+          if (z === 2) burst();
+        }
+        lastZone = z;
+      }
       if (dog && gait !== LABELS[z][1]) {
         dog.classList.remove('gait-stroll', 'gait-trot', 'gait-zoom');
         dog.classList.add(LABELS[z][1]); gait = LABELS[z][1];

@@ -8,10 +8,12 @@ Rules: never alter faces or real dogs (crop, color and exposure only). No AI ups
 | File | Shows in | Shown at (max CSS width) | Current width | Ideal original |
 |---|---|---|---|---|
 | `dog-on-slat-mill.jpg` | Hero background (darkened), OG image | full screen | 1320 | 2400+ |
-| `emelyn-van-door-black-dog.jpg` | Meet Emelyn flip card 1, VSL poster | 340 | 437 | 1200+ |
+| `emelyn-and-pup-van.jpg` | Meet Emelyn flip card 1 and the VSL poster (her whole head in frame; cropped from an Instagram frame) | 340 | 477 | 1200+ |
+| `emelyn-van-door-black-dog.jpg` | Not placed now (her head is cut off in this file) | 340 | 437 | 1200+ |
 | `emelyn-and-son.jpg` | Meet Emelyn flip card 2 [CONFIRM OK to show Adan] | 340 | 438 | 1200+ |
-| `husky-bandana-mill.jpg` | Meet Emelyn flip card 3 [CONFIRM Kira or Kiko], PawZ Reel | 340 | 438 | 1200+ |
-| `black-lab-smiling-mill.jpg` | Who it's for: high-energy, PawZ Reel | 380 | 437 | 1200+ |
+| `huskies-on-the-mills.jpg` | Meet Emelyn flip card 3 [CONFIRM these are Kira and Kiko]. From her Instagram story; the caption text and arrows were cleaned off with an AI edit. Swap for her original. | 340 | 880 | 1200+ |
+| `husky-bandana-mill.jpg` | PawZ Reel | 340 | 438 | 1200+ |
+| `black-lab-smiling-mill.jpg` | Who it's for: high-energy (pinned to the top of its frame so the whole face shows), PawZ Reel | 380 | 437 | 1200+ |
 | `emelyn-overalls-on-mill.jpg` | Who it's for: shy pups | 380 | 437 | 1200+ |
 | `emelyn-selfie-van.jpg` | Not placed right now (spare) | 380 | 438 | 1200+ |
 | `van-mystery-machine.jpg` | Community trophy card, PawZ Reel | 380 | 1320 | 1600+ |
@@ -20,7 +22,7 @@ Rules: never alter faces or real dogs (crop, color and exposure only). No AI ups
 | `coach-beside-mill.jpg` | Safety section photo, PawZ Reel | 480 | 984 | 1600+ |
 | `client-dog-trot-mill.jpg` | PawZ Reel, photo inside the phone notification | 520 | 1187 | 1600+ |
 | `emelyn-client-dog-van.jpg` | PawZ Reel | 520 | 978 | 1600+ |
-| `love-pats.jpg` | PawZ Reel, and Lap 2 of the scroll scene (`assets/scene/*/pats.webp`) | full screen | 1320 | 2400+ |
+| `love-pats.jpg` | PawZ Reel | 520 | 1320 | 2400+ |
 | `van-emelyn-at-door.jpg` | Not placed yet (spare real van photo) | n/a | 1320 | 2400+ |
 | *(empty)* older dog photo | Who it's for: older dogs (set `olderDogPhoto` in `site-config.js`) | 380 | none | 1200+ |
 

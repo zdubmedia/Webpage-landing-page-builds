@@ -15,7 +15,7 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | Path | What it is |
 |---|---|
 | `index.html` | The page. All copy lives here, section by section (hero, VSL, how it works, meet Emelyn, who it's for, safety, proof, pricing, FAQ, booking, final CTA, footer). |
-| `site-config.js` | **The one file to edit for facts and switches.** Prices, promo, services, time windows, service days, FAQ answers, response time, VSL, calendar embed, van frames, pixel. |
+| `site-config.js` | **The one file to edit for facts and switches.** Prices, promo, services, time windows, service days, FAQ answers, response time, VSL, calendar embed, pixel. |
 | `thank-you.html` | After a request. Shows the first name from `?name=`. vCard download, Instagram link, fires Meta `Lead` if the pixel is on. `noindex`. |
 | `privacy.html` | Plain-English privacy policy. [CONFIRM legal review] |
 | `css/site.css` | All styles. Tokens at the top match the visual design guide. |
@@ -23,7 +23,7 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `js/booking.js` | Tabs, 3-step session form, quick-call form, validation, Netlify AJAX submit. |
 | `js/intro.js` | The lick opener: gold screen, logo, red and navy wipes, the pup runs up and licks the lens, slobber drips away to reveal the hero. |
 | `js/flow.js` | The flow layer: wavy ribbon marquees, section arcs that flatten as they rise, the giant "zoomies / snoozies" type band. Decoration only. |
-| `js/scene.js` | The pinned, scroll-scrubbed "How it works" scene (GSAP ScrollTrigger). The van drives across the gold page itself, the door opens, real photo, treadmill clip, exploded slat mill, nap + photo update. |
+| `js/scene.js` | The "How it works" scene. It plays by itself when the section is on screen (no scrolling needed): five short films, one per step, then it loops. Dots jump to a step, the round button pauses. |
 | `vendor/` | GSAP 3.13 + ScrollTrigger, self-hosted (free "no charge" license). |
 | `assets/fonts/` | Self-hosted Poppins, Nunito, Racing Sans One (latin subsets). |
 | `assets/photos/` | Photos plus WebP/AVIF versions. See `assets/photos/README.md` for every slot. |
@@ -32,7 +32,7 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 | `assets/speedypawz.vcf` | "Save our number" contact card. |
 | `assets/video/` | Drop the intro video here (see below). |
 | `assets/intro/` | The lick opener clip, two sizes (`lick-720.mp4` phones, `lick-1080.mp4` desktop). |
-| `assets/scene/` | Scroll-scene frames, desktop (`d/`) and phone (`m/`) sets. See its README to swap in new clips. |
+| `assets/scene/` | The five scene films in `film/` (desktop and phone versions). See its README to swap in new clips. |
 | `brand/` | Brand guide, visual design guide, original build brief. Redirected away on the live site. |
 | `netlify.toml` | Publish settings, redirects, caching headers. |
 | `FOR-EMELYN.md` | One-page owner note. |
@@ -74,15 +74,25 @@ Zach's reference for the feel is sweet-tape.com: one flat color fills the whole 
 ## Add a booking calendar
 Set `calendarEmbed: { type: "iframe", src: "https://...", height: 760, name: "Square Appointments" }`. The "Request a session" tab then shows the live calendar first and the request form under "Can't find a time?". **Set the calendar's own "after booking" redirect to `/thank-you.html`.** [CONFIRM which platform Emelyn uses]
 
-## Scroll scene footage
-See `assets/scene/README.md`: what each beat uses, the "seamless" idea (footage on a flat color that matches the page, so the van is on the page and not in a video box), how to swap in a clip, and the Kling prompts that worked.
+## "How it works" scene
+- It **plays by itself** once the section is on screen, so nobody has to know to keep scrolling. Order: van pulls up and the door opens (Lap 1), Emelyn clips the harness on and gives a treat (Lap 2), the trot (Lap 3), the slat mill comes apart (Pit stop), the nap and photo update (Finish line). Then it loops. About 32 seconds a lap.
+- It pauses when the section leaves the screen. The dots under it jump to any step. The round button pauses and plays.
+- Reduced motion: no films, the real van photo and the five step cards show instead.
+- **iPhone Low Power Mode** does not allow videos to start on their own. Those visitors see the real van photo with a "Tap to play" button; one tap plays everything.
+- See `assets/scene/README.md` for what each step uses, the "seamless" idea (film on a flat color that matches the page, so the van is on the page and not in a video box), how to swap in a clip, and the Kling prompts that worked.
 
 Still wanted:
-1. **A better treadmill shot with more cartoonish energy.** Zach is working on this: zoom in on the dog, face a little exaggerated (bigger eyes, lips flopping, tongue flying), slow motion. Either no saliva or clearly playful saliva. Replaces shot `s`.
-2. **A push-in that ends on her real slat mills.** The current one is cut at the doorway because Kling drew motorized treadmills inside. Give Kling a real interior photo as the last frame.
-3. **Lick opener without the watermark.** The opener still uses Zach's original clip with the frame cropped. Re-download it from Kling history without the watermark (or regenerate at 9:16) and re-encode per "The lick opener" above.
+1. **A treadmill shot with more cartoonish energy** (Zach is working on it). Replaces `3-trot`.
+2. **A push-in that ends on her real slat mills.** The current one is cut at the doorway because Kling drew motorized treadmills inside.
+3. **Lick opener and Lap 2 clip without the Kling watermark and the Instagram caption text.** Both are cropped out of frame today. A clean export (no watermark, source photo without captions) would let the films show the whole frame.
 
 Session network note: generating from a cloud session needs `kling.ai`, `s15-kling.klingai.com` and `v15-kling.klingai.com` on the environment's allowed hosts (the "Landing pages (Kling access)" environment has them, plus `sweet-tape.com` for the reference site).
+
+## Photos changed after Zach's phone review
+- **Meet your coach, first card:** now `emelyn-and-pup-van` (her whole head in frame). It is a crop of an Instagram frame, so it is small (477 px wide). A full-size original from Emelyn would be sharper.
+- **"The pups who started it all":** now `huskies-on-the-mills`, both huskies in frame. The only source with both dogs was Emelyn's Instagram story, which had caption text and arrows over it. Those were cleaned off with an AI edit; nothing else was changed. Swap in her original photo when she sends it (review mode flags this).
+- **High-energy pups card:** the photo now sits at the top of its frame so the dog's whole face shows. The file itself is cropped right at the top of the head; a wider original would fix that fully.
+- **Note on swapping photos:** files in `/assets` are cached by browsers for a year. Give a replacement photo a new file name (and update `index.html`) instead of overwriting the old one.
 
 ## The "Powered by Netlify" badge
 The preview lives at https://speedypawz.netlify.app (Netlify site `speedypawz`, ZDub Media team, free plan). On the free plan Netlify adds its own "Powered by Netlify" pill to the bottom-right corner of every page, and tapping it opens a card that links to Netlify. We did not add it and the page cannot turn it off; it goes away on a paid Netlify plan. It breaks the "no escapes" rule, so sort this out before real ad traffic goes to the page. Until then, `js/main.js` spots the badge and the `.host-badge` rules in `css/site.css` move the sticky button and the Skip button out from under it.

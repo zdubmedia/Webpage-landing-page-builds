@@ -84,7 +84,7 @@ window.SPZ_CONFIG = {
   vsl: {
     src: null,
     captions: null, // "assets/video/intro.vtt"
-    poster: "assets/photos/emelyn-van-door-black-dog.jpg"
+    poster: "assets/photos/emelyn-and-pup-van.jpg"
   },
 
   // Live booking calendar. Example: { type: "iframe", src: "https://...", height: 760, name: "Square Appointments" }

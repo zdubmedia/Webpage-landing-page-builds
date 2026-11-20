@@ -74,11 +74,28 @@
   function checked(form, name) { var c = $('input[name="' + name + '"]:checked', form); return c ? c.value : ''; }
   function joinChecks(form) {
     $$('[data-join]', form).forEach(function (wrap) {
-      var vals = $$('input[type="checkbox"]:checked', wrap).map(function (c) { return c.value; });
+      var vals = $$('input[type="checkbox"]:checked', wrap).map(function (c) {
+        // "Something else" carries whatever they typed in the box it opens
+        var more = c.getAttribute('data-reveal') && document.querySelector('#' + c.getAttribute('data-reveal') + ' input');
+        var typed = more ? more.value.split(/\s+/).join(' ').trim() : '';
+        return typed ? 'Other: ' + typed : c.value;
+      });
       var hidden = $('input[name="' + wrap.getAttribute('data-join') + '"]', form);
       if (hidden) hidden.value = vals.join(', ');
     });
   }
+
+  // A chip with data-reveal opens a small write-in box (the "Something else" option)
+  $$('input[data-reveal]').forEach(function (c) {
+    var box = document.getElementById(c.getAttribute('data-reveal'));
+    if (!box) return;
+    c.addEventListener('change', function () {
+      box.hidden = !c.checked;
+      var inp = $('input', box);
+      if (c.checked && inp) { try { inp.focus({ preventScroll: true }); } catch (e) { inp.focus(); } }
+    });
+    box.hidden = !c.checked;
+  });
 
   /* ---------- Dates ---------- */
   var today = SPZ.caToday ? SPZ.caToday : function (o) { return new Date(Date.now() + (o || 0) * 864e5).toISOString().slice(0, 10); };
