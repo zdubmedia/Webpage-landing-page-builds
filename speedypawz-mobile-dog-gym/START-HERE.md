@@ -64,7 +64,7 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 - Everything sale-related carries `data-sale-until="2026-11-30"` in `index.html` (hero chip, the pack cards, the FAQ cost answer). After that day (California time) it disappears by itself and the regular pricing block (`data-after-sale`) comes back. The three packs also drop out of the booking form's options after Nov 30 (`until` in `site-config.js` services).
 - Each "Claim ..." button scrolls to the form and ticks that pack in step 2, so the request email says which pack.
 - To extend the sale, change the date in those places. To run a new sale, copy the `.sale` block.
-- The fine print in her post was cut off at the start ("...min sessions per dog"); review mode flags it.
+- Each pack shows the regular price crossed out (Reg. $130 / $260 / $520) next to the sale price, so visitors know prices go back up after Nov 30. Fine print from her post: 30-minute sessions, per dog.
 
 ## Page order (Zach, Nov 21)
 Trust builds in one run, then fit, then the ask:
@@ -189,6 +189,5 @@ Any static server from this folder, e.g. `python3 -m http.server 8000`. Form POS
 18. Privacy policy legal review
 21. Credentials for the trust list (pet first aid or CPR, insurance, training, years with dogs)
 22. Water routine (before, during or after)
-23. First line of the Black Friday fine print (cut off in the screenshot)
 24. Permission to show Lucy, Delilah and Kymber in the video
 25. Is the 25% off first session offer from her reels still running? It is left out of the page and the video for now, since the Black Friday packs can't be combined with other discounts
