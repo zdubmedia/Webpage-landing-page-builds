@@ -150,35 +150,40 @@
     </div>
     <p class="pawz-box pawz-box--eyebrow"><span class="nw">Woodland's mobile dog gym</span> <span class="dot" aria-hidden="true">·</span> <span class="hl nw">We come to you</span></p>
     <h1 class="hero__title">
-      <span class="w">How</span> <span class="w">a</span> <span class="w">30-minute</span> <span class="w">stop</span> <span class="w">at</span> <span class="w">your</span> <span class="w">curb</span> <span class="w">turns</span> <span class="w">zoomies</span> <span class="w">into</span>
-      <span class="w hl hl--swipe">snoozies<svg class="swipe" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 13 C 50 6, 120 6, 196 11" /></svg></span>
+      <span class="w">A</span> <span class="w">good</span> <span class="w">run</span> <span class="w">for</span> <span class="w">a</span> <span class="w">happier</span> <span class="w">pup,</span> <span class="w">right</span> <span class="w">at</span> <span class="w">your</span>
+      <span class="w hl hl--swipe">curb<svg class="swipe" viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 13 C 50 6, 120 6, 196 11" /></svg></span>
     </h1>
-    <p class="hero__sub">One-on-one fitness sessions on dog-powered slat mills, inside our climate-controlled van. Your dog sets the pace. You don't drive anywhere.</p>
+    <p class="hero__sub">One-on-one, 30-minute runs on a dog-powered slat mill inside our climate-controlled van. Emelyn coaches, your dog sets the pace, and you never leave home.</p>
+    <a class="hero__sale" href="#pricing" data-sale-until="2026-11-30"><b>Black Friday:</b> save up to 36% on session packs. Ends Nov 30.</a>
     <a class="btn btn--red btn--shine" href="#book" data-cta="hero">Request my pup's first session</a>
     <p class="hero__micro">Takes about a minute. Emelyn will reach out to lock in a time.</p>
     <ul class="hero__chips" role="list">
-      <li><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg><span><b>30-minute</b> sessions</span></li>
-      <li><svg class="ico" aria-hidden="true"><use href="#i-gauge"/></svg><span><b>0 motors.</b> Your dog sets the speed</span></li>
-      <li><svg class="ico" aria-hidden="true"><use href="#i-camera"/></svg><span><b>Photo update</b> after every session</span></li>
+      <li><svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg><span><b>30 minutes,</b> one-on-one</span></li>
+      <li><svg class="ico" aria-hidden="true"><use href="#i-gauge"/></svg><span><b>No motor.</b> Your dog sets the pace</span></li>
+      <li><svg class="ico" aria-hidden="true"><use href="#i-van"/></svg><span><b>We come to you,</b> rain or shine</span></li>
     </ul>
-    <p class="hero__area"><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg>Serving Woodland, Davis, Sacramento &amp; Yolo County</p>
+    <p class="hero__area"><svg class="ico" aria-hidden="true"><use href="#i-pin"/></svg>Serving Woodland, Davis, West Sac, Winters, Sacramento &amp; Yolo County</p>
   </div>
 </header>
 
 <main id="main">
 
-<!-- ============ VSL (hidden until a video exists) ============ -->
+<!-- ============ VSL: Emelyn introduces herself and the van (js/main.js setupVSL; file set in site-config.js) ============ -->
 <section class="sec sec--dark vsl" id="vsl" aria-labelledby="vsl-title" hidden>
   <div class="wrap">
     <div class="sec__head">
-      <h2 id="vsl-title" class="pawz-box pawz-box--label">See <span class="hl">Speedy PawZ</span> in action</h2>
+      <p class="label">90 seconds</p>
+      <h2 id="vsl-title">Meet Emelyn and <span class="hl">see inside the van</span></h2>
     </div>
-    <div class="vsl__frame" data-orient="landscape">
-      <video class="vsl__video" muted playsinline loop preload="none"></video>
-      <button class="vsl__play" type="button">
+    <div class="vsl__frame" data-orient="portrait" data-confirm="Placeholder VSL built from Emelyn's reels with text cards. Swap in her recorded intro when she films it">
+      <video class="vsl__video" muted playsinline loop preload="none" poster="assets/video/intro-poster.jpg"></video>
+      <button class="vsl__play" type="button" aria-label="Play the video with sound">
         <span class="vsl__play-ico"><svg aria-hidden="true"><use href="#i-play"/></svg></span>
-        <span class="vsl__play-txt">Tap to watch with sound</span>
+        <span class="vsl__play-txt">Tap for sound</span>
       </button>
+    </div>
+    <div class="cta-row">
+      <a class="btn btn--red" href="#book" data-cta="vsl">Request my pup's first session</a>
     </div>
   </div>
 </section>
@@ -218,7 +223,7 @@
         <div class="beat reveal">
         <span class="beat__lap">Lap 2</span>
         <h3 class="beat__title">Your pup warms up at <span class="hl">their own pace.</span></h3>
-        <p>Praise, toys and treats. Never force. We take time to get comfy before the first step.</p>
+        <p>Praise, toys and treats, never force. Not every dog steps right on, and that's okay. We go slow.</p>
       </div>
         <div class="lap__media" aria-hidden="true" data-film="assets/scene/film/2-warmup" data-seq="assets/scene/seq/warmup/" data-n="60" data-fps="12" data-w="640" data-h="472" data-play="loop" data-hold="1400" data-vpos="50% 33%" data-first="1">
           <img class="lap__poster" src="assets/scene/seq/warmup/040.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
@@ -231,7 +236,7 @@
         <div class="beat reveal">
         <span class="beat__lap">Lap 3</span>
         <h3 class="beat__title">A happy <span class="hl nw">30-minute</span> workout.</h3>
-        <p>Two dog-powered slat mills, no motor. Your dog sets the speed while Emelyn coaches the whole time.</p>
+        <p>One-on-one on a dog-powered slat mill, with Emelyn coaching the whole time.</p>
       </div>
         <div class="lap__media" aria-hidden="true" data-film="assets/scene/film/3-trot" data-film-m="assets/scene/film/3-trot-m" data-seq="assets/scene/seq/trot/" data-n="60" data-fps="12" data-w="640" data-h="472" data-play="loop" data-first="1">
           <img class="lap__poster" src="assets/scene/seq/trot/020.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
@@ -244,7 +249,7 @@
         <div class="beat reveal">
         <span class="beat__lap">Pit stop</span>
         <h3 class="beat__title">No motor. <span class="hl">Your dog powers every step.</span></h3>
-        <p>The slats only roll when their paws move them, so they can slow down, speed up or stop whenever they want.</p>
+        <p>The slats only roll when their paws move them. They can slow down or stop anytime.</p>
       </div>
         <div class="lap__media" aria-hidden="true" data-film="assets/scene/film/4-mill" data-film-m="assets/scene/film/4-mill-m" data-seq="assets/scene/seq/mill/" data-n="72" data-fps="12" data-w="640" data-h="360" data-play="loop" data-hold="1200" data-first="1">
           <img class="lap__poster" src="assets/scene/seq/mill/036.webp" width="640" height="360" alt="" loading="lazy" decoding="async">
@@ -302,9 +307,7 @@
       <h2 id="meet-title">Hi, I'm Emelyn. <span class="hl">Welcome to the pack!</span></h2>
     </div>
     <div class="meet__story reveal" data-confirm="Story wording (Emelyn to approve)">
-      <p>Speedy PawZ started with my two huskies, Kira and Kiko. Huskies are born to run, and some days a walk just wasn't enough. Too hot, too smoky, too rainy, or just too busy.</p>
-      <p>So I created a gym that could go anywhere: a climate-controlled van with two dog-powered slat mills. No motors. No pressure. Just happy dogs moving at their own pace.</p>
-      <p>Now I bring it right to your door. I'm a mom, a dog lover and a proud part of this community, and I treat every pup like one of my own.</p>
+      <p>Speedy PawZ started with my huskies, Kira and Kiko, on the days a walk just wasn't enough. I'm a mom and a dog lover, and I'd love to be part of your pup's care team.</p>
     </div>
 
     <ul class="flips" role="list">
@@ -359,6 +362,20 @@
         </button>
       </li>
     </ul>
+
+    <div class="trust reveal">
+      <h3 class="trust__title">Why you can trust me with <span class="hl">your pup</span></h3>
+      <ul class="trust__list" role="list" id="trustList">
+        <li><svg class="ico" aria-hidden="true"><use href="#i-heart"/></svg>Right by your dog's side the whole session</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-one"/></svg>One-on-one, never a group class</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-aid"/></svg>Pet first-aid kit on board</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-treat"/></svg>Treats and breaks whenever they need them</li>
+        <li data-confirm="Water: is fresh water offered before, during or after? (C8)"><svg class="ico" aria-hidden="true"><use href="#i-snow"/></svg>Fresh water and a climate-controlled van</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Every pup registered and vaccinated</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-home"/></svg>Mom-owned and local to Woodland</li>
+      </ul>
+      <span class="plan__confirm" data-confirm="Credentials: pet first aid or CPR, insurance, training, years with dogs (credentials in site-config.js)" data-confirm-key="credentials"></span>
+    </div>
   </div>
 </section>
 
@@ -370,14 +387,23 @@
       <p class="label">Who it's for</p>
       <h2 id="fit-title">Is Speedy PawZ right for <span class="hl">your pup</span>?</h2>
     </div>
-    <ul class="cards3" role="list">
+    <ul class="cards3 cards4" role="list">
+      <li class="card fit-card reveal">
+        <div class="fit-card__media">
+          <picture><source type="image/avif" srcset="assets/photos/heeler-and-emelyn-mill-640.avif 640w, assets/photos/heeler-and-emelyn-mill.avif 1170w" sizes="(min-width: 900px) 260px, 46vw"><source type="image/webp" srcset="assets/photos/heeler-and-emelyn-mill-640.webp 640w, assets/photos/heeler-and-emelyn-mill.webp 1170w" sizes="(min-width: 900px) 260px, 46vw"><img src="assets/photos/heeler-and-emelyn-mill-640.jpg" width="640" height="512" alt="A cattle dog with perked ears, smiling on the slat mill, with Emelyn beside it" loading="lazy" decoding="async"></picture>
+        </div>
+        <div class="fit-card__body">
+          <h3>Dogs who love to run</h3>
+          <p>No zoomies needed. Some pups just love a good run.</p>
+        </div>
+      </li>
       <li class="card fit-card reveal" data-confirm="High-energy clip is AI footage, not one of Emelyn's clients">
         <div class="fit-card__media" data-film="assets/video/excited-pup-leash" data-seq="assets/video/seq/excited-pup-leash/" data-n="36" data-fps="12" data-w="480" data-h="384" data-play="once">
           <picture><source type="image/avif" srcset="assets/photos/excited-pup-leash.avif"><source type="image/webp" srcset="assets/photos/excited-pup-leash.webp"><img src="assets/photos/excited-pup-leash.jpg" width="960" height="768" alt="An excited German Shepherd bouncing at the end of its leash on a driveway" loading="lazy" decoding="async"></picture>
         </div>
         <div class="fit-card__body">
           <h3>High-energy pups</h3>
-          <p>Zoomies at 9 pm? Chewed-up shoes? A good run helps burn off that extra energy.</p>
+          <p>Zoomies at 9 pm? Chewed-up shoes? Burn off that extra energy.</p>
         </div>
       </li>
       <li class="card fit-card reveal" data-confirm="Older dog clip is AI footage, not one of Emelyn's clients: swap for a real photo (olderDogPhoto in site-config.js)" data-confirm-key="olderDogPhoto">
@@ -386,7 +412,7 @@
         </div>
         <div class="fit-card__body">
           <h3>Older dogs slowing down</h3>
-          <p>Gentle, steady movement at a pace that feels good to them. No rush, ever.</p>
+          <p>Gentle, steady movement at their own pace.</p>
         </div>
       </li>
       <li class="card fit-card reveal" data-confirm="Shy pup clip is AI footage (AI Emelyn and an AI puppy): get her OK">
@@ -395,16 +421,20 @@
         </div>
         <div class="fit-card__body">
           <h3>Shy pups</h3>
-          <p>No dog park crowds. Just your pup, Emelyn and a calm, one-on-one space.</p>
+          <p>No dog park crowds. Just your pup and Emelyn.</p>
         </div>
       </li>
     </ul>
-    <p class="fit__busy reveal"><svg class="ico" aria-hidden="true"><use href="#i-van"/></svg><span>And for busy owners: we come to you, so your dog gets a real workout even on your busiest day.</span></p>
-    <ul class="good-chips reveal" role="list" aria-label="Good to know">
-      <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>A happy complement to your daily walks</li>
-      <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Dog fitness, not grooming</li>
-      <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Private sessions, never a group class</li>
-    </ul>
+    <div class="compare reveal">
+      <h3 class="compare__title">Why not just a walk?</h3>
+      <div class="compare__grid" role="table" aria-label="A walk compared with a Speedy PawZ session">
+        <div class="compare__head" role="row"><span role="columnheader">A walk</span><span role="columnheader">A Speedy PawZ session</span></div>
+        <div class="compare__row" role="row"><span role="cell">Great for sniffing and potty breaks</span><span role="cell">A real run at your dog's own speed</span></div>
+        <div class="compare__row" role="row"><span role="cell">Tough on hot, smoky or rainy days</span><span role="cell">Climate-controlled, rain or shine</span></div>
+        <div class="compare__row" role="row"><span role="cell">Needs your time and energy</span><span role="cell">We come to your curb. You stay home.</span></div>
+      </div>
+      <p class="compare__foot"><b>Best together.</b> Keep the walks, add the run.</p>
+    </div>
   </div>
 </section>
 
@@ -415,7 +445,7 @@
     <div class="sec__head reveal">
       <p class="label">Safety first</p>
       <h2 id="safety-title">Your dog sets the pace. <span class="hl">Always.</span></h2>
-      <p class="lead">Our slat mills have no motor. Your dog powers every step, so they can slow down, speed up or stop whenever they want.</p>
+      <p class="lead">Sniff and stroll or full zoomies, it's always their call.</p>
     </div>
     <div class="safety__grid">
       <div class="dial-card reveal" data-confirm="Dial clips are AI footage (a dog alone on a treadmill with a smooth belt, not her slat mill): get Emelyn's OK or swap for her own footage">
@@ -459,21 +489,6 @@
           </g>
         </svg>
         <p class="dial__caption">Drag to try it. Your dog's choice, every time.</p>
-      </div>
-      <div class="safety__list reveal">
-        <figure class="coach-photo">
-          <picture><source type="image/avif" srcset="assets/photos/coach-beside-mill-640.avif 640w, assets/photos/coach-beside-mill.avif 984w" sizes="(min-width: 900px) 480px, 92vw"><source type="image/webp" srcset="assets/photos/coach-beside-mill-640.webp 640w, assets/photos/coach-beside-mill.webp 984w" sizes="(min-width: 900px) 480px, 92vw"><img src="assets/photos/coach-beside-mill-640.jpg" width="984" height="534" alt="Emelyn kneeling beside the slat mill, smiling at a client's dog as it walks" loading="lazy" decoding="async"></picture>
-          <figcaption class="pawz-box">Coached at <span class="hl">your dog's pace</span></figcaption>
-        </figure>
-        <ul class="icon-list" role="list">
-          <li><span class="icon-list__ico"><svg aria-hidden="true"><use href="#i-heart"/></svg></span>Emelyn is with your dog the entire session</li>
-          <li><span class="icon-list__ico"><svg aria-hidden="true"><use href="#i-treat"/></svg></span>Praise, toys and treats. Never force.</li>
-          <li><span class="icon-list__ico"><svg aria-hidden="true"><use href="#i-aid"/></svg></span>Pet first-aid kit on board</li>
-          <li><span class="icon-list__ico"><svg aria-hidden="true"><use href="#i-snow"/></svg></span>Climate-controlled van for hot, smoky or rainy days</li>
-          <li><span class="icon-list__ico"><svg aria-hidden="true"><use href="#i-one"/></svg></span>One-on-one, so shy pups can relax</li>
-          <li><span class="icon-list__ico"><svg aria-hidden="true"><use href="#i-camera"/></svg></span>Photo update after every session</li>
-        </ul>
-        <p class="note">Have a dog with a health condition? Check with your vet first, then let's talk.</p>
       </div>
     </div>
     <div class="cta-row">
@@ -556,6 +571,52 @@
       <p class="label">Pricing</p>
       <h2 id="pricing-title">Simple plans for <span class="hl">happy pups</span></h2>
     </div>
+    <div class="sale reveal" data-sale-until="2026-11-30">
+      <p class="sale__badge">Black Friday <span aria-hidden="true">·</span> Ends Nov 30</p>
+      <p class="sale__title">Save up to <span class="sale__pct">36%</span> on session packs</p>
+      <ul class="packs" role="list">
+        <li class="pack">
+          <h3 class="pack__name">Kickstart</h3>
+          <p class="pack__count">2 sessions</p>
+          <p class="pack__from">starting at</p>
+          <p class="pack__price">$99</p>
+          <p class="pack__was"><s>$130 value</s></p>
+          <p class="pack__save">Save $31</p>
+          <p class="pack__note">Perfect for getting started</p>
+          <a class="btn btn--red btn--sm" href="#book" data-cta="pack-kickstart" data-pack="Black Friday pack: Kickstart (2 sessions)">Claim Kickstart</a>
+        </li>
+        <li class="pack pack--pop">
+          <span class="pack__flag">Most popular</span>
+          <h3 class="pack__name">Foundation</h3>
+          <p class="pack__count">4 sessions</p>
+          <p class="pack__from">starting at</p>
+          <p class="pack__price">$179</p>
+          <p class="pack__was"><s>$260 value</s></p>
+          <p class="pack__save">Save $81</p>
+          <p class="pack__note">Build a weekly routine</p>
+          <a class="btn btn--red btn--sm" href="#book" data-cta="pack-foundation" data-pack="Black Friday pack: Foundation (4 sessions)">Claim Foundation</a>
+        </li>
+        <li class="pack">
+          <span class="pack__flag pack__flag--gold">Best value</span>
+          <h3 class="pack__name">Ultimate PawZ</h3>
+          <p class="pack__count">8 sessions</p>
+          <p class="pack__from">starting at</p>
+          <p class="pack__price">$329</p>
+          <p class="pack__was"><s>$520 value</s></p>
+          <p class="pack__save">Save $191</p>
+          <p class="pack__note">Share between dogs in your household</p>
+          <a class="btn btn--red btn--sm" href="#book" data-cta="pack-ultimate" data-pack="Black Friday pack: Ultimate PawZ (8 sessions)">Claim Ultimate PawZ</a>
+        </li>
+      </ul>
+      <ul class="sale__perks" role="list">
+        <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Pay now, schedule later</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Rain or shine, at your curb</li>
+      </ul>
+      <p class="sale__how">Claim a pack below and Emelyn will reach out to set it up.</p>
+      <p class="sale__fine" data-confirm="The fine print in her post starts with '...min sessions per dog' (cut off in the screenshot): confirm that first line">Pricing varies by location. Payment upfront. Can't be combined with other discounts. Booking subject to availability. Registration and vaccinations required.</p>
+    </div>
+
+    <div class="after-sale" data-after-sale hidden>
     <ul class="plans" role="list">
       <li class="plan card reveal">
         <span class="plan__ico"><svg aria-hidden="true"><use href="#i-flag"/></svg></span>
@@ -573,13 +634,13 @@
       </li>
       <li class="plan plan--promo card reveal" id="promoCard" hidden>
         <span class="plan__badge">Limited time</span>
-        <h3 class="promo__label">Black Friday special</h3>
-        <p class="promo__details">Special pricing is live. Request below to lock it in.</p>
+        <h3 class="promo__label">Special</h3>
+        <p class="promo__details"></p>
         <p class="promo__ends"></p>
-        <span class="plan__confirm" data-confirm="Black Friday details and end date (set promo.active)" data-confirm-key="promo.endDate"></span>
       </li>
     </ul>
     <p class="pricing__fallback reveal" id="priceFallback">Send a request and Emelyn will text you current pricing and open times.</p>
+    </div>
     <div class="cta-row">
       <a class="btn btn--red" href="#book" data-cta="pricing">Request a session time</a>
     </div>
@@ -595,14 +656,12 @@
       <h2 id="faq-title">Straight <span class="hl">answers</span></h2>
     </div>
     <div class="faq__list">
-      <details class="qa reveal"><summary>Is a treadmill safe for my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Our slat mills have no motor, so your dog powers every step and sets the speed. Emelyn stays with your dog the whole session, coaches with praise, toys and treats, and never forces anything. There's a pet first-aid kit on board. If your dog has a health condition, check with your vet first.</p></div></details>
-      <details class="qa reveal"><summary>What if my dog won't get on?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>That's okay! We keep it low-pressure and let your pup get comfortable first. <span data-fill="notReadyPolicy" data-confirm="What happens if a dog isn't ready that day" data-confirm-key="notReadyPolicy"></span></p></div></details>
-      <details class="qa reveal"><summary>Why pay when I can walk my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Keep the walks! Speedy PawZ is a happy complement to them. It's great for high-energy days, busy days, and days when it's too hot, smoky or rainy to be outside.</p></div></details>
-      <details class="qa reveal"><summary>How long is a session?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>About 30 minutes, customized to your dog.</p></div></details>
-      <details class="qa reveal"><summary>Where do you go?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Woodland, Davis, Sacramento and Yolo County. <span data-fill="travelRadius" data-confirm="Travel radius" data-confirm-key="travelRadius"></span>Not sure if you're in range? Send a request and we'll let you know.</p></div></details>
-      <details class="qa reveal"><summary>Is this grooming?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Nope! Speedy PawZ is all about fitness and fun. We're a mobile dog gym.</p></div></details>
-      <details class="qa reveal"><summary>What happens after I send a request?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Emelyn reaches out <span data-fill="responseTimePromise" data-confirm="Response time promise" data-confirm-key="responseTimePromise"></span>to ask a few quick questions and lock in a time that works for you.</p></div></details>
-      <details class="qa reveal"><summary>What does it cost?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="cost" data-fallback="Send a request and Emelyn will text you current pricing and open times." data-confirm="FAQ: cost" data-confirm-key="faq.cost"></p></div></details>
+      <details class="qa reveal"><summary>Is a treadmill safe for my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Our slat mills have no motor, so your dog powers every step. Emelyn stays right beside your dog the whole session, and there's a pet first-aid kit on board. If your dog has a health condition, check with your vet first.</p></div></details>
+      <details class="qa reveal"><summary>What if my dog won't get on?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>That's okay! Not every dog steps right on. Emelyn goes slow with praise, toys and treats and builds confidence through routine. Even when it's not the right fit, it's still an enrichment activity. <span data-fill="notReadyPolicy" data-confirm="What happens if a dog isn't ready that day" data-confirm-key="notReadyPolicy"></span></p></div></details>
+      <details class="qa reveal" data-confirm="Water routine (C8)"><summary>Is there water for my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Yes. Fresh water is in the van, and your pup gets breaks whenever they need them.</p></div></details>
+      <details class="qa reveal"><summary>Why pay when I can walk my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Keep the walks! A session adds a real run at your dog's own speed, rain or shine, without you leaving home.</p></div></details>
+      <details class="qa reveal"><summary>Where do you go?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Woodland, Davis, West Sacramento, Winters, Sacramento and the rest of Yolo County. Pricing can vary by location. <span data-fill="travelRadius" data-confirm="Travel radius" data-confirm-key="travelRadius"></span>Not sure if you're in range? Send a request and we'll let you know.</p></div></details>
+      <details class="qa reveal"><summary>What does it cost?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-sale-until="2026-11-30">Black Friday packs start at $99 for 2 sessions, $179 for 4 and $329 for 8, through November 30. See the packs above.</p><p data-after-sale hidden data-faq="cost" data-fallback="Send a request and Emelyn will text you current pricing and open times." data-confirm="FAQ: cost" data-confirm-key="faq.cost"></p></div></details>
       <details class="qa reveal"><summary>Do I need to be home?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="beHome" data-confirm="FAQ: do owners need to be home" data-confirm-key="faq.beHome"></p></div></details>
       <details class="qa reveal"><summary>Is my dog the right size or age?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="sizeAge" data-confirm="FAQ: size, breed and age limits" data-confirm-key="faq.sizeAge"></p></div></details>
       <details class="qa reveal"><summary>Do you need vaccine records?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="vaccines" data-confirm="FAQ: intake and vaccine requirements" data-confirm-key="faq.vaccines"></p></div></details>
@@ -795,6 +854,8 @@
                 <label class="chip"><input type="radio" name="city" value="Woodland"><span>Woodland</span></label>
                 <label class="chip"><input type="radio" name="city" value="Davis"><span>Davis</span></label>
                 <label class="chip"><input type="radio" name="city" value="Sacramento"><span>Sacramento</span></label>
+                <label class="chip"><input type="radio" name="city" value="West Sacramento"><span>West Sac</span></label>
+                <label class="chip"><input type="radio" name="city" value="Winters"><span>Winters</span></label>
                 <label class="chip"><input type="radio" name="city" value="Other Yolo County"><span>Other Yolo County</span></label>
                 <label class="chip"><input type="radio" name="city" value="Other"><span>Other</span></label>
               </div>
@@ -903,7 +964,7 @@
   <div class="wrap footer__inner">
     <img class="footer__logo" src="assets/logo/badge-180.webp" width="180" height="180" alt="Speedy PawZ Mobile Dog Gym" loading="lazy" decoding="async">
     <p class="footer__sign">Happy PawZ, Healthy Strides!</p>
-    <p>Serving Woodland, Davis, Sacramento &amp; Yolo County</p>
+    <p>Serving Woodland, Davis, West Sac, Winters, Sacramento &amp; Yolo County</p>
     <p>(530) 808-5782 <span aria-hidden="true">·</span> info@speedypawz.com</p>
     <p><a href="privacy.html">Privacy policy</a></p>
     <p class="footer__copy">&copy; <span class="js-year">2026</span> Speedy PawZ Mobile Dog Gym</p>

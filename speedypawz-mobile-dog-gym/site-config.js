@@ -14,7 +14,7 @@ window.SPZ_CONFIG = {
     phoneDisplay: "(530) 808-5782",
     phoneE164: "+15308085782",
     email: "info@speedypawz.com",
-    serviceArea: "Woodland, Davis, Sacramento & Yolo County",
+    serviceArea: "Woodland, Davis, West Sac, Winters, Sacramento & Yolo County",
     instagramHandle: "speedypawz_mobiledoggym" // used on the thank-you page only
   },
 
@@ -26,7 +26,11 @@ window.SPZ_CONFIG = {
   services: [
     { label: "30-minute fitness session", confirmed: true },
     { label: "Weekly sessions", confirmed: true },
-    { label: "Two dogs, same home", confirmed: false },
+    { label: "Two dogs, same home", confirmed: true },
+    // Black Friday packs (from Emelyn's Nov 2026 post). Each drops off the form after its "until" day.
+    { label: "Black Friday pack: Kickstart (2 sessions)", confirmed: true, until: "2026-11-30" },
+    { label: "Black Friday pack: Foundation (4 sessions)", confirmed: true, until: "2026-11-30" },
+    { label: "Black Friday pack: Ultimate PawZ (8 sessions)", confirmed: true, until: "2026-11-30" },
     { label: "Meet-and-greet", confirmed: false },
     { label: "Not sure yet, help me choose", confirmed: true }
   ],
@@ -76,16 +80,19 @@ window.SPZ_CONFIG = {
     cost: null,
     beHome: null,
     sizeAge: null,
-    vaccines: null,
+    vaccines: "Yes. Every pup needs current vaccinations and a quick registration before their first session.",
     meetAndGreet: null
   },
 
   // Video slot. Set to "assets/video/intro.mp4" once the file is in place.
   vsl: {
-    src: null,
-    captions: null, // "assets/video/intro.vtt"
-    poster: "assets/photos/emelyn-and-pup-van.jpg"
+    src: "assets/video/intro-720.mp4",      // placeholder cut from Emelyn's reels; assets/video/intro.mp4 is the 1080 master
+    captions: "assets/video/intro.vtt",
+    poster: "assets/video/intro-poster.jpg"
   },
+
+  // Credentials for the "Why you can trust me" list, once Emelyn confirms them. Example: ["Pet first aid and CPR certified", "Fully insured"]
+  credentials: null,
 
   // Live booking calendar. Example: { type: "iframe", src: "https://...", height: 760, name: "Square Appointments" }
   // When set, the "Request a session" tab shows the calendar first and the form as a fallback.

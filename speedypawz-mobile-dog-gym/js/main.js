@@ -136,6 +136,26 @@
       }
     }
 
+    // Dated offers (Black Friday): anything marked data-sale-until="YYYY-MM-DD" disappears after that day (California time),
+    // and anything marked data-after-sale shows up in its place.
+    var today = caToday(), saleOn = false;
+    $$('[data-sale-until]').forEach(function (el) {
+      if (today > el.getAttribute('data-sale-until')) el.parentNode.removeChild(el); else saleOn = true;
+    });
+    $$('[data-after-sale]').forEach(function (el) { el.hidden = saleOn; });
+
+    // Credentials Emelyn has confirmed (site-config.js) join the trust list
+    var tl = $('#trustList');
+    if (tl && Array.isArray(CFG.credentials)) {
+      CFG.credentials.forEach(function (c) {
+        if (!has(c)) return;
+        var li = document.createElement('li');
+        li.innerHTML = '<svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>';
+        li.appendChild(document.createTextNode(c));
+        tl.appendChild(li);
+      });
+    }
+
     // Inline fills
     $$('[data-fill]').forEach(function (el) {
       var v = CFG[el.getAttribute('data-fill')];
@@ -158,6 +178,7 @@
     if (list && Array.isArray(CFG.services) && CFG.services.length) {
       list.innerHTML = '';
       CFG.services.forEach(function (s) {
+        if (s && s.until && caToday() > s.until) return;     // dated options (Black Friday packs) drop off after their last day
         var label = typeof s === 'string' ? s : s.label;
         var l = document.createElement('label'); l.className = 'check';
         var i = document.createElement('input'); i.type = 'checkbox'; i.value = label;
@@ -192,6 +213,8 @@
     $$('.js-year').forEach(function (e) { e.textContent = caToday().slice(0, 4); });
   }
 
+  function fbEvent(name) { try { if (window.fbq) window.fbq('trackCustom', name); } catch (e) {} }
+
   /* ---------- VSL ---------- */
   function setupVSL() {
     var v = CFG.vsl || {};
@@ -216,10 +239,29 @@
         });
       }, { threshold: .4 }).observe(frame);
     }
+    // Muted preview plays by itself; if the phone refuses (Low Power Mode), the button becomes a big play button
+    video.addEventListener('playing', function () { if (!sec.classList.contains('is-playing')) sec.classList.add('is-preview'); });
+    video.addEventListener('pause', function () { if (!video.ended && !sec.classList.contains('is-playing')) sec.classList.remove('is-preview'); });
     btn.addEventListener('click', function () {
-      sec.classList.add('is-playing');
+      sec.classList.add('is-playing'); sec.classList.remove('is-preview');
       video.muted = false; video.loop = false; video.controls = true; video.currentTime = 0;
       var p = video.play(); if (p && p.catch) p.catch(function () {});
+      fbEvent('VslSound');
+    });
+    video.addEventListener('ended', function () {
+      if (!sec.classList.contains('is-playing')) return;
+      sec.classList.remove('is-playing'); video.controls = false; video.muted = true; video.loop = true;
+    });
+  }
+
+  /* ---------- Pack buttons: pick that pack in the booking form ---------- */
+  function packButtons() {
+    $$('[data-pack]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var want = b.getAttribute('data-pack');
+        var tab = $('#tab-session'); if (tab && tab.getAttribute('aria-selected') !== 'true') tab.click();
+        $$('#servicesList input').forEach(function (i) { if (i.value === want && !i.checked) { i.checked = true; i.dispatchEvent(new Event('change', { bubbles: true })); } });
+      });
     });
   }
 
@@ -655,6 +697,7 @@
   // Run
   applyConfig();
   setupVSL();
+  packButtons();
   captureSource();
   if (document.body.classList.contains('page-ty') || document.body.classList.contains('page-privacy')) { pixel(); return; }
   reviewMode();

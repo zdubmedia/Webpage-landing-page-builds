@@ -4,6 +4,12 @@
 
 # Working files that are not for visitors.
 [[redirects]]
+  from = "/tools/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/brand/*"
   to = "/"
   status = 301
