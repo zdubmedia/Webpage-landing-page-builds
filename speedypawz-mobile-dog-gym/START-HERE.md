@@ -14,7 +14,7 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 ## File map
 | Path | What it is |
 |---|---|
-| `index.html` | The page. All copy lives here, section by section: hero, VSL, how it works, meet Emelyn (story, flip cards, trust list, Google reviews, community), who it's for (four dog types, walk comparison, "your dog sets the pace" dial), booking (Black Friday packs, FAQ button, form), FAQ (with a "still have a question" box), zoomies band, final CTA, footer. |
+| `index.html` | The page. All copy lives here, section by section: hero, VSL, how it works, meet Emelyn (story, flip cards, trust list, real review quotes, community), who it's for (four dog types, walk comparison, "your dog sets the pace" dial), booking (Black Friday packs, FAQ button, form), FAQ (with a "still have a question" box), zoomies band, final CTA, footer. |
 | `site-config.js` | **The one file to edit for facts and switches.** Prices, promo, services, time windows, service days, FAQ answers, response time, VSL, calendar embed, pixel. |
 | `thank-you.html` | After a request. Shows the first name from `?name=`. vCard download, Instagram link, fires Meta `Lead` if the pixel is on. `noindex`. |
 | `privacy.html` | Plain-English privacy policy. [CONFIRM legal review] |
@@ -69,13 +69,13 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 ## Page order (Zach, Nov 21)
 Trust builds in one run, then fit, then the ask:
 1. Hero, VSL, how it works.
-2. Meet Emelyn: one-line story, flip cards, "Why you can trust me with your pup", Google reviews, "Part of the pack" (community).
+2. Meet Emelyn: one-line story, flip cards, "Why you can trust me with your pup", "What pup parents are saying" (real review quotes), "Part of the pack" (community).
 3. Who it's for: four dog types, "Why not just a walk?", then "Your dog sets the pace. Always." with the dial (id `safety`, so old links still land).
 4. Booking: heading, the Black Friday packs (id `pricing`; after Nov 30 the regular pricing note shows instead), a "Have a question first? See the FAQs" button that scrolls down, then the form.
 5. FAQ, ending with a "Still have a question?" box: call, text and email buttons, and a plain-text mention of the Instagram handle (not a link, so the page still has no outbound links).
 6. Zoomies band, final CTA, footer.
 Note: the original brief kept call and text links inside the booking section only. Zach asked for them under the FAQ too (Nov 21), so they are there now.
-The Google reviews card still paraphrases what reviews say. Swap in real quotes (first name and dog, with permission) when Emelyn sends screenshots; review mode flags it.
+Reviews (as of Nov 21, all that exist so far): Leticia L.'s public Facebook review (two German Shepherds, ages 5 and 11) and Brianne's note after Kymber's session, shared on social; Kymber went on to weekly sessions. Quotes are trimmed lightly (emojis and repeated "!!!" removed, the misspelled business name left out). Add new reviews as `<figure class="quote">` blocks in `index.html`. Ask Brianne before the page goes live; review mode flags it.
 
 ## Feedback round (Jackie and Yana, Nov 20)
 Their log is the "Speedy PawZ Landing Page: Feedback & Change Log" doc. What changed on the page:
@@ -139,7 +139,7 @@ Session network note: generating from a cloud session needs `kling.ai`, `s15-kli
   - **All three are AI footage, not Emelyn's clients, and the shy pup clip shows an AI Emelyn.** Review mode flags each one. Real clips from her would be better.
   - Not placed now: `heeler-and-emelyn-mill` (the cattle dog photo) and `emelyn-overalls-on-mill`.
 - **Pace dial:** under the dial is Zach's pace clip, cut into three loops in `assets/dial/`: the walk for Sniff and stroll, the close-up of the feet for Happy trot, the sprint for Full zoomies. Moving the needle switches loops. The loop frame ranges are the `LOOPS` list in the pace dial part of `js/main.js`. The little drawing remains as the fallback. **This is AI footage too**, and it shows a dog alone on a treadmill with a smooth belt rather than her slat mill; review mode flags it.
-- **The PawZ Reel** photo carousel and the four stat boxes are gone (Zach: repetitive). The Google reviews and the community block now sit under the trust list in Meet Emelyn, as proof and credibility.
+- **The PawZ Reel** photo carousel and the four stat boxes are gone (Zach: repetitive). The review quotes and the community block now sit under the trust list in Meet Emelyn, as proof and credibility.
 - **Note on swapping photos:** files in `/assets` are cached by browsers for a year. Give a replacement photo a new file name (and update `index.html`) instead of overwriting the old one.
 
 ## The "Powered by Netlify" badge
@@ -171,7 +171,7 @@ Any static server from this folder, e.g. `python3 -m http.server 8000`. Form POS
 2. OK to show Adan (flip card 2); "One-on-one with your pup, every session" line
 3. Which husky is in `husky-bandana-mill.jpg` (Kira or Kiko?)
 4. Older dog photo for "Who it's for"
-5. Real Google review quotes with names and permission
+5. Reviews: two real quotes are live (Leticia, Brianne). Brianne's OK to quote her; add Google reviews as they come in
 6. Prices: first session, weekly regulars
 7. Black Friday: done (packs from her post, auto switch-off after Nov 30)
 8. What happens if a dog isn't ready that day

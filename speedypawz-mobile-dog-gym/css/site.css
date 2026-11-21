@@ -894,3 +894,14 @@ html.lick-on, .lick-on body { overflow: hidden; }
 .ask__dm { font-size: 15px; }
 .ask__book { margin-top: 10px; font-weight: 800; }
 .ask__book a { color: var(--racing-red); }
+
+/* Real review quotes (Meet Emelyn) */
+.quotes { display: grid; gap: 14px; }
+@media (min-width: 760px) { .quotes { grid-template-columns: 1fr 1fr; gap: 18px; } }
+.quote { position: relative; margin: 0; padding: 22px 18px 16px 18px; border-radius: 18px; background: #FFF8E8; border-left: 5px solid var(--pawz-gold); }
+.quote::before { content: "\201C"; position: absolute; top: -14px; left: 12px; font: 900 64px/1 var(--font-display); color: var(--pawz-gold); }
+.quote blockquote { margin: 0; }
+.quote blockquote p { font-weight: 700; font-size: 17px; line-height: 1.45; color: var(--midnight); }
+.quote figcaption { margin-top: 10px; font-size: 14px; color: var(--ink); }
+.quote figcaption b { color: var(--midnight); }
+

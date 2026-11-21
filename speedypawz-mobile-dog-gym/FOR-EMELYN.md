@@ -41,7 +41,7 @@ If they checked the texting box, they said yes to texts. If they didn't, call or
 - How fast you can usually reply (so we can promise it on the page)
 - OK to show the photo with Adan? Which husky is Kira and which is Kiko?
 - Permission from the owners of the client dogs in the photos
-- A few real Google reviews you're happy to quote, with first names
+- New reviews as they come in (Google or Facebook), plus Brianne's OK to quote her note about Kymber
 - Your booking calendar link, if you use one (Square, Calendly or similar)
 - An intro video, if you'd like one on the page
 
