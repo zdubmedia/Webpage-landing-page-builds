@@ -376,12 +376,46 @@
       </ul>
       <span class="plan__confirm" data-confirm="Credentials: pet first aid or CPR, insurance, training, years with dogs (credentials in site-config.js)" data-confirm-key="credentials"></span>
     </div>
+
+    <div class="reviews card reveal" id="reviews" data-confirm="Swap in real Google quotes with names and permission">
+      <h3 class="reviews__title">What clients mention in their Google reviews</h3>
+      <ul class="reviews__list" role="list">
+        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>A low-pressure, welcoming setup</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Dogs who get comfortable before they step on</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Plenty of energy burned</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Pups who settle in for a deep nap afterward</li>
+        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Raffle winners who became weekly regulars</li>
+      </ul>
+      <p class="reviews__src">Summarized from Speedy PawZ reviews on Google.</p>
+    </div>
+
+
+    <div class="community">
+      <h3 class="community__title reveal">Part of the pack, <span class="hl">on and off the mill</span></h3>
+      <ul class="trophies" role="list">
+        <li class="trophy reveal"><span class="trophy__tag"><svg aria-hidden="true"><use href="#i-home"/></svg></span><p>Giving back to shelter pups with <b>Yolo County Animal Shelter</b></p></li>
+        <li class="trophy reveal"><span class="trophy__tag"><svg aria-hidden="true"><use href="#i-golf"/></svg></span><p>Free-session raffle prize for the <b>PAWS Pet Adoption &amp; Wellness</b> golf tournament in Davis</p></li>
+        <li class="trophy reveal"><span class="trophy__tag"><svg aria-hidden="true"><use href="#i-mask"/></svg></span><p>Prize partner for <b>Soul Puppy Woodland's</b> Halloween costume contest</p></li>
+        <li class="trophy trophy--photo reveal">
+          <picture><source type="image/avif" srcset="assets/photos/van-mystery-machine-480.avif 480w, assets/photos/van-mystery-machine-800.avif 800w" sizes="(min-width: 900px) 260px, 90vw"><source type="image/webp" srcset="assets/photos/van-mystery-machine-480.webp 480w, assets/photos/van-mystery-machine-800.webp 800w" sizes="(min-width: 900px) 260px, 90vw"><img src="assets/photos/van-mystery-machine-480.jpg" width="480" height="473" alt="The Speedy PawZ van decorated as the Mystery Machine at a school trunk-or-treat" loading="lazy" decoding="async"></picture>
+          <span class="trophy__tag"><svg aria-hidden="true"><use href="#i-trophy"/></svg></span>
+          <p><b>2nd place</b> at a local school trunk-or-treat, with the van dressed as the Mystery Machine</p>
+        </li>
+      </ul>
+    </div>
   </div>
 </section>
 
 <!-- ============ WHO IT'S FOR ============ -->
 <section class="sec sec--cream fit" id="fit" aria-labelledby="fit-title">
   <div class="arc" aria-hidden="true"></div>
+  <div class="ribbon ribbon--mid" aria-hidden="true" data-phrase="Happy PawZ, Healthy Strides!   ●   ">
+    <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <path id="rb2" d="M-200 104 C 60 34, 300 34, 560 100 S 1020 172, 1280 100 S 1700 30, 2000 96" fill="none"/>
+      <use href="#rb2" class="ribbon__band"/>
+      <text class="ribbon__text" dy="13"><textPath href="#rb2" startOffset="0"></textPath></text>
+    </svg>
+  </div>
   <div class="wrap">
     <div class="sec__head reveal">
       <p class="label">Who it's for</p>
@@ -435,16 +469,10 @@
       </div>
       <p class="compare__foot"><b>Best together.</b> Keep the walks, add the run.</p>
     </div>
-  </div>
-</section>
 
-<!-- ============ SAFETY ============ -->
-<section class="sec sec--dark safety" id="safety" aria-labelledby="safety-title">
-  <div class="arc" aria-hidden="true"></div>
-  <div class="wrap">
-    <div class="sec__head reveal">
-      <p class="label">Safety first</p>
-      <h2 id="safety-title">Your dog sets the pace. <span class="hl">Always.</span></h2>
+    <div class="pace" id="safety">
+    <div class="pace__head reveal">
+            <h3 class="pace__title" id="safety-title">Your dog sets the pace. <span class="hl">Always.</span></h3>
       <p class="lead">Sniff and stroll or full zoomies, it's always their call.</p>
     </div>
     <div class="safety__grid">
@@ -491,87 +519,23 @@
         <p class="dial__caption">Drag to try it. Your dog's choice, every time.</p>
       </div>
     </div>
+    </div>
     <div class="cta-row">
-      <a class="btn btn--red" href="#book" data-cta="safety">See if my dog's a fit</a>
+      <a class="btn btn--red" href="#book" data-cta="fit">See if my dog's a fit</a>
     </div>
   </div>
 </section>
 
-<!-- ============ PROOF ============ -->
-<section class="sec sec--gold proof" id="proof" aria-labelledby="proof-title">
-  <div class="arc" aria-hidden="true"></div>
-  <div class="ribbon ribbon--mid" aria-hidden="true" data-phrase="Happy PawZ, Healthy Strides!   ●   ">
-    <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYMid slice" focusable="false">
-      <path id="rb2" d="M-200 104 C 60 34, 300 34, 560 100 S 1020 172, 1280 100 S 1700 30, 2000 96" fill="none"/>
-      <use href="#rb2" class="ribbon__band"/>
-      <text class="ribbon__text" dy="13"><textPath href="#rb2" startOffset="0"></textPath></text>
-    </svg>
-  </div>
-  <div class="wrap">
-    <div class="sec__head reveal">
-      <p class="label">Happy PawZ</p>
-      <h2 id="proof-title">What happens after a <span class="hl">Speedy PawZ</span> session?</h2>
-    </div>
-
-    <ul class="stats" role="list">
-      <li class="stat reveal">
-        <span class="stat__num" data-count="30">30</span>
-        <span class="stat__label">minute one-on-one sessions</span>
-        <svg class="stat__gauge" viewBox="0 0 120 64" aria-hidden="true"><path d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="#E7DDCA" stroke-width="10" stroke-linecap="round"/><path class="stat__arc" d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="#F7B334" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/><g class="stat__needle" data-end="70"><path d="M57.5 58 L60 16 L62.5 58 Z" fill="#C53336"/></g><circle cx="60" cy="58" r="6" fill="#1F1B30"/></svg>
-      </li>
-      <li class="stat reveal">
-        <span class="stat__num" data-count="2">2</span>
-        <span class="stat__label">dog-powered slat mills</span>
-        <svg class="stat__gauge" viewBox="0 0 120 64" aria-hidden="true"><path d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="#E7DDCA" stroke-width="10" stroke-linecap="round"/><path class="stat__arc" d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="#F7B334" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/><g class="stat__needle" data-end="40"><path d="M57.5 58 L60 16 L62.5 58 Z" fill="#C53336"/></g><circle cx="60" cy="58" r="6" fill="#1F1B30"/></svg>
-      </li>
-      <li class="stat reveal">
-        <span class="stat__num" data-count="0">0</span>
-        <span class="stat__label">motors</span>
-        <svg class="stat__gauge" viewBox="0 0 120 64" aria-hidden="true"><path d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="#E7DDCA" stroke-width="10" stroke-linecap="round"/><path class="stat__arc" d="M10 58 A50 50 0 0 1 110 58" fill="none" stroke="#F7B334" stroke-width="10" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100"/><g class="stat__needle" data-end="0" data-rev="1"><path d="M57.5 58 L60 16 L62.5 58 Z" fill="#C53336"/></g><circle cx="60" cy="58" r="6" fill="#1F1B30"/></svg>
-      </li>
-      <li class="stat stat--icon reveal">
-        <span class="stat__ico"><svg aria-hidden="true"><use href="#i-camera"/></svg></span>
-        <span class="stat__label">Photo update after every session</span>
-      </li>
-    </ul>
-
-    <div class="reviews card reveal" data-confirm="Swap in real Google quotes with names and permission">
-      <h3 class="reviews__title">What clients mention in their Google reviews</h3>
-      <ul class="reviews__list" role="list">
-        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>A low-pressure, welcoming setup</li>
-        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Dogs who get comfortable before they step on</li>
-        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Plenty of energy burned</li>
-        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Pups who settle in for a deep nap afterward</li>
-        <li><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Raffle winners who became weekly regulars</li>
-      </ul>
-      <p class="reviews__src">Summarized from Speedy PawZ reviews on Google.</p>
-    </div>
-
-    <div class="community">
-      <h3 class="community__title reveal">Part of the pack, <span class="hl">on and off the mill</span></h3>
-      <ul class="trophies" role="list">
-        <li class="trophy reveal"><span class="trophy__tag"><svg aria-hidden="true"><use href="#i-home"/></svg></span><p>Giving back to shelter pups with <b>Yolo County Animal Shelter</b></p></li>
-        <li class="trophy reveal"><span class="trophy__tag"><svg aria-hidden="true"><use href="#i-golf"/></svg></span><p>Free-session raffle prize for the <b>PAWS Pet Adoption &amp; Wellness</b> golf tournament in Davis</p></li>
-        <li class="trophy reveal"><span class="trophy__tag"><svg aria-hidden="true"><use href="#i-mask"/></svg></span><p>Prize partner for <b>Soul Puppy Woodland's</b> Halloween costume contest</p></li>
-        <li class="trophy trophy--photo reveal">
-          <picture><source type="image/avif" srcset="assets/photos/van-mystery-machine-480.avif 480w, assets/photos/van-mystery-machine-800.avif 800w" sizes="(min-width: 900px) 260px, 90vw"><source type="image/webp" srcset="assets/photos/van-mystery-machine-480.webp 480w, assets/photos/van-mystery-machine-800.webp 800w" sizes="(min-width: 900px) 260px, 90vw"><img src="assets/photos/van-mystery-machine-480.jpg" width="480" height="473" alt="The Speedy PawZ van decorated as the Mystery Machine at a school trunk-or-treat" loading="lazy" decoding="async"></picture>
-          <span class="trophy__tag"><svg aria-hidden="true"><use href="#i-trophy"/></svg></span>
-          <p><b>2nd place</b> at a local school trunk-or-treat, with the van dressed as the Mystery Machine</p>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ============ PRICING ============ -->
-<section class="sec sec--dark pricing" id="pricing" aria-labelledby="pricing-title">
+<!-- ============ BOOKING ============ -->
+<section class="sec sec--dark book" id="book" aria-labelledby="book-title" tabindex="-1">
   <div class="arc" aria-hidden="true"></div>
   <div class="wrap">
     <div class="sec__head reveal">
-      <p class="label">Pricing</p>
-      <h2 id="pricing-title">Simple plans for <span class="hl">happy pups</span></h2>
+      <p class="label">Book</p>
+      <h2 id="book-title">Let's get your pup <span class="hl">on the schedule</span></h2>
+      <p class="lead">Pick what you're interested in and two times that work for you. Emelyn will reach out <span data-fill="responseTimePromise" data-confirm="Response time promise" data-confirm-key="responseTimePromise"></span>to ask a few quick questions and lock in your time.</p>
     </div>
-    <div class="sale reveal" data-sale-until="2026-11-30">
+    <div class="sale reveal" id="pricing" data-sale-until="2026-11-30">
       <p class="sale__badge">Black Friday <span aria-hidden="true">·</span> Ends Nov 30</p>
       <p class="sale__title">Save up to <span class="sale__pct">36%</span> on session packs</p>
       <ul class="packs" role="list">
@@ -612,7 +576,7 @@
         <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Pay now, schedule later</li>
         <li><svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>Rain or shine, at your curb</li>
       </ul>
-      <p class="sale__how">Claim a pack below and Emelyn will reach out to set it up.</p>
+      <p class="sale__how">Claim a pack and Emelyn will reach out to set it up.</p>
       <p class="sale__fine" data-confirm="The fine print in her post starts with '...min sessions per dog' (cut off in the screenshot): confirm that first line">Pricing varies by location. Payment upfront. Can't be combined with other discounts. Booking subject to availability. Registration and vaccinations required.</p>
     </div>
 
@@ -641,64 +605,11 @@
     </ul>
     <p class="pricing__fallback reveal" id="priceFallback">Send a request and Emelyn will text you current pricing and open times.</p>
     </div>
-    <div class="cta-row">
-      <a class="btn btn--red" href="#book" data-cta="pricing">Request a session time</a>
+    <div class="book__faq reveal">
+      <a class="btn btn--ghost" href="#faq" data-cta="to-faq"><svg class="ico" aria-hidden="true"><use href="#i-plus"/></svg>Have a question first? See the FAQs</a>
     </div>
   </div>
-</section>
-
-<!-- ============ FAQ ============ -->
-<section class="sec sec--cream faq" id="faq" aria-labelledby="faq-title">
-  <div class="arc" aria-hidden="true"></div>
-  <div class="wrap wrap--narrow">
-    <div class="sec__head reveal">
-      <p class="label">FAQ</p>
-      <h2 id="faq-title">Straight <span class="hl">answers</span></h2>
-    </div>
-    <div class="faq__list">
-      <details class="qa reveal"><summary>Is a treadmill safe for my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Our slat mills have no motor, so your dog powers every step. Emelyn stays right beside your dog the whole session, and there's a pet first-aid kit on board. If your dog has a health condition, check with your vet first.</p></div></details>
-      <details class="qa reveal"><summary>What if my dog won't get on?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>That's okay! Not every dog steps right on. Emelyn goes slow with praise, toys and treats and builds confidence through routine. Even when it's not the right fit, it's still an enrichment activity. <span data-fill="notReadyPolicy" data-confirm="What happens if a dog isn't ready that day" data-confirm-key="notReadyPolicy"></span></p></div></details>
-      <details class="qa reveal" data-confirm="Water routine (C8)"><summary>Is there water for my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Yes. Fresh water is in the van, and your pup gets breaks whenever they need them.</p></div></details>
-      <details class="qa reveal"><summary>Why pay when I can walk my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Keep the walks! A session adds a real run at your dog's own speed, rain or shine, without you leaving home.</p></div></details>
-      <details class="qa reveal"><summary>Where do you go?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Woodland, Davis, West Sacramento, Winters, Sacramento and the rest of Yolo County. Pricing can vary by location. <span data-fill="travelRadius" data-confirm="Travel radius" data-confirm-key="travelRadius"></span>Not sure if you're in range? Send a request and we'll let you know.</p></div></details>
-      <details class="qa reveal"><summary>What does it cost?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-sale-until="2026-11-30">Black Friday packs start at $99 for 2 sessions, $179 for 4 and $329 for 8, through November 30. See the packs above.</p><p data-after-sale hidden data-faq="cost" data-fallback="Send a request and Emelyn will text you current pricing and open times." data-confirm="FAQ: cost" data-confirm-key="faq.cost"></p></div></details>
-      <details class="qa reveal"><summary>Do I need to be home?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="beHome" data-confirm="FAQ: do owners need to be home" data-confirm-key="faq.beHome"></p></div></details>
-      <details class="qa reveal"><summary>Is my dog the right size or age?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="sizeAge" data-confirm="FAQ: size, breed and age limits" data-confirm-key="faq.sizeAge"></p></div></details>
-      <details class="qa reveal"><summary>Do you need vaccine records?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="vaccines" data-confirm="FAQ: intake and vaccine requirements" data-confirm-key="faq.vaccines"></p></div></details>
-      <details class="qa reveal"><summary>Do you offer a meet-and-greet?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="meetAndGreet" data-confirm="FAQ: meet-and-greet" data-confirm-key="faq.meetAndGreet"></p></div></details>
-    </div>
-  </div>
-</section>
-
-<!-- ============ GIANT TYPE BAND (decorative; the final CTA carries the words) ============ -->
-<section class="giant sec--gold" aria-hidden="true">
-  <div class="arc" aria-hidden="true"></div>
-  <div class="giant__row giant__row--a">
-    <span>Zoomies</span>
-    <img class="giant__sticker" src="assets/photos/black-lab-smiling-mill.webp" width="437" height="497" alt="" loading="lazy" decoding="async">
-    <span>Zoomies</span>
-    <img class="giant__sticker giant__sticker--logo" src="assets/logo/badge-180.webp" width="180" height="180" alt="" loading="lazy" decoding="async">
-    <span>Zoomies</span>
-  </div>
-  <p class="giant__mid"><span>turn into</span></p>
-  <div class="giant__row giant__row--b">
-    <span>Snoozies</span>
-    <img class="giant__sticker" src="assets/scene/nap-still.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
-    <span>Snoozies</span>
-    <img class="giant__sticker giant__sticker--logo" src="assets/logo/badge-180.webp" width="180" height="180" alt="" loading="lazy" decoding="async">
-    <span>Snoozies</span>
-  </div>
-</section>
-
-<!-- ============ BOOKING ============ -->
-<section class="sec sec--dark book" id="book" aria-labelledby="book-title" tabindex="-1">
-  <div class="arc" aria-hidden="true"></div>
   <div class="wrap wrap--form">
-    <div class="sec__head reveal">
-      <p class="label">Book</p>
-      <h2 id="book-title">Let's get your pup <span class="hl">on the schedule</span></h2>
-      <p class="lead">Pick what you're interested in and two times that work for you. Emelyn will reach out <span data-fill="responseTimePromise" data-confirm="Response time promise" data-confirm-key="responseTimePromise"></span>to ask a few quick questions and lock in your time.</p>
-    </div>
 
     <div class="tabs" role="tablist" aria-label="How would you like to start?">
       <button class="tab" role="tab" id="tab-session" aria-controls="panel-session" aria-selected="true" type="button"><svg class="ico" aria-hidden="true"><use href="#i-paw"/></svg>Request a session</button>
@@ -945,6 +856,60 @@
     </div>
 
     <p class="book__text">Prefer to text? <a href="sms:+15308085782">(530) 808-5782</a> <span class="book__or">or</span> <a href="tel:+15308085782">call</a></p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec sec--cream faq" id="faq" aria-labelledby="faq-title">
+  <div class="arc" aria-hidden="true"></div>
+  <div class="wrap wrap--narrow">
+    <div class="sec__head reveal">
+      <p class="label">FAQ</p>
+      <h2 id="faq-title">Straight <span class="hl">answers</span></h2>
+    </div>
+    <div class="faq__list">
+      <details class="qa reveal"><summary>Is a treadmill safe for my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Our slat mills have no motor, so your dog powers every step. Emelyn stays right beside your dog the whole session, and there's a pet first-aid kit on board. If your dog has a health condition, check with your vet first.</p></div></details>
+      <details class="qa reveal"><summary>What if my dog won't get on?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>That's okay! Not every dog steps right on. Emelyn goes slow with praise, toys and treats and builds confidence through routine. Even when it's not the right fit, it's still an enrichment activity. <span data-fill="notReadyPolicy" data-confirm="What happens if a dog isn't ready that day" data-confirm-key="notReadyPolicy"></span></p></div></details>
+      <details class="qa reveal" data-confirm="Water routine (C8)"><summary>Is there water for my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Yes. Fresh water is in the van, and your pup gets breaks whenever they need them.</p></div></details>
+      <details class="qa reveal"><summary>Why pay when I can walk my dog?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Keep the walks! A session adds a real run at your dog's own speed, rain or shine, without you leaving home.</p></div></details>
+      <details class="qa reveal"><summary>Where do you go?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p>Woodland, Davis, West Sacramento, Winters, Sacramento and the rest of Yolo County. Pricing can vary by location. <span data-fill="travelRadius" data-confirm="Travel radius" data-confirm-key="travelRadius"></span>Not sure if you're in range? Send a request and we'll let you know.</p></div></details>
+      <details class="qa reveal"><summary>What does it cost?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-sale-until="2026-11-30">Black Friday packs start at $99 for 2 sessions, $179 for 4 and $329 for 8, through November 30. See the packs above.</p><p data-after-sale hidden data-faq="cost" data-fallback="Send a request and Emelyn will text you current pricing and open times." data-confirm="FAQ: cost" data-confirm-key="faq.cost"></p></div></details>
+      <details class="qa reveal"><summary>Do I need to be home?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="beHome" data-confirm="FAQ: do owners need to be home" data-confirm-key="faq.beHome"></p></div></details>
+      <details class="qa reveal"><summary>Is my dog the right size or age?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="sizeAge" data-confirm="FAQ: size, breed and age limits" data-confirm-key="faq.sizeAge"></p></div></details>
+      <details class="qa reveal"><summary>Do you need vaccine records?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="vaccines" data-confirm="FAQ: intake and vaccine requirements" data-confirm-key="faq.vaccines"></p></div></details>
+      <details class="qa reveal"><summary>Do you offer a meet-and-greet?<span class="qa__ico"><svg aria-hidden="true"><use href="#i-plus"/></svg></span></summary><div class="qa__a"><p data-faq="meetAndGreet" data-confirm="FAQ: meet-and-greet" data-confirm-key="faq.meetAndGreet"></p></div></details>
+    </div>
+    <div class="ask reveal">
+      <h3 class="ask__title">Still have a question?</h3>
+      <p>Emelyn is happy to help. Reach out any way you like.</p>
+      <div class="ask__btns">
+        <a class="btn btn--red" href="tel:+15308085782" data-cta="faq-call"><svg class="ico" aria-hidden="true"><use href="#i-phone"/></svg>Call (530) 808-5782</a>
+        <a class="btn btn--ghost-dark" href="sms:+15308085782" data-cta="faq-text">Text us</a>
+        <a class="btn btn--ghost-dark" href="mailto:info@speedypawz.com" data-cta="faq-email">Email info@speedypawz.com</a>
+      </div>
+      <p class="ask__dm">Or send a DM to <b>@speedypawz_mobiledoggym</b> on Instagram.</p>
+      <p class="ask__book"><a href="#book" data-cta="faq-book">Ready to book? Request your pup's first session</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GIANT TYPE BAND (decorative; the final CTA carries the words) ============ -->
+<section class="giant sec--gold" aria-hidden="true">
+  <div class="arc" aria-hidden="true"></div>
+  <div class="giant__row giant__row--a">
+    <span>Zoomies</span>
+    <img class="giant__sticker" src="assets/photos/black-lab-smiling-mill.webp" width="437" height="497" alt="" loading="lazy" decoding="async">
+    <span>Zoomies</span>
+    <img class="giant__sticker giant__sticker--logo" src="assets/logo/badge-180.webp" width="180" height="180" alt="" loading="lazy" decoding="async">
+    <span>Zoomies</span>
+  </div>
+  <p class="giant__mid"><span>turn into</span></p>
+  <div class="giant__row giant__row--b">
+    <span>Snoozies</span>
+    <img class="giant__sticker" src="assets/scene/nap-still.webp" width="640" height="472" alt="" loading="lazy" decoding="async">
+    <span>Snoozies</span>
+    <img class="giant__sticker giant__sticker--logo" src="assets/logo/badge-180.webp" width="180" height="180" alt="" loading="lazy" decoding="async">
+    <span>Snoozies</span>
   </div>
 </section>
 

@@ -14,12 +14,12 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 ## File map
 | Path | What it is |
 |---|---|
-| `index.html` | The page. All copy lives here, section by section (hero, VSL, how it works, meet Emelyn, who it's for, safety, proof, pricing, FAQ, booking, final CTA, footer). |
+| `index.html` | The page. All copy lives here, section by section: hero, VSL, how it works, meet Emelyn (story, flip cards, trust list, Google reviews, community), who it's for (four dog types, walk comparison, "your dog sets the pace" dial), booking (Black Friday packs, FAQ button, form), FAQ (with a "still have a question" box), zoomies band, final CTA, footer. |
 | `site-config.js` | **The one file to edit for facts and switches.** Prices, promo, services, time windows, service days, FAQ answers, response time, VSL, calendar embed, pixel. |
 | `thank-you.html` | After a request. Shows the first name from `?name=`. vCard download, Instagram link, fires Meta `Lead` if the pixel is on. `noindex`. |
 | `privacy.html` | Plain-English privacy policy. [CONFIRM legal review] |
 | `css/site.css` | All styles. Tokens at the top match the visual design guide. |
-| `js/main.js` | Config rendering, review mode, dog illustrations, race-track progress, sticky CTA, flip cards, counters, pace dial, PawZ Reel, easter egg, pixel. |
+| `js/main.js` | Config rendering, review mode, dog illustrations, race-track progress, sticky CTA, flip cards, pace dial, VSL, pack buttons, Black Friday switch, easter egg, pixel. |
 | `js/booking.js` | Tabs, 3-step session form, quick-call form, validation, Netlify AJAX submit. |
 | `js/intro.js` | The lick opener: gold screen with the logo, the pup hops out of the van and runs up, one big lick, then red, navy and gold curves follow the tongue up the screen and reveal the hero. |
 | `js/flow.js` | The flow layer: wavy ribbon marquees, section arcs that flatten as they rise, the giant "zoomies / snoozies" type band. Decoration only. |
@@ -66,6 +66,17 @@ A one-page, mobile-first booking page for **Speedy PawZ Mobile Dog Gym** (Woodla
 - To extend the sale, change the date in those places. To run a new sale, copy the `.sale` block.
 - The fine print in her post was cut off at the start ("...min sessions per dog"); review mode flags it.
 
+## Page order (Zach, Nov 21)
+Trust builds in one run, then fit, then the ask:
+1. Hero, VSL, how it works.
+2. Meet Emelyn: one-line story, flip cards, "Why you can trust me with your pup", Google reviews, "Part of the pack" (community).
+3. Who it's for: four dog types, "Why not just a walk?", then "Your dog sets the pace. Always." with the dial (id `safety`, so old links still land).
+4. Booking: heading, the Black Friday packs (id `pricing`; after Nov 30 the regular pricing note shows instead), a "Have a question first? See the FAQs" button that scrolls down, then the form.
+5. FAQ, ending with a "Still have a question?" box: call, text and email buttons, and a plain-text mention of the Instagram handle (not a link, so the page still has no outbound links).
+6. Zoomies band, final CTA, footer.
+Note: the original brief kept call and text links inside the booking section only. Zach asked for them under the FAQ too (Nov 21), so they are there now.
+The Google reviews card still paraphrases what reviews say. Swap in real quotes (first name and dog, with permission) when Emelyn sends screenshots; review mode flags it.
+
 ## Feedback round (Jackie and Yana, Nov 20)
 Their log is the "Speedy PawZ Landing Page: Feedback & Change Log" doc. What changed on the page:
 - C1/C2 too long and repetitive: "no motor / your dog sets the pace" now appears once in full (Pit stop) plus the dial; Emelyn's story is one paragraph (the video tells the rest); safety list merged into the trust list; two FAQ items that repeated the page were cut; flip cards and community items sit two across on phones. The page is about 6% shorter than before even with the video and the packs added.
@@ -82,9 +93,9 @@ Their log is the "Speedy PawZ Landing Page: Feedback & Change Log" doc. What cha
 
 ## Design language (after the sweet-tape.com reference)
 Zach's reference for the feel is sweet-tape.com: one flat color fills the whole screen, the next color arrives as a big curve, giant type, ribbons of scrolling text, objects that sit directly on the color.
-- **Color fields:** every section is one flat field. Classes: `sec--dark` (midnight), `sec--gold` (PawZ gold), `sec--cream`. Order today: hero (midnight photo), how it works (gold), meet Emelyn (midnight), who it's for (cream), safety (midnight), proof (gold), pricing (midnight), FAQ (cream), giant band (gold), booking (midnight), final CTA (gold), footer (black).
+- **Color fields:** every section is one flat field. Classes: `sec--dark` (midnight), `sec--gold` (PawZ gold), `sec--cream`. Order today: hero (midnight photo), VSL (midnight), how it works (gold laps), meet Emelyn with trust, reviews and community (midnight), who it's for with the walk comparison and pace dial (cream), booking with the packs (midnight), FAQ (cream), zoomies band (gold), final CTA (gold), footer (black).
 - **Arcs:** each section starts with `<div class="arc">`, a dome in the section's own color that overlaps the section above. `js/flow.js` flattens it as it scrolls into view.
-- **Ribbons:** `<div class="ribbon" data-phrase="...">` at the top of a section draws a wavy band of scrolling text across the boundary. Two today (red after the hero, navy before proof). Only signature phrases, in normal case so "PawZ" keeps its capital Z.
+- **Ribbons:** `<div class="ribbon" data-phrase="...">` at the top of a section draws a wavy band of scrolling text across the boundary. Two today (red after the hero, navy at the top of who it's for). Only signature phrases, in normal case so "PawZ" keeps its capital Z.
 - **Giant band:** `.giant` before booking. Decorative (`aria-hidden`); the final CTA carries the same words for screen readers.
 - **Highlights:** gold text on midnight; on gold fields the highlight is a small navy box with gold text (an inline PawZ Box); on cream it is a gold marker stroke. Gold text never sits on a light color.
 - **Red:** still buttons only, plus the one red ribbon. Her brand guide reserves red for the call to action, so there are no red sections. If Zach wants a red field, that is a brand-rule change to clear with Emelyn.
@@ -128,7 +139,7 @@ Session network note: generating from a cloud session needs `kling.ai`, `s15-kli
   - **All three are AI footage, not Emelyn's clients, and the shy pup clip shows an AI Emelyn.** Review mode flags each one. Real clips from her would be better.
   - Not placed now: `heeler-and-emelyn-mill` (the cattle dog photo) and `emelyn-overalls-on-mill`.
 - **Pace dial:** under the dial is Zach's pace clip, cut into three loops in `assets/dial/`: the walk for Sniff and stroll, the close-up of the feet for Happy trot, the sprint for Full zoomies. Moving the needle switches loops. The loop frame ranges are the `LOOPS` list in the pace dial part of `js/main.js`. The little drawing remains as the fallback. **This is AI footage too**, and it shows a dog alone on a treadmill with a smooth belt rather than her slat mill; review mode flags it.
-- **The PawZ Reel** photo carousel is gone from the proof section, at Zach's request. Stats, reviews, then "Part of the pack".
+- **The PawZ Reel** photo carousel and the four stat boxes are gone (Zach: repetitive). The Google reviews and the community block now sit under the trust list in Meet Emelyn, as proof and credibility.
 - **Note on swapping photos:** files in `/assets` are cached by browsers for a year. Give a replacement photo a new file name (and update `index.html`) instead of overwriting the old one.
 
 ## The "Powered by Netlify" badge

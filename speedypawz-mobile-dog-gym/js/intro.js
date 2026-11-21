@@ -23,8 +23,8 @@
   var LOGO_MS = 700;        // logo holds at least this long
   var GIVE_UP_MS = 4200;    // no footage by now: go straight to the roll-up and reveal
   var BOOP_AT = 1.55;       // seconds into the clip: nose bumps the lens (little screen shake)
-  var LICK_AT = 1.98;       // seconds into the clip: the tongue comes up from the bottom, the color curves follow it
-  var SEQ = { n: 38, fps: 15, w: 540, h: 680, dir: 'assets/intro/seq2/' };
+  var LICK_AT = 2.95;       // seconds into the clip: the tongue has swept up from the bottom and covers the screen; the color curves take over
+  var SEQ = { n: 47, fps: 15, w: 540, h: 680, dir: 'assets/intro/seq3/' };
   var state = 'logo';       // logo > playing > hit > done
   var timers = [];
   function later(fn, ms) { var t = setTimeout(fn, ms); timers.push(t); return t; }
@@ -116,7 +116,7 @@
   // Ask the browser straight away whether it will play. If it will, hold the clip at the start until the logo has had its moment.
   var size = window.innerWidth >= 900 ? 1080 : 720;
   video.addEventListener('error', useFrames);
-  video.src = 'assets/intro/lick2-' + size + '.mp4';
+  video.src = 'assets/intro/lick3-' + size + '.mp4';
   var probe;
   try { probe = video.play(); } catch (e) { probe = null; useFrames(); }
   if (probe && probe.then) {
