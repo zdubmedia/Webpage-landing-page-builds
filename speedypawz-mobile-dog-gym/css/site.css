@@ -909,7 +909,5 @@ html.lick-on, .lick-on body { overflow: hidden; }
 .quote figcaption { margin-top: 10px; font-size: 14px; color: var(--ink); }
 .quote figcaption b { color: var(--midnight); }
 
-/* Hero copy v2 (Nov 21): stat chips now open the VSL section */
-.hero__chips--moved { margin: 0 auto 30px; }
 @media (max-width: 599px) { .hero__title { font-size: 26px; } }   /* one step down so the longer headline wraps less on phones */
 
